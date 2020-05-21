@@ -1,0 +1,27 @@
+p{
+    margin: 0;
+}
+
+a {
+    margin-left: 10px;
+    font-size: large;
+}
+
+.header-wrap {
+    display: flex;
+    background-color: #006fb8;
+    color: white;
+    padding: 5px;
+    font-size: large;
+    align-items: center;
+}
+
+.nav-text {
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.nav-wrap {
+    margin-bottom: 10px;
+}
