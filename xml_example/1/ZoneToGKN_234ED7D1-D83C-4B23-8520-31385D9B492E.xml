@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Zon5:ZoneToGKN xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:dAp1="urn://x-artefacts-rosreestr-ru/commons/directories/applied-file/1.0.1" xmlns:dAl3="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/3.0.2" xmlns:dEcZ1="urn://x-artefacts-rosreestr-ru/commons/directories/economic-zone/1.0.1" xmlns:Sen5="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/5.0.1" xmlns:DocI5="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1" xmlns:Simple10="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" xmlns:zone4="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" xmlns:Zon5="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8" xmlns:gs1="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/5.0.2" xmlns:gs2="urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/4.0.1" xmlns:gs3="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/6.0.1" xmlns:gs4="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/5.0.1" xmlns:gs5="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" NameSoftware="АИС Geocad System АРМ КИН" VersionSoftware="50139" GUID="234ED7D1-D83C-4B23-8520-31385D9B492E">
+ <Zon5:Title>
+  <DocI5:CodeDocument>558401020300</DocI5:CodeDocument>
+  <DocI5:Name>ZoneToGKN_234ED7D1-D83C-4B23-8520-31385D9B492E</DocI5:Name>
+  <DocI5:Number>578</DocI5:Number>
+  <DocI5:Date>1995-06-09</DocI5:Date>
+  <DocI5:IssueOrgan>Правительство Российской Федерации</DocI5:IssueOrgan>
+ </Zon5:Title>
+ <Zon5:Declarant>
+  <Sen5:Organization>
+   <gs2:Name>Публичное акционерное общество &quot;Ростелеком&quot;</gs2:Name>
+   <gs2:RegDate>2002-09-09</gs2:RegDate>
+   <gs2:INN>7707049388</gs2:INN>
+   <gs2:CodeOGRN>1027700198767</gs2:CodeOGRN>
+  </Sen5:Organization>
+ </Zon5:Declarant>
+ <Zon5:Documents>
+  <Zon5:Document>
+   <DocI5:CodeDocument>558401020300</DocI5:CodeDocument>
+   <DocI5:Name>Постановление Правительства РФ &quot;Об утверждении Правил охраны линий и сооружений связи Российской Федерации&quot;</DocI5:Name>
+   <DocI5:Number>578</DocI5:Number>
+   <DocI5:Date>1995-06-09</DocI5:Date>
+   <DocI5:IssueOrgan>Правительство Российской Федерации</DocI5:IssueOrgan>
+   <DocI5:AppliedFile Kind="01" Name="documents\постановление_578.pdf" />
+  </Zon5:Document>
+  <Zon5:Document>
+   <DocI5:CodeDocument>558221000000</DocI5:CodeDocument>
+   <DocI5:Name>Акт приемки законченного строительством объекта</DocI5:Name>
+   <DocI5:Number>28</DocI5:Number>
+   <DocI5:Date>2018-08-02</DocI5:Date>
+   <DocI5:IssueOrgan>Общество с ограниченной ответственностью &quot;СибДальРегион&quot;</DocI5:IssueOrgan>
+   <DocI5:AppliedFile Kind="01" Name="documents\КС-11_Моряковский_Затон_Советская_29.pdf" />
+  </Zon5:Document>
+  <Zon5:Document>
+   <DocI5:CodeDocument>558301010000</DocI5:CodeDocument>
+   <DocI5:Name>Доверенность на А.И. Махорина</DocI5:Name>
+   <DocI5:Number>01/29/298-18</DocI5:Number>
+   <DocI5:Date>2018-07-05</DocI5:Date>
+   <DocI5:IssueOrgan>Публичное акционерное общество &quot;Ростелеком&quot;</DocI5:IssueOrgan>
+   <DocI5:AppliedFile Kind="01" Name="documents\Генеральная_доверенность_Махорин_А_И__01-29-298-18_от_05_07_2018.pdf" />
+  </Zon5:Document>
+  <Zon5:Document>
+   <DocI5:CodeDocument>558221000000</DocI5:CodeDocument>
+   <DocI5:Name>Описание местоположения границ</DocI5:Name>
+   <DocI5:Number>б/н</DocI5:Number>
+   <DocI5:Date>2020-03-24</DocI5:Date>
+   <DocI5:IssueOrgan>Общество с ограниченной ответственностью &quot;СибДальРегион&quot;</DocI5:IssueOrgan>
+   <DocI5:AppliedFile Kind="01" Name="documents\ОМГ_Моряковский_Затон_Советская_29.pdf" />
+  </Zon5:Document>
+ </Zon5:Documents>
+ <Zon5:NewZones>
+  <Zon5:Zone>
+   <zone4:CadastralDistrict>70:14</zone4:CadastralDistrict>
+   <zone4:CodeZone>218020020007</zone4:CodeZone>
+   <zone4:CodeZoneDoc>Охранная зона &quot;ВОЛС в Томском муниципальном районе Томской области до общественно значимого объекта. Томская область Томский район, МКЛ СЛ-766, РМ-766/1 - с. Моряковский затон, ул. Советская, 29 (КОРШ-110)&quot;</zone4:CodeZoneDoc>
+   <zone4:NumberZone>-</zone4:NumberZone>
+   <zone4:Locations>
+    <zone4:Location>
+     <gs3:OKATO>69254000000</gs3:OKATO>
+     <gs3:KLADR>7001700000000</gs3:KLADR>
+     <gs3:Region>70</gs3:Region>
+     <gs3:District Name="Томский" Type="р-н" />
+    </zone4:Location>
+   </zone4:Locations>
+   <Zon5:SpecialZone>
+    <zone4:ContentRestrictions>Ограничения использования земель в пределах охранных зон установлены в соответствии с Постановлением Правительства РФ от 09.06.1995 г. № 578 &quot;Об утверждении Правил охраны линий и сооружений связи Российской Федерации&quot;, в том числе, но не ограничиваясь, пунктами: 40. Техническому персоналу предприятий, эксплуатирующих линии связи и линии радиофикации, предоставляется право беспрепятственного прохода, а при проведении ремонтно-восстановительных работ - также право беспрепятственного проезда в охранные зоны независимо от формы собственности на землю. Если линии связи и линии радиофикации проходят по территориям запретных (пограничных) полос и специальных объектов, а также по землям собственников (землевладельцев, землепользователей, арендаторов), то они должны выдавать техническому персоналу пропуска (разрешения ) для проведения осмотров и работ в любое время суток без взимания платы за право прохода (проезда). 41. Предприятиям, в ведении которых находятся линии связи и линии радиофикации, в охранных зонах разрешается: а) устройство за свой счет дорог, подъездов, мостов и других сооружений, необходимых для эксплуатационного обслуживания линий связи и линий радиофикации на условиях, согласованных с собственниками земли (землевладельцами, землепользователями, арендаторами), которые не вправе отказать этим предприятиям в обеспечении условий для эксплуатационного обслуживания сооружений связи; б) разрытие ям, траншей и котлованов для ремонта линий связи и линий радиофикации с последующей их засыпкой; в) вырубка отдельных деревьев при авариях на линиях связи и линиях радиофикации, проходящих через лесные массивы, в местах, прилегающих к трассам этих линий, с последующей выдачей в установленном порядке лесорубочных билетов (ордеров) и очисткой мест рубки от порубочных остатков. 48. В пределах охранных зон без письменного согласия и присутствия представителей предприятий, эксплуатирующих линии связи и линии радиофикации, юридическим и физическим лицам запрещается: а) осуществлять всякого рода строительные, монтажные и взрывные работы, планировку грунта землеройными механизмами (за исключением зон песчаных барханов) и земляные работы (за исключением вспашки на глубину не более 0,3 метра); б) производить геолого-съемочные, поисковые, геодезические и другие изыскательские работы, которые связаны с бурением скважин, шурфованием, взятием проб грунта, осуществлением взрывных работ; в) производить посадку деревьев, располагать полевые станы, содержать скот, складировать материалы, корма и удобрения, жечь костры, устраивать стрельбища; г) устраивать проезды и стоянки автотранспорта, тракторов и механизмов, провозить негабаритные грузы под проводами воздушных линий связи и линий радиофикации, строить каналы (арыки), устраивать заграждения и другие препятствия; е) производить строительство и реконструкцию линий электропередач, радиостанций и других объектов, излучающих электромагнитную энергию и оказывающих опасное воздействие на линии связи и линии радиофикации; ж) производить защиту подземных коммуникаций от коррозии без учета проходящих подземных кабельных линий связи.   Наименование:  ВОЛС в Томском муниципальном районе Томской области до общественно значимого объекта. Томская область Томский район, МКЛ СЛ-766, РМ-766/1 - с. Моряковский затон, ул. Советская, 29 (КОРШ-110)  Протяженность: 0.08 км.</zone4:ContentRestrictions>
+    <Zon5:Territory>
+     <DocI5:CodeDocument>558273000000</DocI5:CodeDocument>
+     <DocI5:Date>2020-03-24</DocI5:Date>
+     <DocI5:IssueOrgan>ООО &quot;СибДальРегион&quot;. Представитель по доверенности Камерлох И.В.</DocI5:IssueOrgan>
+     <DocI5:AppliedFile Kind="02" Name="TerritoryToGKN_6D48677C-D5D1-45BD-8111-CFE77736CE66.xml" GUID="6D48677C-D5D1-45BD-8111-CFE77736CE66" />
+    </Zon5:Territory>
+   </Zon5:SpecialZone>
+  </Zon5:Zone>
+ </Zon5:NewZones>
+</Zon5:ZoneToGKN>
