@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple5="urn://x-artefacts-rosreestr-ru/commons/simple-types/5.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/5.0.1" elementFormDefault="qualified">
+	<xs:simpleType name="sMapPlan500xml">
+		<xs:annotation>
+			<xs:documentation>шаблон имени с относительным путём файла карта-плана MapPlan_*.xml</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+			<xs:pattern value="(.*[\\])?[M|m][a|A][p|P][P|p][l|L][a|A][n|N]_.+\.[x|X][m|M][l|L]"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

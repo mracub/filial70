@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dCatOKN1="urn://x-artefacts-rosreestr-ru/commons/directories/category-okn/1.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/directories/category-okn/1.0.1" elementFormDefault="qualified">
+	<xs:simpleType name="dCategoryOKN">
+		<xs:annotation>
+			<xs:documentation>Категории историко-культурного значения объектов культурного наследия</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="208001000000">
+				<xs:annotation>
+					<xs:documentation>Объекты культурного наследия федерального значения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="208002000000">
+				<xs:annotation>
+					<xs:documentation>Объекты культурного наследия регионального значения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="208003000000">
+				<xs:annotation>
+					<xs:documentation>Объекты культурного наследия местного (муниципального) значения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

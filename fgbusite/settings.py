@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'anton',
         'PASSWORD': '13anton82',
-        'HOST': '10.70.143.230',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
@@ -133,3 +133,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

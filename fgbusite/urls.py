@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ipd_xml_to_mif import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
     path('ipd_xml_to_mif/', views.ipd_xml_to_mif),
+    path('ipd_xml_to_mif/convert/', views.convert),
+    path('ipd_xml_to_mif/ok/', views.ok),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

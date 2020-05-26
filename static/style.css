@@ -1,10 +1,33 @@
-p{
+/*body{
     margin: 0;
-}
+    margin-left: 10px;
+}*/
+
 
 a {
-    margin-left: 10px;
     font-size: large;
+}
+
+.a-template {
+    text-decoration: none;
+    color: white;
+}
+.a-template:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.btn-wrap {
+    margin: 3px;
+}
+
+.p-error {
+    color: red;
+    font-size: large;
+}
+
+.content {
+    margin-left: 10px;
 }
 
 .header-wrap {
@@ -14,6 +37,7 @@ a {
     padding: 5px;
     font-size: large;
     align-items: center;
+    margin-left: 0;
 }
 
 .nav-text {

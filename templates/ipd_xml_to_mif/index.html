@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сервис конвертации XML файлов в MIF/MID</title>
-</head>
-<body>
-    <p>test {{ test }}</p>
-</body>
-</html>
+{% extends 'template.html' %}
+{% block content %}
+    <h3>Сервис конвертации координат представленных в XML файлах TerritoryToGKN и MapPlan в MIF/MID формат</h3>
+    <p>Для преобразования координат представленных в XML файлах TerritoryToGKN и MapPlan в MIF/MID формат 
+        необходимо загрузить файл ZoneToGKN и соответствующий файл TerritoryToGKN или MapPlan. Файл ZoneToGKN необходим для указания наименования зоны или границы в MID файле.</p>
+    <form action="/ipd_xml_to_mif/convert/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <div class="btn-wrap">
+                <input type="file" class="btn btn-outline-primary" name="zonetogkn" value="Загрузить файл ZoneToGKN"> Файл ZoneToGKN</button>
+            </div>
+            <div class="btn-wrap">
+                <input type="file" class="btn btn-outline-primary" name="territorytogkn" value="Загрузить файл TerritoryToGKN/MapPlan"> Файл TerritoryToGKN/MapPlan</input>
+            </div>
+            <div class="btn-wrap">
+                <input type="submit" class="btn btn-outline-success" value='Конвертировать'/>
+            </div>
+        </div> 
+    </form>   
+    <p class="p-error">{{ errors }}</p>
+{% endblock %}

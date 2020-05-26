@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple8="urn://x-artefacts-rosreestr-ru/commons/simple-types/8.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/8.0.1" elementFormDefault="qualified">
+	<xs:simpleType name="CadastralBlockTypeNull">
+		<xs:annotation>
+			<xs:documentation>Номер кадастрового квартала.Формат: А:Б:В, где А - 1 или 2 цифры; Б - 1 или 2 цифры; В - 1, 6 или 7 цифр.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="13"/>
+			<xs:pattern value="\d{1,2}:\d{1,2}:(\d{1}|\d{6,7})"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CadastralNumberTypeNull">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер земельного участка. Формат КК:Г, где КК - кадастровый номер кадастрового квартала (см. выше), Г - натуральное число.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+			<xs:pattern value="\d{1,2}:\d{1,2}:(\d{6,7}|\d{1}):\d{1,}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:dAU2="urn://x-artefacts-rosreestr-ru/commons/directories/allowed-use/2.0.1" xmlns:adrInp6="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/6.0.1" xmlns:Simple8="urn://x-artefacts-rosreestr-ru/commons/simple-types/8.0.1" xmlns:dCatOKN1="urn://x-artefacts-rosreestr-ru/commons/directories/category-okn/1.0.1" xmlns:Simple10="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" xmlns:zone4="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" xmlns:dZo2="urn://x-artefacts-rosreestr-ru/commons/directories/zone/2.0.3" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/8.0.1" schemaLocation="P_CommonSimpleType_v08.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" schemaLocation="P_CommonSimpleType_v10.xsd"/>
+	<!--Справочник "Территориальные зоны и зоны с особыми условиями использования территорий"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/zone/2.0.3" schemaLocation="dZoneInp_v02.xsd"/>
+	<!--Справочник "Классификатор видов использования земель"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/allowed-use/2.0.1" schemaLocation="dAllowedUse_v02.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/category-okn/1.0.1" schemaLocation="dCategoryOKN_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/6.0.1" schemaLocation="_AddressInp_v06.xsd"/>
+	<!--06.11.2014 Изменено наименование поля Ohter-->
+	<!--14.14.2015 Изменён справочник разрешенного использования, убрано указание разрешённого использования по документу, оставлено только про классификатору-->
+	<!--04.02.2016 Спецзоны и терзоны ушли для определения в схему, изменен классификатор Территориальные зоны и зоны с особыми условиями использования территорий-->
+	<!--23.03.2016 Новая подсхема адреса-->
+	<!--Повторно используемая подсхема "Территориальная зона и специальная зона"-->
+	<xs:complexType name="tZone">
+		<xs:annotation>
+			<xs:documentation>Терзоны и спецзоны</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralDistrict" type="Simple10:sCadastralNumberDistrictNull">
+				<xs:annotation>
+					<xs:documentation>Кадастровый район</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="zone4:tZoneGroup"/>
+			<xs:element name="Locations" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Местоположения объекта</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Location" type="adrInp6:tAddressInp" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Местоположение объекта</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Note" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tEconomicZone">
+		<xs:annotation>
+			<xs:documentation>Особая экономическая зона</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralDistrict" type="Simple10:sCadastralNumberDistrictNull">
+				<xs:annotation>
+					<xs:documentation>Кадастровый район</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="zone4:tEconomicZoneGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCulturalHeritage">
+		<xs:annotation>
+			<xs:documentation>Территории объекта культурного наследия</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="Simple4:sNe255">
+				<xs:annotation>
+					<xs:documentation>Наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralNumber" type="Simple8:CadastralNumberTypeNull" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Category" type="dCatOKN1:dCategoryOKN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Категория историко-культурного значения объектов культурного наследия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tSpecialZones">
+		<xs:annotation>
+			<xs:documentation>Зона с особыми условиями использования территории</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ContentRestrictions" type="Simple4:sNe4000">
+				<xs:annotation>
+					<xs:documentation>Содержание ограничений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProtectedObject" type="Simple1:s4000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование охраняемого  объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Culturals" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Объекты культурного наследия</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cultural" type="zone4:tCulturalHeritage" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Объект культурного наследия</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tTerritorialZone">
+		<xs:annotation>
+			<xs:documentation>Территориальная зона</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PermittedUses" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Вид разрешенного использования</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="PermitedPrimary" type="zone4:tPermitedPrimary">
+							<xs:annotation>
+								<xs:documentation>Основной вид разрешенного использования</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PermitedConditionally" type="zone4:tPermitedPrimary">
+							<xs:annotation>
+								<xs:documentation>Условно разрешенный вид разрешенного использования</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Вспомогательные типы-->
+	<xs:group name="tEconomicZoneGroup">
+		<xs:annotation>
+			<xs:documentation>Особая экономическая зона тип</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CodeZone">
+				<xs:annotation>
+					<xs:documentation>Вид (тип) зоны по классификатору</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dZo2:dZone">
+						<xs:pattern value="218040000000">
+							<xs:annotation>
+								<xs:documentation>Особая экономическая зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218040010000">
+							<xs:annotation>
+								<xs:documentation>Промышленно-производственные особые экономические зоны</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218040020000">
+							<xs:annotation>
+								<xs:documentation>Технико-внедренческие особые экономические зоны</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218040030000">
+							<xs:annotation>
+								<xs:documentation>Туристско-рекреационные особые экономические зоны</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218040040000">
+							<xs:annotation>
+								<xs:documentation>Портовые особые экономические зоны</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CodeZoneDoc" type="Simple4:sNe255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид зоны (наименование) по документу</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralNumbers" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровые номера земельных участков, образующих особую экономическую зону</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CadastralNumber" type="Simple8:CadastralNumberTypeNull" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый номер</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="tPermitedPrimary">
+		<xs:annotation>
+			<xs:documentation>Основной и условно разрешенный вид разрешенного использования</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="zone4:tPermittedUse">
+				<xs:sequence>
+					<xs:element name="PermitedAncillary" type="zone4:tPermittedUse" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Вспомогательные виды</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LimitSize" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Предельные размеры участков</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Max" type="xs:decimal" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Максимум</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="Min" type="xs:decimal" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Минимум</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tPermittedUse">
+		<xs:annotation>
+			<xs:documentation>Разрешенное использование</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LandUse" type="dAU2:dAllowedUse">
+				<xs:annotation>
+					<xs:documentation>Разрешенное использование (по классификатору)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="tZoneGroup">
+		<xs:annotation>
+			<xs:documentation>Индивидуальное обозначение</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CodeZone">
+				<xs:annotation>
+					<xs:documentation>Вид (тип) зоны по классификатору</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dZo2:dZone">
+						<xs:pattern value="218010000000">
+							<xs:annotation>
+								<xs:documentation>Территориальные зоны</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010010000">
+							<xs:annotation>
+								<xs:documentation>Жилая зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010020000">
+							<xs:annotation>
+								<xs:documentation>Общественно-деловая зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010030000">
+							<xs:annotation>
+								<xs:documentation>Производственная зона, зона инженерной и транспортной инфраструктур</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010040000">
+							<xs:annotation>
+								<xs:documentation>Зона сельскохозяйственного использования</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010050000">
+							<xs:annotation>
+								<xs:documentation>Зона рекреационного назначения</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010060000">
+							<xs:annotation>
+								<xs:documentation>Зона особо охраняемых территорий</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010070000">
+							<xs:annotation>
+								<xs:documentation>Зона специального назначения</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010080000">
+							<xs:annotation>
+								<xs:documentation>Зона размещения военных объектов</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218010090000">
+							<xs:annotation>
+								<xs:documentation>Иная зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020000000">
+							<xs:annotation>
+								<xs:documentation>Зоны с особыми условиями использования территории</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010000">
+							<xs:annotation>
+								<xs:documentation>Зоны охраны природных объектов</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010001">
+							<xs:annotation>
+								<xs:documentation>Территория особо охраняемого природного объекта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010002">
+							<xs:annotation>
+								<xs:documentation>Охранная зона особо охраняемого природного объекта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010003">
+							<xs:annotation>
+								<xs:documentation>Водоохранная зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010004">
+							<xs:annotation>
+								<xs:documentation>Прибрежная защитная полоса</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010005">
+							<xs:annotation>
+								<xs:documentation>Зона санитарной охраны источников водоснабжения и водопроводов питьевого назначения</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020010006">
+							<xs:annotation>
+								<xs:documentation>Особо ценные земли</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020000">
+							<xs:annotation>
+								<xs:documentation>Зоны охраны искусственных объектов</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020002">
+							<xs:annotation>
+								<xs:documentation>Зона охраны объекта культурного наследия</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020201">
+							<xs:annotation>
+								<xs:documentation>Охранная зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020202">
+							<xs:annotation>
+								<xs:documentation>Зона регулирования застройки и хозяйственной деятельности</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020203">
+							<xs:annotation>
+								<xs:documentation>Зона охраняемого природного ландшафта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020003">
+							<xs:annotation>
+								<xs:documentation>Охранная зона геодезического пункта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020004">
+							<xs:annotation>
+								<xs:documentation>Охранная зона стационарного пункта наблюдений за состоянием окружающей природной среды</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020005">
+							<xs:annotation>
+								<xs:documentation>Охранная зона транспорта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020006">
+							<xs:annotation>
+								<xs:documentation>Охранная зона инженерных коммуникаций</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020007">
+							<xs:annotation>
+								<xs:documentation>Охранная зона линий и сооружений связи и линий и сооружений радиофикации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020020008">
+							<xs:annotation>
+								<xs:documentation>Придорожная полоса</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030000">
+							<xs:annotation>
+								<xs:documentation>Зоны защиты населения</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030001">
+							<xs:annotation>
+								<xs:documentation>Запретная зона при военном складе</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030002">
+							<xs:annotation>
+								<xs:documentation>Запретный район при военном складе</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030003">
+							<xs:annotation>
+								<xs:documentation>Загрязненные земли</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030004">
+							<xs:annotation>
+								<xs:documentation>Охранная зона загрязненных земель</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030005">
+							<xs:annotation>
+								<xs:documentation>Санитарно-защитная зона предприятий, сооружений и иных объектов</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030006">
+							<xs:annotation>
+								<xs:documentation>Санитарный разрыв (санитарная полоса отчуждения)</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030007">
+							<xs:annotation>
+								<xs:documentation>Зона ограничения от передающего радиотехнического объекта</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020030008">
+							<xs:annotation>
+								<xs:documentation>Район падения отделяющихся частей ракет</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040000">
+							<xs:annotation>
+								<xs:documentation>Прочие зоны с особыми условиями использования территории</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040001">
+							<xs:annotation>
+								<xs:documentation>Зона публичного сервитута</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040002">
+							<xs:annotation>
+								<xs:documentation>Зона резервирования земель</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040003">
+							<xs:annotation>
+								<xs:documentation>Горный отвод</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040004">
+							<xs:annotation>
+								<xs:documentation>Пригородная зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040005">
+							<xs:annotation>
+								<xs:documentation>Зеленая зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040007">
+							<xs:annotation>
+								<xs:documentation>Пограничная зона</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020040008">
+							<xs:annotation>
+								<xs:documentation>Территория традиционного природопользования</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020050000">
+							<xs:annotation>
+								<xs:documentation>Иные зоны с особыми условиями использования территории</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218020050001">
+							<xs:annotation>
+								<xs:documentation>Иная зона с особыми условиями использования территории</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="218030000000">
+							<xs:annotation>
+								<xs:documentation>Территория объекта культурного наследия (памятников истории и культуры) народов Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CodeZoneDoc" type="Simple4:sNe255">
+				<xs:annotation>
+					<xs:documentation>Вид зоны (наименование) по документу</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumberZone" type="Simple4:sNe255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Index" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Индекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Authority" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Орган власти</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Other" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Иные идентифицирующие сведения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

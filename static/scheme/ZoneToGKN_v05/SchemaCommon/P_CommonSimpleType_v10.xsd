@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple10="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" elementFormDefault="qualified">
+	<xs:simpleType name="sTerritory500xml">
+		<xs:annotation>
+			<xs:documentation>шаблон имени с относительным путём файла  описания границ территории TerritoryToGKN_*.xml</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+			<xs:pattern value="(.*[\\])?[T|t][E|e][R|r][R|r][I|i][T|t][O|o][R|r][Y|y][T|t][O|o][G|g][K|k][N|n]_.+\.[x|X][m|M][l|L]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="sCadastralNumberZoneNull">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер зоны. Формат значения: «Кадастровый номер КО».«Кадастровый номер КР».«Номер типа зоны».порядковый номер зоны в данном типе, 0 - территория, 1 - ЗОУИТ, 2 - ТЗ, 3 - особая экономическая зона. Если это особая экономическая зона, то может указыватся код 3, 30,31..39</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+			<xs:pattern value="\d{1,2}\.\d{1,2}\.(([0-3])|([3][0-9]))\.[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="sCadastralNumberDistrictNull">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер кадастрового района</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{1,2}:\d{1,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

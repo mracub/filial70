@@ -1,0 +1,8 @@
+{% extends 'template.html' %}
+{% block content %}
+    <p>Файл ZoneToGKN: <a href="{{ zonetogkn_url }}">{{ zonetogkn_url }}</a></p>
+    <p>Файл TerritoryToGKN: <a href="{{ territorytogkn_url }}">{{ territorytogkn_url }}</a></p>
+    <p>Файл MIF: <a href="{{ mif_url }}">{{ mif_url }}</a></p>
+    <p>Файл MID: <a href="{{ mid_url }}">{{ mid_url }}</a></p>
+    <a href="{{ HTTP_HOST }}/ipd_xml_to_mif" class="btn btn-outline-success">Вернуться к сервису конвертации</a>
+{% endblock %}

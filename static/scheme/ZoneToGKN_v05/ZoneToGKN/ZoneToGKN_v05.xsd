@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:dAp1="urn://x-artefacts-rosreestr-ru/commons/directories/applied-file/1.0.1" xmlns:dAl3="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/3.0.2" xmlns:dEcZ1="urn://x-artefacts-rosreestr-ru/commons/directories/economic-zone/1.0.1" xmlns:Sen5="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/5.0.1" xmlns:DocI5="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1" xmlns:Simple10="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8" elementFormDefault="qualified" xmlns:zone4="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" xmlns:Zon5="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8">
+  <!--Все простые типы данных-->
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="../SchemaCommon/P_CommonSimpleType_v01.xsd" />
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v04.xsd" />
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/10.0.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v10.xsd" />
+  <!--Подключение подсхемы Документ для информационного взаимодействия-->
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1" schemaLocation="../SchemaCommon/_DocumentInfo_v05.xsd" />
+  <!--Подсхема "Отправитель сведений"-->
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/5.0.1" schemaLocation="../SchemaCommon/_SenderInfo_v05.xsd" />
+  <!--Повторно используемая подсхема "Территориальная зона и специальная зона"-->
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" schemaLocation="../SchemaCommon/_Zone_v04.xsd" />
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/3.0.2" schemaLocation="../SchemaCommon/dAllDocuments_v03.xsd" />
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/applied-file/1.0.1" schemaLocation="../SchemaCommon/dAppliedFiles_v01.xsd" />
+  <xs:annotation>
+    <xs:documentation>07.05.2014г. Версия схемы 3 Реализация приказа 71. Доработка под требования СМЭВ</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>06.11.2014г. на учетный номер зоны наложена маска, длина учетного номера ограничена 40 символами, наложена маска на имя файла карта(плана)</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>10.11.2014 Добавлены реквизиты документа воспроизводящего сведения</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>11.11.2014г. Запрещена строка состоящая только из пробелов для всех обязательных полей</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>14.04.2015г. 4 версия включен новый классификатор разрешенного использования, исключено внесение разрешённого использования по документу, только по классификатору,новая подсхема адреса</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>04.02.2016г. 5 версия доработка для поддержки решения (акта) об установлении (изменении) границ территории объекта культурного наследия или его зон охраны</xs:documentation>
+  </xs:annotation>
+  <xs:element name="ZoneToGKN">
+    <xs:annotation>
+      <xs:documentation>Сведения о территориальных зонах, зонах с особыми условиями использования территорий, территориях объектов культурного наследия и особых экономических зонах</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Title" type="DocI5:tDocumentTitle">
+          <xs:annotation>
+            <xs:documentation>Реквизиты документа</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Declarant" type="Sen5:tSender">
+          <xs:annotation>
+            <xs:documentation>Заявитель</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Documents">
+          <xs:annotation>
+            <xs:documentation>Документы</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Document" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Документ</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="DocI5:tDocumentInfo">
+                      <xs:sequence>
+                        <xs:element name="SourcePublication" type="Simple1:s255" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Сведения об официальной публикации</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:choice>
+          <xs:element name="NewZones">
+            <xs:annotation>
+              <xs:documentation>Новые объекты</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:choice>
+                <xs:element name="Zone" type="Zon5:ZoneType" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Территориальная зона, зона с особыми условиями использования территорий, территория объекта культурного наследия</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="EconomicZone" type="Zon5:EconomicZoneType" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Особая экономическая зона</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ChangedZones">
+            <xs:annotation>
+              <xs:documentation>Изменяемые объекты</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:choice>
+                <xs:element name="Zone" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Территориальная зона, зона с особыми условиями использования территорий, территория объекта культурного наследия</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension base="Zon5:ZoneType">
+                        <xs:sequence>
+                          <xs:element name="AccountNumber" type="Simple10:sCadastralNumberZoneNull">
+                            <xs:annotation>
+                              <xs:documentation>Учётный номер</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="EconomicZone" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Особая экономическая зона</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension base="Zon5:EconomicZoneType">
+                        <xs:sequence>
+                          <xs:element name="AccountNumber" type="Simple10:sCadastralNumberZoneNull">
+                            <xs:annotation>
+                              <xs:documentation>Учётный номер</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ArchiveZones">
+            <xs:annotation>
+              <xs:documentation>Ликвидируемые объекты</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="AccountNumber" type="Simple10:sCadastralNumberZoneNull" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Учётный номер</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attributeGroup ref="Simple4:agNeTitle" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="EconomicZoneType">
+    <xs:annotation>
+      <xs:documentation>Особая экономическая зона</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="zone4:tEconomicZone">
+        <xs:choice>
+          <xs:element name="MapPlan" type="DocI5:tDocumentKP">
+            <xs:annotation>
+              <xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Desc" type="DocI5:tDocumentDesc">
+            <xs:annotation>
+              <xs:documentation>Описание местоположения границ особой экономической зоны</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SpecialZoneType">
+    <xs:annotation>
+      <xs:documentation>Зона с особыми условиями использования территории</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="zone4:tSpecialZones">
+        <xs:choice>
+          <xs:element name="MapPlan" type="DocI5:tDocumentKP">
+            <xs:annotation>
+              <xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Territory" type="DocI5:tDocumentTerritory">
+            <xs:annotation>
+              <xs:documentation>Текстовое и графическое описание местоположения границ территории объекта культурного наследия или зон с особыми условиями использования территорий с перечнем координат характерных точек этих границ</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TerritorialZoneType">
+    <xs:annotation>
+      <xs:documentation>Территориальная зона</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="zone4:tTerritorialZone">
+        <xs:sequence>
+          <xs:element name="MapPlan" type="DocI5:tDocumentKP">
+            <xs:annotation>
+              <xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="ZoneSequenceGroup">
+    <xs:annotation>
+      <xs:documentation>Территориальная зона или зона с особыми условими использования территорий, территория объекта культурного наследия</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="TerritorialZone" type="Zon5:TerritorialZoneType">
+        <xs:annotation>
+          <xs:documentation>Территориальная зона</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialZone" type="Zon5:SpecialZoneType">
+        <xs:annotation>
+          <xs:documentation>Зона с особыми условиями использования территорий, территория объекта культурного наследия</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="ZoneType">
+    <xs:annotation>
+      <xs:documentation>Территориальная зона или зона с особыми условими использования территорий, территория объекта культурного наследия</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="zone4:tZone">
+        <xs:sequence>
+          <xs:group ref="Zon5:ZoneSequenceGroup" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
