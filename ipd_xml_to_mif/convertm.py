@@ -29,8 +29,29 @@ def parseXML (xmlFileTerr, xmlFileZone):
             contour.append(str(Ordinate[0].getAttribute('Y') + ' ' + Ordinate[0].getAttribute('X')))
         contours.append(contour)
     xml_doc_zone = minidom.parse(xmlFileZone)
-    name_by_doc = xml_doc_zone.getElementsByTagNameNS('*', 'CodeZoneDoc')
-    zoneName = name_by_doc[0].firstChild.data
+    #здесь два раза парсим один и тот же XML файл разными способами только потому, 
+    #что изначально функция писалась с использованием minidom в котором нет возможности валидировать в соответствии с XML схемой
+    xml_doc = etree.parse(xmlFileZone)
+    xml_schema_filename_zone = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+                'scheme/ZoneToGKN_v05/ZoneToGKN', 'ZoneToGKN_v05.xsd'))
+    xml_schema_doc_zone = etree.parse(xml_schema_filename_zone)
+    xmlschema_zone = etree.XMLSchema(xml_schema_doc_zone)
+    if xmlschema_zone.validate(xml_doc):
+        try:
+            newzones = xml_doc_zone.getElementsByTagNameNS('*','NewZones')
+            zone = newzones[0].getElementsByTagNameNS('*', 'Zone')
+            name_by_doc = zone[0].getElementsByTagNameNS('*', 'CodeZoneDoc')
+            zoneName = name_by_doc[0].firstChild.data
+        except:
+            zoneName = 'no zone name'
+    else:
+        try:
+            newbounds = xml_doc_zone.getElementsByTagNameNS('*','NewBounds')
+            newbound = newbounds[0].getElementsByTagNameNS('*', 'NewBound')
+            description = newbound[0].getElementsByTagNameNS('*', 'Description')
+            zoneName = description[0].firstChild.data
+        except:
+            zoneName = 'no bound name'
     return contours, zoneName
 
 
@@ -122,11 +143,15 @@ def checkXML(fileXML, typeXML):
     else:
         try:
             xml_doc = etree.parse(fileXML)
-            xml_schema_filename = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            xml_schema_filename_zone = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
                 'scheme/ZoneToGKN_v05/ZoneToGKN', 'ZoneToGKN_v05.xsd'))
-            xml_schema_doc = etree.parse(xml_schema_filename)
-            xmlschema = etree.XMLSchema(xml_schema_doc)
-            if xmlschema.validate(xml_doc):
+            xml_schema_filename_bound = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+                'scheme/BoundToGKN_v03/BoundToGKN', 'BoundToGKN_v03.xsd'))
+            xml_schema_doc_zone = etree.parse(xml_schema_filename_zone)
+            xml_schema_doc_bound = etree.parse(xml_schema_filename_bound)
+            xmlschema_zone = etree.XMLSchema(xml_schema_doc_zone)
+            xmlschema_bound = etree.XMLSchema(xml_schema_doc_bound)
+            if xmlschema_zone.validate(xml_doc) or xmlschema_bound.validate(xml_doc):
                 return True
             else:
                 return False

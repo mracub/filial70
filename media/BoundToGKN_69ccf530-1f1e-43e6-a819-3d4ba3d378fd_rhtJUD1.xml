@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BoundToGKN xmlns="urn://x-artefacts-rosreestr-ru/incoming/bound-to-gkn/3.0.4" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:gBound2="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" xmlns:Person1="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1" xmlns:Sen2="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" xmlns:Gov3="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" xmlns:Org3="urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/3.0.1" xmlns:Doc2="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/2.0.1" xmlns:DocI3="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" NameSoftware="Полигон Про" VersionSoftware="5.1.6.3" GUID="69ccf530-1f1e-43e6-a819-3d4ba3d378fd">
+  <Title>
+    <DocI3:CodeDocument>558221030000</DocI3:CodeDocument>
+    <DocI3:Number>"-"</DocI3:Number>
+    <DocI3:Date>2019-05-23</DocI3:Date>
+    <DocI3:IssueOrgan>Пономаренко Михаил Валерьевич, 0ОО"СибпроектНИИ"</DocI3:IssueOrgan>
+  </Title>
+  <Declarant>
+    <Sen2:Governance>
+      <Gov3:Name>Администрация Высоковского сельского поселения Зырянского района Томской области</Gov3:Name>
+      <Gov3:GovernanceCode>007001001003</Gov3:GovernanceCode>
+      <Gov3:Location>
+        <adrInp2:OKATO>69220000018</adrInp2:OKATO>
+        <adrInp2:KLADR>7000600000700010008</adrInp2:KLADR>
+        <adrInp2:PostalCode>636856</adrInp2:PostalCode>
+        <adrInp2:Region>70</adrInp2:Region>
+        <adrInp2:District Name="Зырянский" Type="р-н" />
+        <adrInp2:Locality Name="Высокое" Type="с" />
+        <adrInp2:Street Name="Мира" Type="ул" />
+        <adrInp2:Level1 Type="д" Value="62" />
+      </Gov3:Location>
+      <Gov3:Email>visokoe@tomsk.gov.ru</Gov3:Email>
+      <Gov3:Telephone>+7 (38-243) 39-323</Gov3:Telephone>
+    </Sen2:Governance>
+  </Declarant>
+  <Documents>
+    <Document>
+      <DocI3:CodeDocument>558401020000</DocI3:CodeDocument>
+      <DocI3:Name>Решение Об утверждении генерального плана муниципального образования "Высоковское сельское поселение"</DocI3:Name>
+      <DocI3:Number>25</DocI3:Number>
+      <DocI3:Date>2014-10-30</DocI3:Date>
+      <DocI3:IssueOrgan>Совет Высоковского сельского поселения Зырянского района Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\решение по генплану.pdf" Kind="01" />
+    </Document>
+  </Documents>
+  <NewBounds>
+    <NewBound>
+      <gBound2:InhabitedLocalityBoundary>
+        <adrInp2:OKATO>69220000018</adrInp2:OKATO>
+        <adrInp2:KLADR>7000600000700</adrInp2:KLADR>
+        <adrInp2:OKTMO>69620450101</adrInp2:OKTMO>
+        <adrInp2:PostalCode>636856</adrInp2:PostalCode>
+        <adrInp2:Region>70</adrInp2:Region>
+        <adrInp2:District Name="Зырянский" Type="р-н" />
+        <adrInp2:City Name="Высоковское" Type="с/п" />
+        <adrInp2:Locality Name="Высокое" Type="с" />
+      </gBound2:InhabitedLocalityBoundary>
+      <MapPlan>
+        <DocI3:CodeDocument>558252000000</DocI3:CodeDocument>
+        <DocI3:Date>2020-03-20</DocI3:Date>
+        <DocI3:IssueOrgan>Пономаренко Михаил Валерьевич</DocI3:IssueOrgan>
+        <DocI3:AppliedFile Kind="02" Name="MapPlan_69d1d548-ea0e-45a0-b8f9-7a66a306a9bd.xml" GUID="69d1d548-ea0e-45a0-b8f9-7a66a306a9bd" />
+      </MapPlan>
+    </NewBound>
+  </NewBounds>
+</BoundToGKN>

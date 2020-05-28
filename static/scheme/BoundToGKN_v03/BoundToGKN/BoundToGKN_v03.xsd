@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:gBound2="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" xmlns:Sen2="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" xmlns:DocI3="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" xmlns="urn://x-artefacts-rosreestr-ru/incoming/bound-to-gkn/3.0.4" targetNamespace="urn://x-artefacts-rosreestr-ru/incoming/bound-to-gkn/3.0.4" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="../SchemaCommon/P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v04.xsd"/>
+	<xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="../SchemaCommonSMEV/smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Подключение подсхемы Документ для информационного взаимодействия-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" schemaLocation="../SchemaCommon/_DocumentInfo_v03.xsd"/>
+	<!--Подключение подсхемы "Границы объекта землеустройства"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" schemaLocation="../SchemaCommon/_Boundary_v02.xsd"/>
+	<!--Подсхема "Отправитель сведений для информационного взаимодействия"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" schemaLocation="../SchemaCommon/_SenderInfo_v02.xsd"/>
+	<xs:annotation>
+		<xs:documentation>07.05.2014г. Версия схемы 3. Переход на 71й ПП, доработка под требования СМЭВ</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>06.11.2014г. На учетный номер границы наложена маска, длина учетного номера ограничена 40 символами</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>10.11.2014 Добавлены реквизиты документа воспроизводящего сведения</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>11.11.2014г. Запрещена строка состоящая только из пробелов для всех обязательных полей</xs:documentation>
+	</xs:annotation>
+	<xs:element name="BoundToGKN">
+		<xs:annotation>
+			<xs:documentation>Сведения об участках границ объекта землеустройства, передаваемые в государственный кадастр недвижимости</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title" type="DocI3:tDocumentTitle">
+					<xs:annotation>
+						<xs:documentation>Реквизиты документа</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Declarant" type="Sen2:tSender">
+					<xs:annotation>
+						<xs:documentation>Заявитель</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Documents">
+					<xs:annotation>
+						<xs:documentation>Документы</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Document" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Документ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="DocI3:tDocumentInfo">
+											<xs:sequence>
+												<xs:element name="SourcePublication" type="Simple1:s255" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Сведения об официальной публикации</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:choice>
+					<xs:element name="NewBounds">
+						<xs:annotation>
+							<xs:documentation>Новые границы</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewBound" type="tNewBound" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Новая граница</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ChangedBounds">
+						<xs:annotation>
+							<xs:documentation>Изменяемые границы</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ChangedBound" type="tChangedBound" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Изменяемая граница</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ArchiveBounds">
+						<xs:annotation>
+							<xs:documentation>Ликвидируемые границы</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AccountNumber" type="Simple4:sRegNumberBound" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Учётный номер</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="Simple4:agNeTitle"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tChangedBound">
+		<xs:annotation>
+			<xs:documentation>Изменяемая граница</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="gBound2:gBoundary"/>
+			<xs:element name="AccountNumber" type="Simple4:sRegNumberBound">
+				<xs:annotation>
+					<xs:documentation>Учётный номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MapPlan" type="DocI3:tDocumentKP">
+				<xs:annotation>
+					<xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNewBound">
+		<xs:annotation>
+			<xs:documentation>Новая граница</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="gBound2:gBoundary"/>
+			<xs:element name="MapPlan" type="DocI3:tDocumentKP">
+				<xs:annotation>
+					<xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
