@@ -3,7 +3,7 @@
 Можго парсить много вложенных папок. Файлы mif/mid пишутся в теже директории, где лежат ZoneToGKN и TerritoryToGKN в формате UUID.mif и UUID.mid
 """
 from shapely.geometry import Polygon
-from shapely.geometry import Point
+#from shapely.geometry import Point
 import sys
 import os
 import uuid
@@ -52,8 +52,8 @@ def writeMIF(contoursList, dir_path_to_write):
     формируем MIF файл маза фака
     """
     guid = str(uuid.uuid1())
-    outMifFile = dir_path_to_write + '\\' + guid + '.mif'
-    outMidFile = dir_path_to_write + '\\' + guid + '.mid'
+    outMifFile = os.path.normcase(dir_path_to_write + '/' + guid + '.mif')
+    outMidFile = os.path.normcase(dir_path_to_write + '/' + guid + '.mid')
     file_out_mif = open(outMifFile, 'w', encoding='UTF-8') #
     file_out_mid = open(outMidFile, 'w', encoding='UTF-8') 
 
@@ -69,21 +69,20 @@ def writeMIF(contoursList, dir_path_to_write):
     
     i = 0
     for contour in range(len(contoursList[0])):
-        if len(contoursList[0]) > 1 and i < len(contoursList[0]) - 1 and isinstance(listToPolygon(contoursList[0][i]).intersection(listToPolygon(contoursList[0][i+1])), Polygon) and contour == i:
+        if len(contoursList[0]) > 1 and i < len(contoursList[0]) - 1 and listToPolygon(contoursList[0][i]).intersects(listToPolygon(contoursList[0][i+1])) and contour == i:
             contoursIn = 0
             for c in range(len(contoursList[0])-i):
-                if isinstance(listToPolygon(contoursList[0][i]).intersection(listToPolygon(contoursList[0][c+i])), Polygon) and c > 0: 
+                if listToPolygon(contoursList[0][i]).intersects(listToPolygon(contoursList[0][c+i])) and c > 0: 
                     contoursIn += 1
             if contoursIn >0:
-                print('Region {}'.format(contoursIn), file=file_out_mif)
+                print('Region {}'.format(contoursIn+1), file=file_out_mif)
                 print(len(contoursList[0][i]), file=file_out_mif)
                 for item in contoursList[0][i]:
                     print(item, file=file_out_mif)
                 for con in range(contoursIn):
-                    if con > 0:
-                        print(len(contoursList[0][i+con]), file=file_out_mif)
-                        for it in contoursList[0][i+con]:
-                            print(it, file=file_out_mif)
+                    print(len(contoursList[0][i+con+1]), file=file_out_mif)
+                    for it in contoursList[0][i+con+1]:
+                        print(it, file=file_out_mif)
                 i += (contoursIn + 1)
         elif contour == i:
             print('Region 1', file=file_out_mif)

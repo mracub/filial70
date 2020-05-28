@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MapPlan xmlns:Spa1="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/1.0.2" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:Doc2="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/2.0.1" xmlns:dUn1="urn://x-artefacts-rosreestr-ru/commons/directories/unit/1.0.1" xmlns:dZo1="urn://x-artefacts-rosreestr-ru/commons/directories/zone/1.0.1" xmlns:gBound2="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" xmlns:CadEng2="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/2.0.1" xmlns:DocI3="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" xmlns:Zon2="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:dAl2="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/2.0.1" xmlns="urn://x-artefacts-rosreestr-ru/incoming/map-plan/1.0.7" NameSoftware="Полигон Про" VersionSoftware="5.1.8.7" GUID="e5365e53-84d6-4a2d-b5b2-970ff711fbd2">
+  <Title>
+    <Clients>
+      <Client Date="2017-12-13">
+        <Governance>
+          <Name>Муниципальное образование Плотниковское сельское поселение Бакчарского Томской области</Name>
+          <Agent>
+            <Appointment>Глава администрации</Appointment>
+            <tns:FamilyName>Грибов</tns:FamilyName>
+            <tns:FirstName>Иван</tns:FirstName>
+            <tns:Patronymic>Семенович</tns:Patronymic>
+            <AttorneyDocument>
+              <DocI3:CodeDocument>558301140000</DocI3:CodeDocument>
+              <DocI3:Name>Решение "Об избрании Главы Плотниковского сельского поселения"</DocI3:Name>
+              <DocI3:Number>16</DocI3:Number>
+              <DocI3:Date>2017-12-13</DocI3:Date>
+              <DocI3:IssueOrgan>Совет Плотниковского сельского поселения</DocI3:IssueOrgan>
+              <DocI3:AppliedFile Name="Images\решение по главе.pdf" Kind="01" />
+            </AttorneyDocument>
+          </Agent>
+        </Governance>
+      </Client>
+    </Clients>
+    <Contractor>
+      <CadastralEngineer>
+        <tns:FamilyName>Соболев</tns:FamilyName>
+        <tns:FirstName>Николай</tns:FirstName>
+        <tns:Patronymic>Валерьевич</tns:Patronymic>
+        <CadEng2:NCertificate>54-16-657</CadEng2:NCertificate>
+        <CadEng2:Telephone>89137550030</CadEng2:Telephone>
+        <CadEng2:Address>Новосибирская область, г. Новосибирск, ул. Селезнева, д. 26, кв. 118</CadEng2:Address>
+        <CadEng2:Email>krab118@mail.ru</CadEng2:Email>
+        <INN>540138851807</INN>
+        <Organization>
+          <CadEng2:Name>ООО "СибПроект НИИ"</CadEng2:Name>
+          <CadEng2:AddressOrganization>630078, г. Новосибирск, улица Челюскинцев, 44/2, оф. 208</CadEng2:AddressOrganization>
+          <CodeOGRN>1145476030358</CodeOGRN>
+        </Organization>
+      </CadastralEngineer>
+    </Contractor>
+    <Coordinations>
+      <Coordination>
+        <Name>Муниципальное образование "Администрация Плотниковского сельского поселения" Бакчарского район Томской области</Name>
+        <Official>
+          <Appointment>Глава администрации</Appointment>
+          <tns:FamilyName>Грибов</tns:FamilyName>
+          <tns:FirstName>Иван</tns:FirstName>
+          <tns:Patronymic>Семенович</tns:Patronymic>
+        </Official>
+      </Coordination>
+    </Coordinations>
+    <Information>
+      <NumberReg>"-"</NumberReg>
+      <DateReg>2020-04-06</DateReg>
+      <NameArchive>"-"</NameArchive>
+    </Information>
+  </Title>
+  <Documents>
+    <Document>
+      <CodeDocument>558301140000</CodeDocument>
+      <Name>Муниципальный контракт</Name>
+      <Number>1</Number>
+      <Date>2020-04-06</Date>
+      <IssueOrgan>Муниципальное казенное учереждение Администрация Плотниковского сельского поселения Бакчарского района Томской области</IssueOrgan>
+    </Document>
+    <Document>
+      <CodeDocument>558252000000</CodeDocument>
+      <Name>Ортофотопланы масштаба 1:10000.  Год издания 2010</Name>
+      <Number>б/н</Number>
+      <Date>2010-12-12</Date>
+      <IssueOrgan>ФГУП "Госземкадастрсъемка" ВИСХАГИ</IssueOrgan>
+    </Document>
+    <Document>
+      <CodeDocument>558301140000</CodeDocument>
+      <Name>Решение совета Плотниковского сельского поселения Бакчарского района Томской области «Об утверждении изменений в Правила землепользования и застройки муниципального образования «Плотниковское сельское поселение Бакчарского района Томской области» от 11.04.2019 г. № 8</Name>
+      <Number>8</Number>
+      <Date>2019-04-11</Date>
+      <IssueOrgan>Совет Плотниковского сельского поселения</IssueOrgan>
+      <AppliedFile Name="Images\решение по утверждению ПЗЗ.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <CodeDocument>558217000000</CodeDocument>
+      <Name>Кадастровый план территории</Name>
+      <Number>КУВИ-001/2020-1482309</Number>
+      <Date>2020-01-28</Date>
+      <IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</IssueOrgan>
+    </Document>
+    <Document>
+      <CodeDocument>558217000000</CodeDocument>
+      <Name>Кадастровый план территории</Name>
+      <Number>КУВИ-001/2020-1482236</Number>
+      <Date>2020-01-28</Date>
+      <IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</IssueOrgan>
+    </Document>
+  </Documents>
+  <Object>
+    <Zone>
+      <Zon2:CadastralDistrict>70:03</Zon2:CadastralDistrict>
+      <Zon2:CodeZone>218010030000</Zon2:CodeZone>
+      <Zon2:CodeZoneDoc>Зона производственных объектов и транспортной инфраструктуры (П2) Плотниковского сельского поселения Бакчарского района Томской области</Zon2:CodeZoneDoc>
+      <Zon2:NumberZone>"-"</Zon2:NumberZone>
+      <Zon2:Description>"-"</Zon2:Description>
+      <Zon2:Locations>
+        <Zon2:Location>
+          <adrInp2:OKATO>69212000000</adrInp2:OKATO>
+          <adrInp2:KLADR>7000400000000</adrInp2:KLADR>
+          <adrInp2:OKTMO>69612000</adrInp2:OKTMO>
+          <adrInp2:Region>70</adrInp2:Region>
+          <adrInp2:District Name="Бакчарский" Type="р-н" />
+          <adrInp2:City Name="Плотниковское" Type="с/п" />
+        </Zon2:Location>
+      </Zon2:Locations>
+      <Zon2:TerritorialZone>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Использование лесов (10.0)</Zon2:PermittedUse>
+            <Zon2:LandUse>145000000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Заготовка древесины (10.1)</Zon2:PermittedUse>
+            <Zon2:LandUse>145000000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Лесные плантации (10.2)</Zon2:PermittedUse>
+            <Zon2:LandUse>145000000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Предпринимательство (4.0)</Zon2:PermittedUse>
+            <Zon2:LandUse>142002060000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Производственная деятельность (6.0)</Zon2:PermittedUse>
+            <Zon2:LandUse>143001000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Целлюлозно-бумажная промышленность (6.11)</Zon2:PermittedUse>
+            <Zon2:LandUse>143001030000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Деловое управление (4.1)</Zon2:PermittedUse>
+            <Zon2:LandUse>142002120000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Объекты гаражного назначения (2.7.1)</Zon2:PermittedUse>
+            <Zon2:LandUse>142002160000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Обслуживание автотранспорта (4.9)</Zon2:PermittedUse>
+            <Zon2:LandUse>143002010800</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Строительная промышленность (6.6)</Zon2:PermittedUse>
+            <Zon2:LandUse>143001030000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Сельскохозяйственное использование (1.0)</Zon2:PermittedUse>
+            <Zon2:LandUse>141001020000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Энергетика (6.7)</Zon2:PermittedUse>
+            <Zon2:LandUse>143002000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Связь (6.8)</Zon2:PermittedUse>
+            <Zon2:LandUse>143004000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Склады (6.9)</Zon2:PermittedUse>
+            <Zon2:LandUse>143001010400</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Автомобильный транспорт (7.2)</Zon2:PermittedUse>
+            <Zon2:LandUse>143003020000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Трубопроводный транспорт (7.5)</Zon2:PermittedUse>
+            <Zon2:LandUse>143003050000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Земельные участки (территории) общего пользования (12.0)</Zon2:PermittedUse>
+            <Zon2:LandUse>142003000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>Специальная деятельность (12.2)</Zon2:PermittedUse>
+            <Zon2:LandUse>142004050000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedConditionally>
+            <Zon2:PermittedUse>Коммунальное обслуживание (3.1)</Zon2:PermittedUse>
+            <Zon2:LandUse>142006000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedConditionally>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedConditionally>
+            <Zon2:PermittedUse>Бытовое обслуживание (3.3)</Zon2:PermittedUse>
+            <Zon2:LandUse>142000000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedConditionally>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedConditionally>
+            <Zon2:PermittedUse>Объекты придорожного сервиса (4.9.1)</Zon2:PermittedUse>
+            <Zon2:LandUse>143003020300</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>Гидротехнические сооружения (11.3)</Zon2:PermittedUse>
+              <Zon2:LandUse>146002000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedConditionally>
+        </Zon2:PermittedUses>
+      </Zon2:TerritorialZone>
+      <EntitySpatial EntSys="Idee924382-c7db-40ef-aa7d-16a4a63932bf">
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="411828.61" Y="3383650.93" NumGeopoint="1" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="411838.02" Y="3383649.93" NumGeopoint="2" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="411851.71" Y="3383638.56" NumGeopoint="3" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="411868.50" Y="3383630.98" NumGeopoint="4" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="411884.93" Y="3383619.24" NumGeopoint="5" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="411892.29" Y="3383615.67" NumGeopoint="6" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="411901.48" Y="3383614.68" NumGeopoint="7" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="411920.55" Y="3383615.42" NumGeopoint="8" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="411937.66" Y="3383617.10" NumGeopoint="9" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="411955.66" Y="3383624.23" NumGeopoint="10" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <Spa1:Ordinate X="411975.36" Y="3383623.29" NumGeopoint="11" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="12">
+            <Spa1:Ordinate X="411971.65" Y="3383612.32" NumGeopoint="12" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="13">
+            <Spa1:Ordinate X="411971.78" Y="3383600.08" NumGeopoint="13" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <Spa1:Ordinate X="411976.46" Y="3383589.32" NumGeopoint="14" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="15">
+            <Spa1:Ordinate X="411986.77" Y="3383583.12" NumGeopoint="15" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="16">
+            <Spa1:Ordinate X="411990.43" Y="3383573.01" NumGeopoint="16" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="17">
+            <Spa1:Ordinate X="411988.81" Y="3383559.58" NumGeopoint="17" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="18">
+            <Spa1:Ordinate X="411982.98" Y="3383535.25" NumGeopoint="18" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="19">
+            <Spa1:Ordinate X="411980.76" Y="3383511.55" NumGeopoint="19" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="20">
+            <Spa1:Ordinate X="411932.14" Y="3383526.56" NumGeopoint="20" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="21">
+            <Spa1:Ordinate X="411882.74" Y="3383530.82" NumGeopoint="21" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="22">
+            <Spa1:Ordinate X="411818.40" Y="3383499.94" NumGeopoint="22" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="23">
+            <Spa1:Ordinate X="411810.48" Y="3383450.12" NumGeopoint="23" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="24">
+            <Spa1:Ordinate X="411809.30" Y="3383442.69" NumGeopoint="24" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="25">
+            <Spa1:Ordinate X="411637.10" Y="3383459.93" NumGeopoint="25" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="26">
+            <Spa1:Ordinate X="411555.05" Y="3383479.32" NumGeopoint="26" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="27">
+            <Spa1:Ordinate X="411573.25" Y="3383592.77" NumGeopoint="27" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="28">
+            <Spa1:Ordinate X="411580.94" Y="3383590.20" NumGeopoint="28" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="29">
+            <Spa1:Ordinate X="411589.22" Y="3383590.77" NumGeopoint="29" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="30">
+            <Spa1:Ordinate X="411606.99" Y="3383596.03" NumGeopoint="30" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="31">
+            <Spa1:Ordinate X="411624.45" Y="3383596.63" NumGeopoint="31" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="32">
+            <Spa1:Ordinate X="411640.48" Y="3383589.81" NumGeopoint="32" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="33">
+            <Spa1:Ordinate X="411654.95" Y="3383580.45" NumGeopoint="33" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="34">
+            <Spa1:Ordinate X="411674.40" Y="3383563.05" NumGeopoint="34" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="35">
+            <Spa1:Ordinate X="411694.68" Y="3383545.58" NumGeopoint="35" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="36">
+            <Spa1:Ordinate X="411710.65" Y="3383536.32" NumGeopoint="36" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="37">
+            <Spa1:Ordinate X="411717.58" Y="3383538.68" NumGeopoint="37" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="38">
+            <Spa1:Ordinate X="411721.83" Y="3383546.83" NumGeopoint="38" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="39">
+            <Spa1:Ordinate X="411725.43" Y="3383565.95" NumGeopoint="39" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="40">
+            <Spa1:Ordinate X="411725.94" Y="3383600.42" NumGeopoint="40" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="41">
+            <Spa1:Ordinate X="411777.76" Y="3383620.54" NumGeopoint="41" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="42">
+            <Spa1:Ordinate X="411792.71" Y="3383609.80" NumGeopoint="42" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="43">
+            <Spa1:Ordinate X="411802.14" Y="3383608.16" NumGeopoint="43" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="44">
+            <Spa1:Ordinate X="411810.92" Y="3383610.18" NumGeopoint="44" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="45">
+            <Spa1:Ordinate X="411818.01" Y="3383616.52" NumGeopoint="45" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="46">
+            <Spa1:Ordinate X="411821.96" Y="3383625.43" NumGeopoint="46" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="47">
+            <Spa1:Ordinate X="411823.11" Y="3383643.48" NumGeopoint="47" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="48">
+            <Spa1:Ordinate X="411828.61" Y="3383650.93" NumGeopoint="1" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="394481.99" Y="3392802.55" NumGeopoint="48" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="394513.17" Y="3392788.77" NumGeopoint="49" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="394501.31" Y="3392746.59" NumGeopoint="50" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="394484.50" Y="3392712.98" NumGeopoint="51" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="394435.61" Y="3392710.57" NumGeopoint="52" GeopointOpred="692001000000" DeltaGeopoint="0.20" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="394445.29" Y="3392780.98" NumGeopoint="53" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="394466.16" Y="3392784.08" NumGeopoint="54" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="394481.99" Y="3392802.55" NumGeopoint="48" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="394795.28" Y="3392972.18" NumGeopoint="55" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="394971.17" Y="3392950.34" NumGeopoint="56" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="394928.02" Y="3392846.95" NumGeopoint="57" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="394852.80" Y="3392785.19" NumGeopoint="58" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="394791.48" Y="3392808.12" NumGeopoint="59" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="394754.86" Y="3392807.24" NumGeopoint="60" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="394744.28" Y="3392818.28" NumGeopoint="61" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="394700.60" Y="3392793.13" NumGeopoint="62" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="394662.22" Y="3392805.48" NumGeopoint="63" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="394633.55" Y="3392797.98" NumGeopoint="64" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <Spa1:Ordinate X="394582.63" Y="3392916.45" NumGeopoint="65" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="12">
+            <Spa1:Ordinate X="394629.74" Y="3392928.19" NumGeopoint="66" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="13">
+            <Spa1:Ordinate X="394775.57" Y="3392967.04" NumGeopoint="67" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <Spa1:Ordinate X="394790.76" Y="3392971.31" NumGeopoint="68" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="15">
+            <Spa1:Ordinate X="394795.28" Y="3392972.18" NumGeopoint="55" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="393530.34" Y="3393109.29" NumGeopoint="69" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="393532.18" Y="3393099.08" NumGeopoint="70" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="393539.22" Y="3393062.75" NumGeopoint="71" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="393489.52" Y="3393052.75" NumGeopoint="72" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="393484.88" Y="3393041.56" NumGeopoint="73" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="393479.20" Y="3393057.06" NumGeopoint="74" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="393476.54" Y="3393071.05" NumGeopoint="75" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="393475.06" Y="3393081.49" NumGeopoint="76" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="393478.05" Y="3393087.66" NumGeopoint="77" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="393530.34" Y="3393109.29" NumGeopoint="69" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="394184.80" Y="3393379.93" NumGeopoint="78" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="394184.46" Y="3393347.80" NumGeopoint="79" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="394157.11" Y="3393345.34" NumGeopoint="80" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="394156.87" Y="3393358.12" NumGeopoint="81" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="394156.91" Y="3393368.33" NumGeopoint="82" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="394157.11" Y="3393379.10" NumGeopoint="83" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="394184.80" Y="3393379.93" NumGeopoint="78" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="393358.18" Y="3393393.40" NumGeopoint="84" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="393413.06" Y="3393371.54" NumGeopoint="85" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="393393.43" Y="3393309.75" NumGeopoint="86" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="393341.67" Y="3393330.50" NumGeopoint="87" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="393358.18" Y="3393393.40" NumGeopoint="84" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="394480.31" Y="3393473.22" NumGeopoint="88" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="394574.14" Y="3393449.90" NumGeopoint="89" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="394677.15" Y="3393424.30" NumGeopoint="90" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="394712.59" Y="3393381.81" NumGeopoint="91" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="394742.28" Y="3393240.41" NumGeopoint="92" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="394883.52" Y="3393211.81" NumGeopoint="93" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="394898.80" Y="3393124.78" NumGeopoint="94" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="394941.92" Y="3393073.88" NumGeopoint="95" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="394973.14" Y="3393037.04" NumGeopoint="96" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="394971.34" Y="3392962.00" NumGeopoint="97" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <Spa1:Ordinate X="394852.72" Y="3392977.29" NumGeopoint="98" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="12">
+            <Spa1:Ordinate X="394799.60" Y="3392983.64" NumGeopoint="99" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="13">
+            <Spa1:Ordinate X="394775.40" Y="3392981.99" NumGeopoint="100" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <Spa1:Ordinate X="394753.94" Y="3392977.49" NumGeopoint="101" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="15">
+            <Spa1:Ordinate X="394735.26" Y="3392972.74" NumGeopoint="102" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="16">
+            <Spa1:Ordinate X="394637.60" Y="3392944.48" NumGeopoint="103" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="17">
+            <Spa1:Ordinate X="394613.43" Y="3393137.84" NumGeopoint="104" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="18">
+            <Spa1:Ordinate X="394588.24" Y="3393144.01" NumGeopoint="105" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="19">
+            <Spa1:Ordinate X="394578.66" Y="3393142.51" NumGeopoint="106" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="20">
+            <Spa1:Ordinate X="394499.12" Y="3393133.90" NumGeopoint="107" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="21">
+            <Spa1:Ordinate X="394377.73" Y="3393114.78" NumGeopoint="108" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="22">
+            <Spa1:Ordinate X="394363.44" Y="3393208.26" NumGeopoint="109" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="23">
+            <Spa1:Ordinate X="394360.99" Y="3393288.46" NumGeopoint="110" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="24">
+            <Spa1:Ordinate X="394355.63" Y="3393469.36" NumGeopoint="111" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="25">
+            <Spa1:Ordinate X="394480.31" Y="3393473.22" NumGeopoint="88" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="393496.04" Y="3393579.01" NumGeopoint="112" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="393521.05" Y="3393459.96" NumGeopoint="113" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="393491.27" Y="3393452.80" NumGeopoint="114" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="393433.97" Y="3393435.84" NumGeopoint="115" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="393399.62" Y="3393422.25" NumGeopoint="116" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="393375.52" Y="3393433.43" NumGeopoint="117" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="393362.09" Y="3393437.30" NumGeopoint="118" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="393264.81" Y="3393478.23" NumGeopoint="119" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="393375.63" Y="3393549.13" NumGeopoint="120" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="393479.83" Y="3393576.63" NumGeopoint="121" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <Spa1:Ordinate X="393496.04" Y="3393579.01" NumGeopoint="112" GeopointOpred="692001000000" DeltaGeopoint="0.10" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="394987.05" Y="3393764.35" NumGeopoint="122" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="395046.36" Y="3393726.12" NumGeopoint="123" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="395062.19" Y="3393654.94" NumGeopoint="124" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="395110.96" Y="3393633.85" NumGeopoint="125" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="395093.82" Y="3393541.58" NumGeopoint="126" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="395051.63" Y="3393359.67" NumGeopoint="127" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <Spa1:Ordinate X="394985.73" Y="3393130.31" NumGeopoint="128" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <Spa1:Ordinate X="394901.40" Y="3393125.74" NumGeopoint="129" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <Spa1:Ordinate X="394886.64" Y="3393213.77" NumGeopoint="130" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <Spa1:Ordinate X="394744.47" Y="3393241.38" NumGeopoint="131" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <Spa1:Ordinate X="394910.59" Y="3393376.80" NumGeopoint="132" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="12">
+            <Spa1:Ordinate X="394935.64" Y="3393483.58" NumGeopoint="133" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="13">
+            <Spa1:Ordinate X="394980.45" Y="3393677.34" NumGeopoint="134" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <Spa1:Ordinate X="394987.05" Y="3393764.35" NumGeopoint="122" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:SpatialElement>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <Spa1:Ordinate X="393384.45" Y="3394042.81" NumGeopoint="135" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <Spa1:Ordinate X="393449.05" Y="3393765.32" NumGeopoint="136" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <Spa1:Ordinate X="393358.75" Y="3393752.80" NumGeopoint="137" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <Spa1:Ordinate X="393333.05" Y="3393805.53" NumGeopoint="138" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <Spa1:Ordinate X="393284.27" Y="3394024.35" NumGeopoint="139" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+          <Spa1:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <Spa1:Ordinate X="393384.45" Y="3394042.81" NumGeopoint="135" GeopointOpred="692003000000" DeltaGeopoint="1.00" />
+          </Spa1:SpelementUnit>
+        </Spa1:SpatialElement>
+        <Spa1:Borders>
+          <Spa1:Border Spatial="1" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="1" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="1" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="1" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="1" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="1" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="1" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="1" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="1" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="1" Point1="10" Point2="11" />
+          <Spa1:Border Spatial="1" Point1="11" Point2="12" />
+          <Spa1:Border Spatial="1" Point1="12" Point2="13" />
+          <Spa1:Border Spatial="1" Point1="13" Point2="14" />
+          <Spa1:Border Spatial="1" Point1="14" Point2="15" />
+          <Spa1:Border Spatial="1" Point1="15" Point2="16" />
+          <Spa1:Border Spatial="1" Point1="16" Point2="17" />
+          <Spa1:Border Spatial="1" Point1="17" Point2="18" />
+          <Spa1:Border Spatial="1" Point1="18" Point2="19" />
+          <Spa1:Border Spatial="1" Point1="19" Point2="20" />
+          <Spa1:Border Spatial="1" Point1="20" Point2="21" />
+          <Spa1:Border Spatial="1" Point1="21" Point2="22" />
+          <Spa1:Border Spatial="1" Point1="22" Point2="23" />
+          <Spa1:Border Spatial="1" Point1="23" Point2="24" />
+          <Spa1:Border Spatial="1" Point1="24" Point2="25" />
+          <Spa1:Border Spatial="1" Point1="25" Point2="26" />
+          <Spa1:Border Spatial="1" Point1="26" Point2="27" />
+          <Spa1:Border Spatial="1" Point1="27" Point2="28" />
+          <Spa1:Border Spatial="1" Point1="28" Point2="29" />
+          <Spa1:Border Spatial="1" Point1="29" Point2="30" />
+          <Spa1:Border Spatial="1" Point1="30" Point2="31" />
+          <Spa1:Border Spatial="1" Point1="31" Point2="32" />
+          <Spa1:Border Spatial="1" Point1="32" Point2="33" />
+          <Spa1:Border Spatial="1" Point1="33" Point2="34" />
+          <Spa1:Border Spatial="1" Point1="34" Point2="35" />
+          <Spa1:Border Spatial="1" Point1="35" Point2="36" />
+          <Spa1:Border Spatial="1" Point1="36" Point2="37" />
+          <Spa1:Border Spatial="1" Point1="37" Point2="38" />
+          <Spa1:Border Spatial="1" Point1="38" Point2="39" />
+          <Spa1:Border Spatial="1" Point1="39" Point2="40" />
+          <Spa1:Border Spatial="1" Point1="40" Point2="41" />
+          <Spa1:Border Spatial="1" Point1="41" Point2="42" />
+          <Spa1:Border Spatial="1" Point1="42" Point2="43" />
+          <Spa1:Border Spatial="1" Point1="43" Point2="44" />
+          <Spa1:Border Spatial="1" Point1="44" Point2="45" />
+          <Spa1:Border Spatial="1" Point1="45" Point2="46" />
+          <Spa1:Border Spatial="1" Point1="46" Point2="47" />
+          <Spa1:Border Spatial="1" Point1="47" Point2="48" />
+          <Spa1:Border Spatial="2" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="2" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="2" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="2" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="2" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="2" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="2" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="3" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="3" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="3" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="3" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="3" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="3" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="3" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="3" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="3" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="3" Point1="10" Point2="11" />
+          <Spa1:Border Spatial="3" Point1="11" Point2="12" />
+          <Spa1:Border Spatial="3" Point1="12" Point2="13" />
+          <Spa1:Border Spatial="3" Point1="13" Point2="14" />
+          <Spa1:Border Spatial="3" Point1="14" Point2="15" />
+          <Spa1:Border Spatial="4" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="4" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="4" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="4" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="4" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="4" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="4" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="4" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="4" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="5" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="5" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="5" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="5" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="5" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="5" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="6" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="6" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="6" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="6" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="7" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="7" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="7" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="7" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="7" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="7" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="7" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="7" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="7" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="7" Point1="10" Point2="11" />
+          <Spa1:Border Spatial="7" Point1="11" Point2="12" />
+          <Spa1:Border Spatial="7" Point1="12" Point2="13" />
+          <Spa1:Border Spatial="7" Point1="13" Point2="14" />
+          <Spa1:Border Spatial="7" Point1="14" Point2="15" />
+          <Spa1:Border Spatial="7" Point1="15" Point2="16" />
+          <Spa1:Border Spatial="7" Point1="16" Point2="17" />
+          <Spa1:Border Spatial="7" Point1="17" Point2="18" />
+          <Spa1:Border Spatial="7" Point1="18" Point2="19" />
+          <Spa1:Border Spatial="7" Point1="19" Point2="20" />
+          <Spa1:Border Spatial="7" Point1="20" Point2="21" />
+          <Spa1:Border Spatial="7" Point1="21" Point2="22" />
+          <Spa1:Border Spatial="7" Point1="22" Point2="23" />
+          <Spa1:Border Spatial="7" Point1="23" Point2="24" />
+          <Spa1:Border Spatial="7" Point1="24" Point2="25" />
+          <Spa1:Border Spatial="8" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="8" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="8" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="8" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="8" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="8" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="8" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="8" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="8" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="8" Point1="10" Point2="11" />
+          <Spa1:Border Spatial="9" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="9" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="9" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="9" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="9" Point1="5" Point2="6" />
+          <Spa1:Border Spatial="9" Point1="6" Point2="7" />
+          <Spa1:Border Spatial="9" Point1="7" Point2="8" />
+          <Spa1:Border Spatial="9" Point1="8" Point2="9" />
+          <Spa1:Border Spatial="9" Point1="9" Point2="10" />
+          <Spa1:Border Spatial="9" Point1="10" Point2="11" />
+          <Spa1:Border Spatial="9" Point1="11" Point2="12" />
+          <Spa1:Border Spatial="9" Point1="12" Point2="13" />
+          <Spa1:Border Spatial="9" Point1="13" Point2="14" />
+          <Spa1:Border Spatial="10" Point1="1" Point2="2" />
+          <Spa1:Border Spatial="10" Point1="2" Point2="3" />
+          <Spa1:Border Spatial="10" Point1="3" Point2="4" />
+          <Spa1:Border Spatial="10" Point1="4" Point2="5" />
+          <Spa1:Border Spatial="10" Point1="5" Point2="6" />
+        </Spa1:Borders>
+      </EntitySpatial>
+    </Zone>
+    <Area>
+      <AreaMeter>
+        <Area>437649</Area>
+        <Unit>055</Unit>
+        <Inaccuracy>1430</Inaccuracy>
+      </AreaMeter>
+    </Area>
+  </Object>
+  <CoordSystems>
+    <Spa1:CoordSystem Name="МСК-70, зона 3" CsId="Idee924382-c7db-40ef-aa7d-16a4a63932bf" />
+  </CoordSystems>
+  <Diagram>
+    <AppliedFile Kind="01" Name="Images\П2.pdf" />
+  </Diagram>
+</MapPlan>
