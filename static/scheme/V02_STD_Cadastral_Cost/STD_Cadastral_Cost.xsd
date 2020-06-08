@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by FGUP FKC Zemlja (FGUP FKC Zemlja) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Справочник "Единицы измерений по ОКЕИ"-->
+	<xs:include schemaLocation="dUnit.xsd"/>
+	<xs:annotation>
+		<xs:documentation>25.05.2011г. Версия схемы 2</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>25.05.2011г. Добавлен атрибут LandValuation/eDocument/@Version</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>25.05.2011г. Обновлены классификаторы</xs:documentation>
+	</xs:annotation>
+	<!--06.06.2011 Откорректированы наименования некоторых элементов-->
+	<xs:element name="LandValuation">
+		<xs:annotation>
+			<xs:documentation>ОСНОВНОЙ корневой</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Sender">
+								<xs:annotation>
+									<xs:documentation>Отправитель</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Kod">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="12"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Name" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="255"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Date_Upload" type="xs:date" use="required"/>
+									<xs:attribute name="Appointment" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="50"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="FIO" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="100"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="E_Mail">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="60"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Telephone" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="50"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Recipient">
+								<xs:annotation>
+									<xs:documentation>Получатель</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Kod" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="12"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Name" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="255"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="CodeType" type="xs:string" use="required" fixed="004">
+							<xs:annotation>
+								<xs:documentation>Тип программы</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Date" type="xs:date">
+							<xs:annotation>
+								<xs:documentation>Дата значения показателя (01-01-200х)</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="N_doc" use="optional">
+							<xs:annotation>
+								<xs:documentation>Номер документа, удостоверяющего оценку</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="45"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Name_Doc">
+							<xs:annotation>
+								<xs:documentation>Наименование документа, удостоверяющего оценку</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="100"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Date_Doc" type="xs:date">
+							<xs:annotation>
+								<xs:documentation>Дата  документа, удостоверяющего оценку</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Version" type="xs:string" use="required" fixed="02">
+							<xs:annotation>
+								<xs:documentation>Версия схемы</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Package">
+					<xs:annotation>
+						<xs:documentation>Пакет ДОКУМЕНТОВ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Federal">
+								<xs:annotation>
+									<xs:documentation>Кадастровый округ Общероссийский</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Cadastral_Regions">
+											<xs:annotation>
+												<xs:documentation>Кадастровые округа</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Cadastral_Region" type="tCadastral_Region" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Кадастровый округ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="CadastralNumber" type="xs:string" use="optional" default="00">
+										<xs:annotation>
+											<xs:documentation>Кадастровый номер</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tCadastral_Block">
+		<xs:annotation>
+			<xs:documentation>Кадастровый блок</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="Parcels">
+				<xs:annotation>
+					<xs:documentation>Объекты недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber" use="optional">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tCadastr_District">
+		<xs:annotation>
+			<xs:documentation>Кадастровый район</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Cadastral_Blocks" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровые кварталы</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cadastral_Block" type="tCadastral_Block" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый квартал</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Parcels" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Объекты недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tCadastral_Region">
+		<xs:annotation>
+			<xs:documentation>Кадастровый округ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Cadastral_Districts">
+				<xs:annotation>
+					<xs:documentation>Кадастровые районы</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cadastral_District" type="tCadastr_District" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый район</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tGroundPayment">
+		<xs:annotation>
+			<xs:documentation>Базовые платежи</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Value" use="required">
+			<xs:annotation>
+				<xs:documentation>Значение</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="20"/>
+					<xs:fractionDigits value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Unit" type="dUnit" use="optional">
+			<xs:annotation>
+				<xs:documentation>Единицы платежа</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tParcel">
+		<xs:annotation>
+			<xs:documentation>Описание земельного участка</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ground_Payments">
+				<xs:annotation>
+					<xs:documentation>Базовые платежи</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Specific_CadastralCost" type="tGroundPayment">
+							<xs:annotation>
+								<xs:documentation>Удельный показатель кадастровой стоимости(руб/м2)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="CadastralCost" type="tGroundPayment">
+							<xs:annotation>
+								<xs:documentation>Кадастровая стоимость</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Parcels">
+		<xs:annotation>
+			<xs:documentation>Участки</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Parcel" type="tParcel" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Объект недвижимости</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

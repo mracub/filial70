@@ -2,8 +2,6 @@
     margin: 0;
     margin-left: 10px;
 }*/
-
-
 a {
     font-size: large;
 }
@@ -28,6 +26,7 @@ a {
 
 .content {
     margin-left: 10px;
+    margin-right: 10px;
 }
 
 .header-wrap {

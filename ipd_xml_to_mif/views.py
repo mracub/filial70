@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from ipd_xml_to_mif import convertm
 from django.conf import settings
 
+
 # Create your views here.
 
 def index(request):

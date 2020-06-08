@@ -15,16 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ipd_xml_to_mif import views
+from ipd_xml_to_mif import views as ipd_xml_views
+from cost_cadastr import views as cost_views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('ipd_xml_to_mif/', views.ipd_xml_to_mif),
-    path('ipd_xml_to_mif/convert/', views.convert),
-    path('ipd_xml_to_mif/ok/', views.ok),
+    path('', ipd_xml_views.index),
+    path('ipd_xml_to_mif/', ipd_xml_views.ipd_xml_to_mif),
+    path('ipd_xml_to_mif/convert/', ipd_xml_views.convert),
+    path('ipd_xml_to_mif/ok/', ipd_xml_views.ok),
+    path('cost_cadastr/', cost_views.cost_cadastr),
+    path('cost_cadastr/load/', cost_views.cost_load_form),
+    path('cost_cadastr/loadf/', cost_views.cost_load),
+    path('cost_cadastr/docdetail/', cost_views.doc_detail),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TerritoryToGKN xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:Simple7="urn://x-artefacts-rosreestr-ru/commons/simple-types/7.0.1" xmlns:CadEng4="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/4.1.1" xmlns:Spa2="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1" xmlns:dAl3="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/3.0.2" xmlns:DocI5="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1" xmlns="urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4" xmlns:dUn1="urn://x-artefacts-rosreestr-ru/commons/directories/unit/1.0.1" xmlns:Zon4="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2" NameSoftware="АИС Geocad System АРМ КИН" VersionSoftware="50139" GUID="6D48677C-D5D1-45BD-8111-CFE77736CE66">
+ <Title>
+  <Clients>
+   <Client Date="2020-03-24">
+    <Organization>
+     <Name>Публичное акционерное общество &quot;Ростелеком&quot;</Name>
+     <Agent>
+      <Appointment>главный инженер проектов</Appointment>
+      <tns:FamilyName>Камерлох</tns:FamilyName>
+      <tns:FirstName>Игорь</tns:FirstName>
+      <tns:Patronymic>Владимирович</tns:Patronymic>
+      <AttorneyDocument>
+       <DocI5:CodeDocument>558301010000</DocI5:CodeDocument>
+       <DocI5:Name>Доверенность на И.В. Камерлоха</DocI5:Name>
+       <DocI5:Number>0703/29/14/20</DocI5:Number>
+       <DocI5:Date>2020-02-12</DocI5:Date>
+       <DocI5:IssueOrgan>Публичное акционерное общество &quot;Ростелеком&quot;</DocI5:IssueOrgan>
+       <DocI5:AppliedFile Kind="01" Name="documents\РТК(Махорин)_на_Камерлох_И_В__0703-29-14-20_от_12_02_2020.pdf" />
+      </AttorneyDocument>
+     </Agent>
+    </Organization>
+   </Client>
+  </Clients>
+  <Contractor>
+   <OrganisationContractor>
+    <Name>Общество с ограниченной ответственностью &quot;СибДальРегион&quot;</Name>
+    <CodeOGRN>1025402453120</CodeOGRN>
+    <Telephone>(383) 304-57-00</Telephone>
+    <Address>630088, г. Новосибирск, ул. Палласа, 27</Address>
+    <Agent>
+     <Appointment>главный инженер проектов</Appointment>
+     <tns:FamilyName>Камерлох</tns:FamilyName>
+     <tns:FirstName>Игорь</tns:FirstName>
+     <tns:Patronymic>Владимирович</tns:Patronymic>
+     <AttorneyDocument>
+      <DocI5:CodeDocument>558301010000</DocI5:CodeDocument>
+      <DocI5:Name>Доверенность на И.В. Камерлоха</DocI5:Name>
+      <DocI5:Number>14-11/19</DocI5:Number>
+      <DocI5:Date>2019-11-11</DocI5:Date>
+      <DocI5:IssueOrgan>Общество с ограниченной ответственностью &quot;СибДальРегион&quot;</DocI5:IssueOrgan>
+      <DocI5:AppliedFile Kind="01" Name="documents\Доверенность_Камерлох_14-11_19.pdf" />
+     </AttorneyDocument>
+    </Agent>
+   </OrganisationContractor>
+  </Contractor>
+  <Coordinations>
+   <Coordination>
+    <Name>Публичное акционерное общество &quot;Ростелеком&quot;</Name>
+    <Official>
+     <Appointment>главный инженер проектов</Appointment>
+     <tns:FamilyName>Камерлох</tns:FamilyName>
+     <tns:FirstName>Игорь</tns:FirstName>
+     <tns:Patronymic>Владимирович</tns:Patronymic>
+    </Official>
+   </Coordination>
+  </Coordinations>
+ </Title>
+ <EntitySpatial EntSys="ID1">
+  <Spa2:SpatialElement>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="1">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373528.99" Y="4306344.68" NumGeopoint="1" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="2">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373525.53" Y="4306346.7" NumGeopoint="2" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="3">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373552.02" Y="4306392.02" NumGeopoint="3" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="4">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373551.66" Y="4306418.69" NumGeopoint="4" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="5">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373553.44" Y="4306420.71" NumGeopoint="5" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="6">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373558.61" Y="4306421.28" NumGeopoint="6" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="7">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373559.05" Y="4306417.3" NumGeopoint="7" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="8">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373555.68" Y="4306416.93" NumGeopoint="8" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="9">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373556.03" Y="4306391.52" NumGeopoint="9" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="10">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373555.76" Y="4306390.48" NumGeopoint="10" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+   <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="11">
+    <Spa2:Ordinate GeopointOpred="692001000000" X="373528.99" Y="4306344.68" NumGeopoint="1" DeltaGeopoint="0.5" />
+   </Spa2:SpelementUnit>
+  </Spa2:SpatialElement>
+ </EntitySpatial>
+ <Area>
+  <AreaMeter>
+   <Area>341</Area>
+   <Unit>055</Unit>
+   <Inaccuracy>32</Inaccuracy>
+  </AreaMeter>
+ </Area>
+ <CoordSystems>
+  <Spa2:CoordSystem Name="МСК 70, зона 4" CsId="ID1" />
+ </CoordSystems>
+ <Diagram>
+  <AppliedFile Kind="01" Name="documents\ПГО_Моряковский_Затон_Советская_29.pdf" />
+ </Diagram>
+</TerritoryToGKN>

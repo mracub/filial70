@@ -1,0 +1,33 @@
+{% extends 'template.html' %}
+{% load tz %}
+{% block content %}
+    {% for d in doc %}
+    <p>Наименование документа: {{ d.doc_name }}</p>
+    <p>Номер документа: {{ d.doc_number }}</p>
+    <p>Дата документа: {{ d.doc_date|date:'Y-m-d' }}</p>
+    <p>Орган принявший документ: {{ d.doc_author }}</p>
+    {% endfor %}
+    <h4>Кадастровая стоимость объектов:</h4>
+    <table class="table table-bordered table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Кадастровый номер</th>
+                <th>Кадастровая стоимость</th>
+                <th>Удельный показатель кадастровой стоимости</th>
+                <th>XML файл</th>
+                <th>Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in obj %}
+            <tr>
+                <td>{{ item.cad_num }}</td>
+                <td>{{ item.cost.cost }}</td>
+                <td>{{ item.cost.upks }}</td>
+                <td><a href="{{ item.filecost.urlfile }}">{{ item.filecost.filename }}</a></td>
+                <td>---</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </table>
+{% endblock %}

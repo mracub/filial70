@@ -1,6 +1,5 @@
 """
 пасрит XML файлы ZoneToGKN и TerritoryToGKN формирую mif/mid файлы по координатам указанным в XML.
-Можго парсить много вложенных папок. Файлы mif/mid пишутся в теже директории, где лежат ZoneToGKN и TerritoryToGKN в формате UUID.mif и UUID.mid
 """
 from shapely.geometry import Polygon
 #from shapely.geometry import Point
