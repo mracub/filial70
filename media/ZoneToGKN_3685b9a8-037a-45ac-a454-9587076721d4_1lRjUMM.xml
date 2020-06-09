@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ZoneToGKN xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:dZo2="urn://x-artefacts-rosreestr-ru/commons/directories/zone/2.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:Sen2="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" xmlns:DocI3="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" xmlns:Zon2="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" xmlns="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/3.0.5" xmlns:Org3="urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/3.0.1" xmlns:Gov3="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" xmlns:Person1="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" NameSoftware="Полигон Про" VersionSoftware="5.2.1.3" GUID="3685b9a8-037a-45ac-a454-9587076721d4">
+  <Title>
+    <DocI3:CodeDocument>558221040000</DocI3:CodeDocument>
+    <DocI3:Number>"-"</DocI3:Number>
+    <DocI3:Date>2018-08-10</DocI3:Date>
+    <DocI3:IssueOrgan>Пономаренко Михаил Валерьевич, 0ОО"СибпроектНИИ"</DocI3:IssueOrgan>
+  </Title>
+  <Declarant>
+    <Sen2:Governance>
+      <Gov3:Name>Муниципальное казенное учереждение "Администрация Вавиловского сельского поселения" Бакчарского район Томской области</Gov3:Name>
+      <Gov3:GovernanceCode>007001001003</Gov3:GovernanceCode>
+      <Gov3:Location>
+        <adrInp2:OKATO>69212815001</adrInp2:OKATO>
+        <adrInp2:KLADR>70004000005000600</adrInp2:KLADR>
+        <adrInp2:PostalCode>636202</adrInp2:PostalCode>
+        <adrInp2:Region>70</adrInp2:Region>
+        <adrInp2:District Name="Бакчарский" Type="р-н" />
+        <adrInp2:Locality Name="Вавиловка" Type="д" />
+        <adrInp2:Street Name="Центральная" Type="ул" />
+        <adrInp2:Level1 Type="д" Value="2" />
+      </Gov3:Location>
+      <Gov3:Email>vavilsp@tomsk.gov.ru</Gov3:Email>
+      <Gov3:Telephone>8 (38 249) 37-295</Gov3:Telephone>
+    </Sen2:Governance>
+  </Declarant>
+  <Documents>
+    <Document>
+      <DocI3:CodeDocument>558301140000</DocI3:CodeDocument>
+      <DocI3:Name>Решение совета Вавиловского сельского поселения Бакчарского района Томской области О внесении изменений в Правила землепользования и застройки муниципального образования "Вавиловское сельское поселение", утвержденные решением Совета Вавиловского сельского поселения от 25.12.2013 № 56</DocI3:Name>
+      <DocI3:Number>31</DocI3:Number>
+      <DocI3:Date>2018-05-18</DocI3:Date>
+      <DocI3:IssueOrgan>Совет Вавиловского сельского поселения</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\решение ПЗЗ нов1.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558217000000</DocI3:CodeDocument>
+      <DocI3:Name>Кадастровый план территории</DocI3:Name>
+      <DocI3:Number>7000/301/16-76970</DocI3:Number>
+      <DocI3:Date>2016-05-07</DocI3:Date>
+      <DocI3:IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\70_03_0100005 (70).pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558217000000</DocI3:CodeDocument>
+      <DocI3:Name>Кадастровый план территории</DocI3:Name>
+      <DocI3:Number>7000/301/16-76975</DocI3:Number>
+      <DocI3:Date>2016-05-07</DocI3:Date>
+      <DocI3:IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\70_03_0100023 (75).pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558217000000</DocI3:CodeDocument>
+      <DocI3:Name>Кадастровый план территории</DocI3:Name>
+      <DocI3:Number>7000/301/16-76982</DocI3:Number>
+      <DocI3:Date>2016-05-07</DocI3:Date>
+      <DocI3:IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\70_03_0100032 (82).pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558217000000</DocI3:CodeDocument>
+      <DocI3:Name>Кадастровый план территории</DocI3:Name>
+      <DocI3:Number>7000/301/16-76974</DocI3:Number>
+      <DocI3:Date>2016-05-07</DocI3:Date>
+      <DocI3:IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\70_03_0100017 (74).pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558217000000</DocI3:CodeDocument>
+      <DocI3:Name>Кадастровый план территории</DocI3:Name>
+      <DocI3:Number>7000/301/16-76981</DocI3:Number>
+      <DocI3:Date>2016-05-07</DocI3:Date>
+      <DocI3:IssueOrgan>Филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\70_03_0100034 (81).pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ГРАНИЦЕ МЕЖДУ СУБЪЕКТАМИ РОССИЙСКОЙ ФЕДЕРАЦИИ, ГРАНИЦЕ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ И ГРАНИЦЕ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3470140</DocI3:Number>
+      <DocI3:Date>2020-02-19</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\Граница Вавиловка.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ГРАНИЦЕ МЕЖДУ СУБЪЕКТАМИ РОССИЙСКОЙ ФЕДЕРАЦИИ, ГРАНИЦЕ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ И ГРАНИЦЕ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3474913</DocI3:Number>
+      <DocI3:Date>2020-02-19</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\Граница Сухое.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ГРАНИЦЕ МЕЖДУ СУБЪЕКТАМИ РОССИЙСКОЙ ФЕДЕРАЦИИ, ГРАНИЦЕ МУНИЦИПАЛЬНОГО ОБРАЗОВАНИЯ И ГРАНИЦЕ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3475028</DocI3:Number>
+      <DocI3:Date>2020-02-19</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\Граница Подольск.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3415366</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ Д1.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3420400</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ Р3.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3420624</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ Р2.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3420806</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ П1.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3420979</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ Р2.pdf" Kind="01" />
+    </Document>
+    <Document>
+      <DocI3:CodeDocument>558220000000</DocI3:CodeDocument>
+      <DocI3:Name>ВЫПИСКА О ЗОНЕ С ОСОБЫМИ УСЛОВИЯМИ ИСПОЛЬЗОВАНИЯ ТЕРРИТОРИЙ, ТЕРРИТОРИАЛЬНОЙ ЗОНЕ, ТЕРРИТОРИИ ОБЪЕКТА КУЛЬТУРНОГО НАСЛЕДИЯ, ТЕРРИТОРИИ ОПЕРЕЖАЮЩЕГО СОЦИАЛЬНО-ЭКОНОМИЧЕСКОГО РАЗВИТИЯ, ЗОНЕ ТЕРРИТОРИАЛЬНОГО РАЗВИТИЯ В РОССИЙСКОЙ ФЕДЕРАЦИИ, ИГОРНОЙ ЗОНЕ, ЛЕСНИЧЕСТВЕ, ЛЕСОПАРКЕ, ОСОБО ОХРАНЯЕМОЙ ПРИРОДНТЕРРИТОРИИ, ОСОБОЙ ЭКОНОМИЧЕСКОЙ ЗОНЕ, ОХОТНИЧЬЕМ УГОДЬЕ, БЕРЕГОВОЙ ЛИНИИ (ГРАНИЦЕ ВОДНОГО ОБЪЕКТА), ПРОЕКТЕ МЕЖЕВАНИЯ ТЕРРИТОРИИ</DocI3:Name>
+      <DocI3:Number>КУВИ-001/2020-3421311</DocI3:Number>
+      <DocI3:Date>2020-02-18</DocI3:Date>
+      <DocI3:IssueOrgan>филиал ФГБУ "ФКП Росреестра" по Томской области</DocI3:IssueOrgan>
+      <DocI3:AppliedFile Name="Images\ТЗ Сх2.pdf" Kind="01" />
+    </Document>
+  </Documents>
+  <NewZones>
+    <Zone>
+      <Zon2:CadastralDistrict>70:03</Zon2:CadastralDistrict>
+      <Zon2:CodeZone>218010050000</Zon2:CodeZone>
+      <Zon2:CodeZoneDoc>Зона зеленых насаждений общего пользования (парки,скверы,бульвары) (Р-1) Вавиловского сельского поселения Бакчарского района Томской области</Zon2:CodeZoneDoc>
+      <Zon2:NumberZone>"-"</Zon2:NumberZone>
+      <Zon2:Description>"-"</Zon2:Description>
+      <Zon2:Locations>
+        <Zon2:Location>
+          <adrInp2:OKATO>69212815002</adrInp2:OKATO>
+          <adrInp2:KLADR>7000400002200</adrInp2:KLADR>
+          <adrInp2:PostalCode>636202</adrInp2:PostalCode>
+          <adrInp2:Region>70</adrInp2:Region>
+          <adrInp2:District Name="Бакчарский" Type="р-н" />
+          <adrInp2:City Name="Вавиловское" Type="с/п" />
+        </Zon2:Location>
+      </Zon2:Locations>
+      <Zon2:TerritorialZone>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>посадка новых и реконструкция существующих зеленых насаждений</Zon2:PermittedUse>
+            <Zon2:LandUse>145000000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>детские площадки, площадки для отдыха</Zon2:PermittedUse>
+              <Zon2:LandUse>144003100000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>объекты инженерной инфраструктуры</Zon2:PermittedUse>
+              <Zon2:LandUse>142007000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>общественные туалеты, в том числе с кабинами для инвалидов-колясочников</Zon2:PermittedUse>
+              <Zon2:LandUse>142002010000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>санитарная рубка деревьев</Zon2:PermittedUse>
+              <Zon2:LandUse>145000000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>парки скверы, сады, бульвары</Zon2:PermittedUse>
+            <Zon2:LandUse>144002000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>детские площадки, площадки для отдыха</Zon2:PermittedUse>
+              <Zon2:LandUse>144003100000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>объекты инженерной инфраструктуры</Zon2:PermittedUse>
+              <Zon2:LandUse>142007000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>общественные туалеты, в том числе с кабинами для инвалидов-колясочников</Zon2:PermittedUse>
+              <Zon2:LandUse>142002010000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>санитарная рубка деревьев</Zon2:PermittedUse>
+              <Zon2:LandUse>145000000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedPrimary>
+            <Zon2:PermittedUse>элементы благоустройства, малые архитектурные формы, скульптурные композиции и другие объекты ландшафтного дизайна</Zon2:PermittedUse>
+            <Zon2:LandUse>142002000000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>детские площадки, площадки для отдыха</Zon2:PermittedUse>
+              <Zon2:LandUse>144003100000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>объекты инженерной инфраструктуры</Zon2:PermittedUse>
+              <Zon2:LandUse>142007000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>общественные туалеты, в том числе с кабинами для инвалидов-колясочников</Zon2:PermittedUse>
+              <Zon2:LandUse>142002010000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>санитарная рубка деревьев</Zon2:PermittedUse>
+              <Zon2:LandUse>145000000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedPrimary>
+        </Zon2:PermittedUses>
+        <Zon2:PermittedUses>
+          <Zon2:PermitedConditionally>
+            <Zon2:PermittedUse>автостоянки для временного хранения индивидуальных легковых автомобилей</Zon2:PermittedUse>
+            <Zon2:LandUse>143003020000</Zon2:LandUse>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>детские площадки, площадки для отдыха</Zon2:PermittedUse>
+              <Zon2:LandUse>144003100000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>объекты инженерной инфраструктуры</Zon2:PermittedUse>
+              <Zon2:LandUse>142007000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>общественные туалеты, в том числе с кабинами для инвалидов-колясочников</Zon2:PermittedUse>
+              <Zon2:LandUse>142002010000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+            <Zon2:PermitedAncillary>
+              <Zon2:PermittedUse>санитарная рубка деревьев</Zon2:PermittedUse>
+              <Zon2:LandUse>145000000000</Zon2:LandUse>
+            </Zon2:PermitedAncillary>
+          </Zon2:PermitedConditionally>
+        </Zon2:PermittedUses>
+      </Zon2:TerritorialZone>
+      <MapPlan>
+        <DocI3:CodeDocument>558252000000</DocI3:CodeDocument>
+        <DocI3:Name>Описание местоположения объекта</DocI3:Name>
+        <DocI3:Number>б/н</DocI3:Number>
+        <DocI3:Date>2020-03-11</DocI3:Date>
+        <DocI3:IssueOrgan>Пономаренко Михаил Валерьевич</DocI3:IssueOrgan>
+        <DocI3:AppliedFile Kind="02" Name="MapPlan_7a44ef10-c4c2-4d7e-b70f-a29a9d32744d.xml" GUID="7a44ef10-c4c2-4d7e-b70f-a29a9d32744d" />
+      </MapPlan>
+    </Zone>
+  </NewZones>
+</ZoneToGKN>

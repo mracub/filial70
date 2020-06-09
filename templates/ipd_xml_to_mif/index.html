@@ -9,11 +9,11 @@
         <div>
             <div class="btn-wrap">
                 <input type="file" class="btn btn-outline-primary" name="zonetogkn" 
-                value="Загрузить файл ZoneToGKN"> Файл ZoneToGKN/BoundToGKN</button>
+                value="Загрузить файл ZoneToGKN(BoundToGKN)"> Файл ZoneToGKN_*.xml(BoundToGKN_*.xml)</button>
             </div>
             <div class="btn-wrap">
                 <input type="file" class="btn btn-outline-primary" name="territorytogkn" 
-                value="Загрузить файл TerritoryToGKN/MapPlan"> Файл TerritoryToGKN/MapPlan</input>
+                value="Загрузить файл TerritoryToGKN(MapPlan)"> Файл TerritoryToGKN_*.xml(MapPlan_*.xml)</input>
             </div>
             <div class="btn-wrap">
                 <input type="submit" class="btn btn-outline-success" value='Конвертировать'/>
@@ -21,4 +21,12 @@
         </div> 
     </form>   
     <p class="p-error">{{ errors }}</p>
+    {% if visible %}
+    <ul class="p-error">
+        <li>Файл ZoneToGKN_*.xml должен соответствовать XML схеме ZoneToGKN_v05 утвержденной приказом Росреестра № П/0465 от 15.09.2016</li>
+        <li>Файл BoundToGKN_*.xml должен соответствовать XML схеме BoundToGKN_v03 утвержденой приказом Росреестра П/369 от 01.08.2014</li>
+        <li>Файл TerritoryToGKN_*.xml должен соответствовать XML схеме TerritoryToGKN_v01 утвержденой приказом Росреестра № П/0465 от 15.09.2016</li>
+        <li>Файл MapPlan_*.xml должен соответствовать XML схеме MapPlan_v01 утвержденой приказом Росреестра П/369 от 01.08.2014</li>
+    </ul>
+    {% endif %}
 {% endblock %}
