@@ -39,3 +39,6 @@ class Object(models.Model):
 
     def __str_(self):
         return self.cad_num
+        
+class Test(models.Model):
+    test = models.CharField(max_length=64)

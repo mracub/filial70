@@ -55,7 +55,7 @@ def create_folders(dt):
     full_path = xml_storage_dir + folder_name
     dir_name = '/cost_cadastr/' + folder_name + '/'
     try:
-        os.mkdir(full_path)
-        return dir_name
+        os.mkdir(os.path.normpath(full_path))
+        return os.path.normpath(dir_name)
     except:
         return False

@@ -46,7 +46,7 @@ def cost_load(request):
                 filename_on_storage = fs.save(f.name, f)
                 filepath_on_storage = fs.path(filename_on_storage)
                 #file_url_on_storage = fs.url(filepath_on_storage)
-                file_url_on_storage = '/media' + dir_name + filename_on_storage
+                file_url_on_storage = os.path.normpath('/media/' + dir_name + '/' +  filename_on_storage)
                 filecost = FilesCost(filename=filename_on_storage, filepath=filepath_on_storage, 
                     urlfile=file_url_on_storage, datetime_load=date_time_file_load)
                 filecost.save()
