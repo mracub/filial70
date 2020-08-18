@@ -132,11 +132,11 @@ def create_xml(file_path, object, doc, file_name='70_cad_num_'):
 def clearfolder(path):
     files = os.listdir(path)
     for f in files:
-        os.remove(path + '\\' + f)
+        os.remove(os.path.normpath(path + '//' + f))
 
 def packxmltozip(path):
     zipname = os.path.normpath(path + '//' + '70_cad_cost_' + str(uuid.uuid1()) + '.zip')
-    files = glob.glob(os.path.normpath(path) + '\\*.xml')
+    files = glob.glob(os.path.normpath(path) + '//*.xml')
     os.chdir(path)
     with ZipFile(zipname, 'w') as zipObj:
         for f in files:

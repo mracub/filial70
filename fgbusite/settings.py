@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'ipd_xml_to_mif',
     'cost_cadastr',
     'sheduler',
-    'schedule',
+#    'schedule',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'anton',
         'PASSWORD': '13anton82',
-        'HOST': '127.0.0.1',
+        'HOST': '10.70.143.230',
         'PORT': '5432',
     }
 }
