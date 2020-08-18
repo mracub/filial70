@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ipd_xml_to_mif',
     'cost_cadastr',
+    'sheduler',
+    'schedule',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -88,7 +91,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'anton',
         'PASSWORD': '13anton82',
-        'HOST': '10.70.143.230',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

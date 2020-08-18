@@ -6,7 +6,7 @@
     <p>Номер документа: {{ d.doc_number }}</p>
     <p>Дата документа: {{ d.doc_date|date:'Y-m-d' }}</p>
     <p>Орган принявший документ: {{ d.doc_author }}</p>
-    {% endfor %}
+    {% endfor %}    
     <h4>Кадастровая стоимость объектов:</h4>
     <table class="table table-bordered table-sm table-hover">
         <thead>
@@ -30,4 +30,127 @@
             {% endfor %}
         </table>
     </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5">
+                <p>Количество объектов в документе: {{ obj_count }}</p>
+            </div>
+            <div class="col-2">
+                <div class="pagination nav-position">
+                    <span class="step-links">    
+                        {% if obj.has_previous %}
+                            <a href="?page=1" class="btn btn-light" >&lt;&lt;</a>
+                            <a href="?page={{ obj.previous_page_number }}" class="btn btn-light">&lt;</a>
+                        {% else %}
+                            <a href="#" class="btn btn-light disabled">&lt;&lt;</a>
+                            <a href="#" class="btn btn-light disabled">&lt;</a> 
+                        {% endif %}
+                
+                        <span class="current">
+                            {{ obj.number }} из {{ obj.paginator.num_pages }}
+                        </span>
+                
+                        {% if obj.has_next %}
+                            <a href="?page={{ obj.next_page_number }}" class="btn btn-light">&gt;</a>
+                            <a href="?page={{ obj.paginator.num_pages }}" class="btn btn-light">&gt;&gt;</a>
+                        {% else %}
+                            <a href="#" class="btn btn-light disabled">&gt;</a>
+                            <a href="#" class="btn btn-light disabled">&gt;&gt;</a>            
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="btn-position">
+                    <div class="btn-style">
+                        <!--<a href="#" class="btn btn btn-outline-danger">Удалить документ</a>-->
+                        <button type="button" class="btn btn btn-outline-danger" data-toggle="modal" data-target="#deleteDoc">Удалить документ</button>
+                    </div>
+                    <div class="btn-style">
+                        <!--<a href="#" class="btn btn btn-outline-success">Сформировать XML</a>-->
+                        <button type="button" class="btn btn btn-outline-success" data-toggle="modal" data-target="#selectParam">Сформировать XML</button>
+                    </div>
+                    <div class="btn-style">
+                        <a href="{{ HTTP_HOST }}/cost_cadastr/" class="btn btn btn-outline-primary">Вернуться к списку документов</a>
+                    </div>       
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="selectParam" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Параметры формирования XML файла(ов)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form action="/cost_cadastr/createxml/" method="POST" enctype="multipart/form-data" id="createXML">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <label for="ObjectCountSelect" class="col-12 col-form-label">Количество объектов в файле</label>
+                            <select class="custom-select mr-sm-2" id="ObjectCountSelect" name="ObjCountSelect">
+                                <option selected>20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <label for="DocType" class="col-12 col-form-label">Вид документа</label>
+                            <select class="custom-select mr-sm-2" id="DocType" name="DocType">
+                                <option selected value="558501030500">Акт определения кадастровой стоимости объектов недвижимости</option>
+                                <option value="558221080000">Акт об утверждении кадастровой стоимости</option>
+                            </select>     
+                            {% for d in doc %}
+                            <label for="approvement-date-input" class="col-12 col-form-label">Дата утверждения</label>
+                            <input class="form-control" type="date" value={{ d.doc_date|date:'yy-m-d' }} id="approvement-date-input" name="approvement-date-input">          
+                            <label for="determination-date-input" class="col-12 col-form-label">Дата определения</label>
+                            <input class="form-control" type="date" value={{ d.doc_date|date:'yy-m-d' }} id="determination-date-input" name="determination-date-input">                       
+                            {% endfor %} 
+                        </div>
+                        <div class="invalid-feedback">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary" id="closeModal">Сформировать XML</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteDoc" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Вы действительно хотите удалить документ?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form action="/cost_cadastr/deletedoc/" method="POST" enctype="multipart/form-data" id="delDoc">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <p>Удаление документа приведёт к удалению загруженных сведений о кадастровой стоимости обектов, переданных в рамках данного документа</p>
+                        </div>
+                        <div class="invalid-feedback">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $('#createXML').submit(function() {
+
+        // submission stuff
+
+        $('#selectParam').modal('hide');
+        return true;
+        });
+    </script>
 {% endblock %}

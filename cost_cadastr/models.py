@@ -16,7 +16,7 @@ class Docs(models.Model):
 class CadastrCosts(models.Model):
     cost = models.FloatField()
     upks = models.FloatField()
-    doc_cost = models.ForeignKey(Docs, on_delete=models.DO_NOTHING)
+    doc_cost = models.ForeignKey(Docs, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.cost
@@ -34,11 +34,22 @@ class Object(models.Model):
     cad_num = models.CharField(max_length=64)
     cad_num_block = models.CharField(max_length=64, default=None)
     obj_type = models.CharField(max_length=64, default='002001001000')
-    cost = models.ForeignKey(CadastrCosts, on_delete=models.DO_NOTHING)
-    filecost = models.ForeignKey(FilesCost, on_delete=models.DO_NOTHING)
+    cost = models.ForeignKey(CadastrCosts, on_delete=models.CASCADE)
+    filecost = models.ForeignKey(FilesCost, on_delete=models.CASCADE)
 
     def __str_(self):
         return self.cad_num
         
-class Test(models.Model):
-    test = models.CharField(max_length=64)
+class XmlDocEgrn(models.Model):
+    """
+    данная модель задумывалась для хранения сформированных файлов, если "отдавать" сформированный архив
+    сразу пользователю, то наверное она не нужна
+    """
+    filename = models.CharField(max_length=256, default=None)
+    filepath = models.CharField(max_length=256, default=None)
+    urlfile = models.URLField(max_length=1024, default=None)
+    datetime_create = models.DateTimeField(auto_now=True)
+    docs = models.ForeignKey(Docs, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.filename

@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from ipd_xml_to_mif import views as ipd_xml_views
 from cost_cadastr import views as cost_views
+from sheduler import views as sheduler_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -30,6 +31,9 @@ urlpatterns = [
     path('cost_cadastr/load/', cost_views.cost_load_form),
     path('cost_cadastr/loadf/', cost_views.cost_load),
     path('cost_cadastr/docdetail/', cost_views.doc_detail),
+    path('cost_cadastr/createxml/', cost_views.create_xml),
+    path('cost_cadastr/deletedoc/', cost_views.delete_doc),
+    path('sheduler/', sheduler_views.index),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

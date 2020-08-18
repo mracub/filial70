@@ -2,6 +2,16 @@
     margin: 0;
     margin-left: 10px;
 }*/
+@font-face {
+    font-family: "TT Norms Regular";
+    src:url(../static/fonts/TTNorms-Regular.otf) format("opentype");
+}
+
+p,a {
+    font-family: "TT Norms Regular";/*, Helvetica, Arial, sans-serif;*/
+    font-size: 18px;
+}
+
 a {
     font-size: large;
 }
@@ -47,4 +57,20 @@ a {
 
 .nav-wrap {
     margin-bottom: 10px;
+}
+
+.btn-position {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-position {
+    display: flex;
+    justify-content: center;
+}
+
+
+.btn-style {
+    margin-left: 5px; 
+    margin-right: 5px;
 }
