@@ -1,0 +1,46 @@
+{% extends 'template.html' %}
+{% block content %}
+    <h3>Загрузка сведений об объекта, поставленных на учет за указанный период, а также объектах, характеристики которых были изменены</h3>
+    <form action="/cost_cadastr/cl/loadf/" method="POST" enctype="multipart/form-data" class="was-validated">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" id="files_fir" name="files_fir" accept=".zip" required 
+                                title="Выберите файл выгрузки в ФИР"/>
+                            <label class="custom-file-label" for="files_fir" data-browse="Выберите файл">Выберите файл(архив) выгрузки сведений в ФИР...</label>
+                        </div>
+                    </div>
+                    <!--<div class="form-group col-md-12">
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" id="files_oks_zu_relations" name="files_oks_zu_relations" accept=".csv" required 
+                            title="Выберите файл полученный по запросу ХХХХ в сервиче http://query.kadastr.ru в формате *.csv"/>
+                            <label class="custom-file-label" for="files_oks_zu_relations" data-browse="Выберите файл">Выберите ф...</label>
+                        </div>
+                    </div> -->
+                    <div class="btn-wrap">
+                        <input type="submit" class="btn btn-outline-success" value='Загрузить'>
+                    </div> 
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-row btn-style">       
+                    <p>Сервис загрузки сведений об объектах недвижимости для последующего формирования перечня 
+                        объектов недвижимости подлежащих государственной кадастровой оценке в рамках ст.16 и ст.24 237-ФЗ.
+                        <br>
+                        После загрузки сведений о КС доступны следующие возможности:      
+                    </p>
+                    <ul>
+                        <li>поиск сведений об объекте;</li>
+                        <li>выгрузка сведений в формате XML-схемы ListForRating_v04 для последующей передачи в ОГБУ "ТОЦИК";</li>
+                    </ul>
+                    <br>
+                    <p class="p-error">{{ errors }}</p>       
+                </div>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

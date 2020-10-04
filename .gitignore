@@ -1,4 +1,5 @@
 / static / *
-* .xml
-* .mif
-* .mid
+*.xml
+*.mif
+*.mid
+*.zip

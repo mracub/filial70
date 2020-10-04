@@ -1,5 +1,8 @@
 from django.contrib import admin
-from cost_cadastr.models import Docs, CadastrCosts, FilesCost, Object, XmlDocEgrn
+from cost_cadastr.models import Docs, CadastrCosts, FilesCost, Object
+from cost_cadastr.models import ClObject, ClCadNumNum, ClExploitationChar, ClAssignationType, ClAssignationCode
+from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCadastralNumbers, ClElementConstr
+from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation
 # Register your models here.
 
 
@@ -21,6 +24,25 @@ class FilesCostAdmin(admin.ModelAdmin):
 class ObjectAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(XmlDocEgrn)
-class XmlDocEgrnAdmin(admin.ModelAdmin):
+#ClAddress, ClCadNumNum, ClKeyParam, ClCadCost, ClElementConstr, ClObject, ClPeriod
+@admin.register(ClLocation)
+class ClLocationAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(ClCadNumNum)
+class ClCadNumNumAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(ClKeyParam)
+class ClKeyParamAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(ClCadCost)
+class ClCadCostAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ClObject)
+class ClObjectAdmin(admin.ModelAdmin):
+    pass
+

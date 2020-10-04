@@ -20,6 +20,7 @@ from cost_cadastr import views as cost_views
 from sheduler import views as sheduler_views
 from django.conf import settings
 from django.conf.urls.static import static
+from luckygardener import views as luckygardener_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,12 +28,18 @@ urlpatterns = [
     path('ipd_xml_to_mif/', ipd_xml_views.ipd_xml_to_mif),
     path('ipd_xml_to_mif/convert/', ipd_xml_views.convert),
     path('ipd_xml_to_mif/ok/', ipd_xml_views.ok),
-    path('cost_cadastr/', cost_views.cost_cadastr),
+    path('cost_cadastr/cc/', cost_views.cost_cadastr),
+    path('cost_cadastr/', cost_views.cost_index),
     path('cost_cadastr/load/', cost_views.cost_load_form),
     path('cost_cadastr/loadf/', cost_views.cost_load),
     path('cost_cadastr/docdetail/', cost_views.doc_detail),
     path('cost_cadastr/createxml/', cost_views.create_xml),
     path('cost_cadastr/deletedoc/', cost_views.delete_doc),
+    path('cost_cadastr/cl/', cost_views.cl_index),
+    path('cost_cadastr/cl/load/', cost_views.cl_load_form),
+    path('cost_cadastr/cl/loadf/', cost_views.cl_load_file),
+    path('cost_cadastr/cl/createdlist/', cost_views.cl_create_list),
+    path('luckygardener/', luckygardener_views.index),
     path('sheduler/', sheduler_views.index),
 ]
 

@@ -1,0 +1,109 @@
+{% extends 'template.html' %}
+{% load tz %}
+{% block content %}
+<h4>Формирование перечней ОКС (п.2 ст. 16 237-ФЗ):</h4>
+<table class="table table-bordered table-sm table-hover">
+    <thead>
+        <tr>
+            <th>Период загруженных сведений</th>
+            <th>Дата загрузки</th>
+            <th>XML файлы ФИР</th>
+            <!--    <th>Витрина ОКС постановка</th>
+                <th>Витрина ОКС изменения</th>
+                <th>Витрина помещения постановка</th>
+                <th>Витрина помещения изменения</th>
+                <th>Витрина связь ОКС с ЗУ</th>
+                <th>Витрина связь помещений с ОКС</th>-->
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cldatalist %}
+        <tr>
+            <td>{{ item.date_start|date:'Y.m.d' }} - {{ item.date_end|date:'Y.m.d' }}</td>
+            <td>{{ item.date_load|date:'Y.m.d' }}</td>
+            <td><a href="{{ item.files_fir_url }}">Скачать</a></td>
+        </tr>
+        {% endfor %}
+</table>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-5">
+            <p>Количество объектов в документе: {{ cldatalist_count }}</p>
+        </div>
+        <div class="col-2">
+            <div class="pagination nav-position">
+                <span class="step-links">
+                    {% if cldatalist.has_previous %}
+                    <a href="?page=1" class="btn btn-light">&lt;&lt;</a>
+                    <a href="?page={{ cldatalist.previous_page_number }}" class="btn btn-light">&lt;</a>
+                    {% else %}
+                    <a href="#" class="btn btn-light disabled">&lt;&lt;</a>
+                    <a href="#" class="btn btn-light disabled">&lt;</a>
+                    {% endif %}
+
+                    <span class="current">
+                        {{ cldatalist.number }} из {{ cldatalist.paginator.num_pages }}
+                    </span>
+
+                    {% if cldatalist.has_next %}
+                    <a href="?page={{ cldatalist.next_page_number }}" class="btn btn-light">&gt;</a>
+                    <a href="?page={{ cldatalist.paginator.num_pages }}" class="btn btn-light">&gt;&gt;</a>
+                    {% else %}
+                    <a href="#" class="btn btn-light disabled">&gt;</a>
+                    <a href="#" class="btn btn-light disabled">&gt;&gt;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12">
+    <div class="btn-position">
+        <div class="btn-style">
+            <form action="/cost_cadastr/cl/load/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-success" value="Загрузить сведения за период">
+            </form>
+        </div>
+        <div class="btn-style">
+            <button type="button" class="btn btn btn-outline-success" data-toggle="modal"
+                data-target="#selectParam">Сформировать перечень для оценки</button>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="selectParam" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Параметры формирования перечня:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/cost_cadastr/cl/createdlist/" method="POST" enctype="multipart/form-data" id="createXML">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="ObjectCountSelect" class="col-12 col-form-label">Количество объектов в файле:</label>
+                    <select class="custom-select mr-sm-2" id="ObjectCountSelect" name="ObjCountSelect">
+                        <option selected>500</option>
+                        <option value="50">100</option>
+                        <option value="100">1000</option>
+                    </select>
+                    <label for="list_date_start" class="col-12 col-form-label">Дата начала периода:</label>
+                    <input class="form-control" type="date" id="list_date_start" name="list_date_start" value={{ current_date|date:'yy-m-d' }}>
+                    <label for="list_date_end" class="col-12 col-form-label">Дата окончания периода:</label>
+                    <input class="form-control" type="date"  id="list_date_end" name="list_date_end" value={{ current_date|date:'yy-m-d' }}>
+                </div>
+                <div class="invalid-feedback">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary" id="closeModal">Сформировать XML</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,25 +6,116 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
 from cost_cadastr.models import FilesCost, Docs, Object, CadastrCosts
+from cost_cadastr.models import ClDataList, ClObject, ClElementConstr, ClCadCost, ClKeyParam, ClCadNumNum, ClLocation, ClListRatingReady
 from django.db import models
 from cost_cadastr import xmlparser
+from cost_cadastr import xmlfirload
+from cost_cadastr import xmllistcreate
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from lxml import etree, objectify
 
 
-
 # Create your views here.
-def cost_cadastr(request):
+def cost_index(request):
+    """
+    стартовая страница раздела КС
+    """
     template = loader.get_template('cost_cadastr/index.html')
+    data = {}
+    return HttpResponse(template.render(data, request))  
+
+def cl_index(request):
+    """
+    стартовая страница раздела формирования перечней для оценки
+    """
+    cldatalist = ClDataList.objects.all()
+    paginator = Paginator(cldatalist, 15)
+    page_number = request.GET.get('page')
+    page_cldatalist = paginator.get_page(page_number)
+    cldatalist_count = cldatalist.count()
+    current_date = datetime.today()#.strftime('%Y-%m-%d')
+    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date}
+    response = render(request, 'cost_cadastr/listcost/index.html', data)
+    return response
+
+def cl_load_form(request):
+    """
+    раздел загрузки файлов содержащих характеристики объектов необходимые для формирования перечней
+    """
+    template = loader.get_template('cost_cadastr/listCost/load.html')
+    data = {}
+    return HttpResponse(template.render(data, request))   
+
+def cl_load_file(request):
+    """
+    загрузка файлов ФИР в БД
+    """
+    if request.method == 'POST':
+        dir_name = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/')
+        if dir_name:
+            date_time_file_load = datetime.now()
+            fs = FileSystemStorage(location=dir_name)
+            filename_on_storage = fs.save(request.FILES['files_fir'].name, request.FILES['files_fir'])
+            filepath_on_storage = fs.path(filename_on_storage)
+            file_url = dir_name.replace(settings.MEDIA_ROOT, '').replace('\\', '/') + '/' + filename_on_storage
+            file_url = '/media' + file_url
+            #парсим файл протокола и пишем данные в БД
+            file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+            if not file_protocol_data['error']:
+                cldatalist = ClDataList(date_start=file_protocol_data['dateStart'], date_end=file_protocol_data['dateEnd'], 
+                    date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
+                cldatalist.save()
+                xmlfirload.parseXMLdata(file_protocol_data)
+            else:
+                pass
+                #здесь нужно вернуть ошибку парсинга протокола
+    else:
+        pass #написать обработчик добавив в возвращаемый шаблон строку для вывода ошибок
+    return redirect('/cost_cadastr/cl/')
+
+def cl_create_list(request):
+    """
+    формирование перечня для оценки
+    """
+    if request.method == 'POST':
+        #здесь вызов функции по формированию перечня в реквесте нужные параметры
+        dateStart = request.POST["list_date_start"]
+        dateEnd = request.POST["list_date_end"]
+        objCount = request.POST["ObjCountSelect"]
+        if xmllistcreate.createListForRating(dateStart, dateEnd, objCount): 
+            pass
+        else:
+            #data["error"] = "Ошибка формирования перечня"
+            pass
+        listFiles = ClListRatingReady.objects.all()
+        paginator = Paginator(listFiles, 15)
+        page_number = request.GET.get('page')
+        page_listFiles = paginator.get_page(page_number)
+        listFiles_count = listFiles.count()
+        data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count}
+    else:
+        data = {"error":"undefined erro, request method is not POST"}
+    response = render(request, 'cost_cadastr/listCost/lists.html', data)
+    return response
+
+
+def cost_cadastr(request):
+    """
+    стартовая страница раздела загрузка сведений о КС
+    """
+    template = loader.get_template('cost_cadastr/filescost/index.html')
     docs_count = Docs.objects.all().count()
     docs = Docs.objects.all()
     data = {"docs":docs, "docs_count":docs_count}
     return HttpResponse(template.render(data, request))   
 
 def cost_load_form(request):
-    template = loader.get_template('cost_cadastr/load.html')
+    """
+    раздел загрузки файлов с КС поступивших от ТОЦИК
+    """
+    template = loader.get_template('cost_cadastr/filescost/load.html')
     data = {}
     return HttpResponse(template.render(data, request))   
 
@@ -54,12 +145,12 @@ def cost_load(request):
                 xmlparser.parsexml(filepath_on_storage, filecost, costdoc)
             return redirect('/cost_cadastr/')
         else:
-            return render(request, 'cost_cadastr/load.html', 
+            return render(request, 'cost_cadastr/filescost/load.html', 
                     {"invalid_form_style":"is-invalid", "doc_name_value":request.POST["doc_name"],
                     "doc_number_value":request.POST["doc_number"],
                     "doc_author_value":request.POST["doc_author"]})
     else:
-        return render(request, 'cost_cadastr/load.html', 
+        return render(request, 'cost_cadastr/filescost/load.html', 
                 {"errors":"Произошда какая-то неведомая херня :-(((", "doc_name_value":request.POST["doc_name"],
                 "doc_number_value":request.POST["doc_number"],"doc_date_value":request.POST["doc_date"],
                 "doc_author_value":request.POST["doc_author"]})
@@ -67,6 +158,9 @@ def cost_load(request):
 
 
 def doc_detail(request):
+    """
+    детальная информация об объектах и КС поступивших с актом КС от ТОЦИК
+    """
 #    template = loader.get_template('cost_cadastr/docdet.html')
     if request.method == 'POST':
         doc = Docs.objects.filter(pk = request.POST['docid'])
@@ -80,7 +174,7 @@ def doc_detail(request):
     page_obj = paginator.get_page(page_number)
     obj_count = obj.count()
     data = {"doc":doc, "obj":page_obj, "obj_count":obj_count}
-    response = render(request, 'cost_cadastr/docdet.html', data)
+    response = render(request, 'cost_cadastr/filescost/docdet.html', data)
     if request.method == 'POST':
         response.set_cookie('docid', request.POST['docid'])
     return response

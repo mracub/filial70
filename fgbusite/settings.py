@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ipd_xml_to_mif',
     'cost_cadastr',
     'sheduler',
+    'luckygardener',
 #    'schedule',
 ]
 

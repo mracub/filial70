@@ -1,0 +1,16 @@
+{% extends 'template.html' %}
+{% block content %}
+    <div class="container">
+        <h1 class="h3 text-center my-4">Фотоконкурс "Удачный дачник"!</h1>
+        <div class="row">
+            {% for pic in images %}
+            <div class="col-lg-3 col-md-4 col-6 thumb">
+                <a data-fancybox="gallery" href="{{ HTTP_HOST}}/media/{{ pic.image_ns }}">
+                    <img class="img-fluid" src="{{ HTTP_HOST}}/media/{{ pic.image_ss }}" alt="...">
+                    <p class="text-center">Автор: {{ pic.author.short_name }} №: {{ pic.author.id }} </p>
+                </a>
+            </div>
+            {% endfor %}     
+    </div>
+{% endblock %}
+

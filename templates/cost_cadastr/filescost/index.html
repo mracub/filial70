@@ -1,0 +1,33 @@
+{% extends 'template.html' %}
+{% block content %}
+    <a href="/cost_cadastr/load/" class="btn btn-outline-success">Загрузить XML файлы</a>
+    <p>{{ docs_count }}</p>
+    <table class="table table-bordered table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Наименование документа</th>
+                <th>Номер документа</th>
+                <th>Дата документа</th>
+                <th>Орган принявший документ</th>
+                <th>Примечание</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in docs %}
+            <tr>
+                <td>{{ doc.doc_name }}</td>
+                <td>{{ doc.doc_number }}</td>
+                <td>{{ doc.doc_date|date:'Y-m-d' }}</td>
+                <td>{{ doc.doc_author }}</td>
+                <td>
+                    <form action="/cost_cadastr/docdetail/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="docid" value="{{ doc.id }}">
+                        <input type="submit" class="btn btn-outline-info" value="Подробнее...">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </table>
+{% endblock %}

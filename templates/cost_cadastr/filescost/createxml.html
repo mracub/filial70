@@ -1,0 +1,16 @@
+{% extends 'template.html' %}
+{% load tz %}
+{% block content %}
+    <table class="table table-bordered">
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td>{{ file.filename }}</td>
+                <td>{{ file.filepath }}</td>
+                <td>{{ file.urlfile }}</td>
+                <td>{{ file.datetime_load|localtime|date:'Y-m-d, H:i' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </table>
+{% endblock %}
