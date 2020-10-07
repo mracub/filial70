@@ -14,6 +14,7 @@ import time
 import dateutil.parser
 from decimal import Decimal
 from cost_cadastr import xmlfirload
+import requests
 
 def createLocationNode(locationQuerySet):
     """
@@ -675,6 +676,41 @@ def packToZIP(outdir, filesList):
             zipobj.write(f, os.path.basename(f))
     return fileZip
 #------------------------------------------------
+def selectCadNums(objListCreated, objListChanged):
+    """
+    формирование списка КН объектов по которым нужно загрузить графическую часть
+    """
+    cadNums = []
+    objListQuerySetCreated = objListCreated.filter(clobjecttype__ObjectTypeCode__in=['002001002000', '002001004000', '002001005000'])
+    for item in objListQuerySetCreated:
+        cadNums.append(item.CadastralNumber)
+    objListQuerySetChanged = objListChanged.filter(clobjecttype__ObjectTypeCode__in=['002001002000', '002001004000', '002001005000'])
+    for item in objListQuerySetChanged:
+        cadNums.append(item.CadastralNumber)
+    return cadNums
+#------------------------------------------------
+def loadMifMid(tmpFilesDir, cadNums):
+    """
+    загруза MIF/MID файлов
+    """
+    graph = os.path.normpath(tmpFilesDir + '/graphics')
+    try:
+        os.mkdir(graph)
+    except:
+        pass
+    urltmpl = 'http://popd-geoapi-balancer-01.prod.egrn/api/v1/mif_export/realty?kn='
+    for kn in cadNums:
+        url = urltmpl + kn.replace(':', '%3A')
+        savePath = os.path.normpath(graph + '/' + kn.replace(':', '_') + '.zip')
+        try:
+            r = requests.get(url)
+            r.raise_for_status()
+        except Exception as err:
+            pass
+        else:
+            with open(savePath, 'wb') as f:
+                f.write(r.content)
+#------------------------------------------------
 def createListForRating(dateStart, dateEnd, objCount):
     """
     формирование перечня для оценки
@@ -683,12 +719,11 @@ def createListForRating(dateStart, dateEnd, objCount):
     objCount - количество объектов в одном XML - файле, пока не используем
     """
     objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()])
+                                                                datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
     objListChanged = ClObject.objects.filter(DateCadastralRecord__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
                                                                 datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).exclude(
                                                                     DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]
-                                                                )
+                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
     #сразу в выборке исключить объекты без назначения для зданий, сооружений, помещений и без площади для
     #зданий, помещений и машиномест, также исключить снятые с учета объекты
     tmpFilesDir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/temp/')
@@ -744,6 +779,10 @@ def createListForRating(dateStart, dateEnd, objCount):
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir, True)
         listTolist(listFiles, listSource)
+    #загрузка графической части перечня
+    cadNums = selectCadNums(objListCreated, objListChanged)
+    loadMifMid(tmpFilesDir, cadNums)
+    #архивирование перечня
     outdir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/data/list_rating_out/')
     if listFiles:
         listfileZip = packToZIP(outdir, listFiles)
@@ -752,6 +791,7 @@ def createListForRating(dateStart, dateEnd, objCount):
     else:
         listfileZipName = None
         file_url = None
+    #запись данных о перечне в БД
     listratingready = ClListRatingReady(file_list_name=listfileZipName,
                                         file_list_url=file_url,
                                         date_period_start=datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(),
