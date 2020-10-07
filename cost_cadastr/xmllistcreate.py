@@ -15,6 +15,7 @@ import dateutil.parser
 from decimal import Decimal
 from cost_cadastr import xmlfirload
 import requests
+import shutil
 
 def createLocationNode(locationQuerySet):
     """
@@ -655,26 +656,15 @@ def createXML(objectsQuerySet, objType, tmpFilesDir, correction_flag=None):
         except:
             pass
     return filelist
-
 #------------------------------------------------
-def listTolist(listDest, listSource):
-    """
-    херово когда логику приходится менять уже вконце
-    """
-    for item in listSource:
-        listDest.append(item)
-    return listDest
-#------------------------------------------------
-def packToZIP(outdir, filesList):
+def packToZIP2(outdir, dirtopack):
     """
     упаковка полученных в формате XML перечней в архив
     """
     guid = str(uuid.uuid1())
-    fileZip = os.path.join(outdir, 'ListInfo_' + guid + '.zip')
-    with ZipFile(fileZip, 'w') as zipobj:
-        for f in filesList:
-            zipobj.write(f, os.path.basename(f))
-    return fileZip
+    fileZip = os.path.join(outdir, 'ListInfo_' + guid)
+    shutil.make_archive(fileZip, 'zip', dirtopack)
+    return fileZip + '.zip'
 #------------------------------------------------
 def selectCadNums(objListCreated, objListChanged):
     """
@@ -733,59 +723,60 @@ def createListForRating(dateStart, dateEnd, objCount):
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень зданий (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir, True)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень сооружений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень сооружений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir, True)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень ОНС (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень ОНС (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir, True)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень помещений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень помещений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir, True)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень машино-мест (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #формируем перечень машиномест (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
         listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir, True)
-        listTolist(listFiles, listSource)
+        listFiles.append(listSource)
     #загрузка графической части перечня
     cadNums = selectCadNums(objListCreated, objListChanged)
     loadMifMid(tmpFilesDir, cadNums)
     #архивирование перечня
     outdir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/data/list_rating_out/')
     if listFiles:
-        listfileZip = packToZIP(outdir, listFiles)
+        #listfileZip = packToZIP(outdir, listFiles)
+        listfileZip = packToZIP2(outdir, tmpFilesDir)
         file_url = '/media' + listfileZip.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
         listfileZipName = os.path.basename(listfileZip)
     else:
