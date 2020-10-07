@@ -4,7 +4,7 @@ from datetime import datetime, date, time
 from cost_cadastr.models import CadastrCosts, Object, Docs, FilesCost
 from cost_cadastr.models import ClObject, ClCadNumNum, ClExploitationChar, ClAssignationType, ClAssignationCode
 from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCadastralNumbers, ClElementConstr
-from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels
+from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClListRatingReady
 from lxml import etree, objectify
 import uuid
 import glob
@@ -148,11 +148,13 @@ def createPositionInObjectNode(objectQuerySet):
                 if item.LevelType:
                     level.set("Type", item.LevelType)
                 else:
-                    level.set("Type", '')
+                    pass
+                    #level.set("Type", '')
                 if item.LevelNumber:
                     level.set("Number", item.LevelNumber)
                 else:
-                    level.set("Number", '')
+                    pass
+                    #level.set("Number", '')
                 if item.Number_OnPlan:
                     position = objectify.SubElement(level, "Position")
                     position.set("NumberOnPlan", item.Number_OnPlan)
@@ -221,11 +223,63 @@ def createKeyParametersNode(keyQuerySet):
         keyparam.set("Value", str(item.value))
     return keyparameters
 #--------------------------
+def validateNode(Node, objType, xmlschema):
+    """
+    валидация узла
+    коряво формировать полностью структуру файла для валидации нужного узла, но пока так
+    """
+    xml = '''<?xml version="1.0"?>
+    <ListForRating>
+    </ListForRating>
+    '''
+    root = objectify.fromstring(xml)
+    root.set("Version", "04")
+    listInfoNode = createListInfo(1, objType)
+    root.append(listInfoNode[0])
+    objects = objectify.Element("Objects")
+    #дальше нужно в зависимости от вида объекта формировать структуру
+    if objType == '002001002000':
+        obj = objectify.Element('Buildings')
+        obj.append(Node)
+        objects.append(obj)
+    elif objType == '002001003000':
+        obj = objectify.Element('Flats')
+        obj.append(Node)
+        objects.append(obj)
+    elif objType == '002001004000':
+        obj = objectify.Element('Constructions')
+        obj.append(Node)
+        objects.append(obj)
+    elif objType == '002001005000':
+        obj = objectify.Element('Uncompleteds')
+        obj.append(Node)
+        objects.append(obj)
+    elif objType == '002001009000':
+        obj = objectify.Element('CarParkingSpaces')
+        obj.append(Node)
+        objects.append(obj)
+
+    root.append(objects)
+    objectify.deannotate(root, xsi_nil=True)
+    etree.cleanup_namespaces(root)
+    if xmlschema.validate(root):
+        return True
+    else:
+        return False
+
+#--------------------------
 def createCarParkingSpace(objectsQuerySet):
     """
     формирование записей о машиноместах
     """
-    carparkingspaces = objectify.Element("CarParkingSpaces")
+    xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
+    xml_schema_doc = etree.parse(xml_schema_listforrating)
+    xmlschema = etree.XMLSchema(xml_schema_doc)
+    carparkingspaces_valid = objectify.Element("CarParkingSpaces")
+    carparkingspaces_invalid = objectify.Element("CarParkingSpaces")
+    valid = 0
+    invalid = 0
     for item in objectsQuerySet:
         carparkingspace = objectify.Element("CarParkingSpace")
         carparkingspace.set("DateCreated", item.DateCreated.strftime('%Y-%m-%d'))
@@ -254,15 +308,27 @@ def createCarParkingSpace(objectsQuerySet):
         else:
             pass
             #carparkingspace.CadastralCost = None
-        carparkingspaces.append(carparkingspace)
-    return carparkingspaces
+        if validateNode(carparkingspace, '002001009000', xmlschema):
+            carparkingspaces_valid.append(carparkingspace)
+            valid += 1
+        else:
+            carparkingspaces_invalid.append(carparkingspace)
+            invalid += 1
+    return carparkingspaces_valid, carparkingspaces_invalid, valid, invalid
 
 #--------------------------
 def createFlat(objectsQuerySet):
     """
     формирование записей о зданиях
     """
-    flats = objectify.Element("Flats")
+    xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
+    xml_schema_doc = etree.parse(xml_schema_listforrating)
+    xmlschema = etree.XMLSchema(xml_schema_doc)
+    flats_valid = objectify.Element("Flats")
+    flats_invalid = objectify.Element("Flats")
+    valid = 0
+    invalid = 0
     for item in objectsQuerySet:
         flat = objectify.Element("Flat")
         flat.set("DateCreated", item.DateCreated.strftime('%Y-%m-%d'))
@@ -298,14 +364,26 @@ def createFlat(objectsQuerySet):
         else:
             pass
             #flat.CadastralCost = None
-        flats.append(flat)
-    return flats
+        if validateNode(flat, '002001003000', xmlschema):
+            flats_valid.append(flat)
+            valid += 1
+        else:
+            flats_invalid.append(flat)
+            invalid += 1
+    return flats_valid, flats_invalid, valid, invalid
 #--------------------------
 def createUncompletedConstructions(objectsQuerySet):
     """
     формирование записей об объектах незавершенного строительства
     """
-    uncompleteds = objectify.Element("Uncompleteds")
+    xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
+    xml_schema_doc = etree.parse(xml_schema_listforrating)
+    xmlschema = etree.XMLSchema(xml_schema_doc)
+    uncompleteds_valid = objectify.Element("Uncompleteds")
+    uncompleteds_invalid = objectify.Element("Uncompleteds")
+    valid = 0
+    invalid = 0
     for item in objectsQuerySet:
         uncompleted = objectify.Element("Uncompleted")
         uncompleted.set("DateCreated", item.DateCreated.strftime('%Y-%m-%d'))
@@ -336,14 +414,27 @@ def createUncompletedConstructions(objectsQuerySet):
             pass
             #uncompleted.CadastralCost = None
         uncompleted.DegreeReadiness = item.DegreeReadiness
-        uncompleteds.append(uncompleted)
-    return uncompleteds
+        if validateNode(uncompleted, '002001005000', xmlschema):
+            uncompleteds_valid.append(uncompleted)
+            valid += 1
+        else:
+            uncompleteds_invalid.append(uncompleted)
+            invalid += 1
+    return uncompleteds_valid, uncompleteds_invalid, valid, invalid
+
 #--------------------------
 def createConstructions(objectsQuerySet):
     """
     формирование записей о сооружениях
     """
-    constructions = objectify.Element("Constructions")
+    xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
+    xml_schema_doc = etree.parse(xml_schema_listforrating)
+    xmlschema = etree.XMLSchema(xml_schema_doc)
+    constructions_valid = objectify.Element("Constructions")
+    constructions_invalid = objectify.Element("Constructions")
+    valid = 0
+    invalid = 0
     for item in objectsQuerySet:
         construction = objectify.Element("Construction")
         construction.set("DateCreated", item.DateCreated.strftime('%Y-%m-%d'))
@@ -397,15 +488,27 @@ def createConstructions(objectsQuerySet):
             if carplacesChild:
                 construction.append(CarParkingSpacesCadastralNumbers(relQuerySet))
         #------
-        constructions.append(construction)
-    return constructions
+        if validateNode(construction, '002001004000', xmlschema):
+            constructions_valid.append(construction)
+            valid += 1
+        else:
+            constructions_invalid.append(construction)
+            invalid += 1
+    return constructions_valid, constructions_invalid, valid, invalid
 #--------------------------
 
 def createBuilding(objectsQuerySet):
     """
     формирование записей о зданиях
     """
-    buildings = objectify.Element("Buildings")
+    xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+            'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
+    xml_schema_doc = etree.parse(xml_schema_listforrating)
+    xmlschema = etree.XMLSchema(xml_schema_doc)
+    buildings_valid = objectify.Element("Buildings")
+    buildings_invalid = objectify.Element("Buildings")
+    valid = 0
+    invalid = 0
     for item in objectsQuerySet:
         building = objectify.Element("Building")
         building.set("DateCreated", item.DateCreated.strftime('%Y-%m-%d'))
@@ -470,8 +573,14 @@ def createBuilding(objectsQuerySet):
             if carplacesChild:
                 building.append(CarParkingSpacesCadastralNumbers(relQuerySet))
         #------
-        buildings.append(building)
-    return buildings
+        if validateNode(building, '002001002000', xmlschema):
+            buildings_valid.append(building)
+            valid += 1
+        else:
+            buildings_invalid.append(building)
+            invalid += 1
+    return buildings_valid, buildings_invalid, valid, invalid
+#------------------------------
 
 def createXML(objectsQuerySet, objType, tmpFilesDir, correction_flag=None):
     """
@@ -484,24 +593,31 @@ def createXML(objectsQuerySet, objType, tmpFilesDir, correction_flag=None):
     <ListForRating>
     </ListForRating>
     '''
-    root = objectify.fromstring(xml)
-    root.set("Version", "04")
-    listInfoNode = createListInfo(len(objectsQuerySet), objType)
-    root.append(listInfoNode[0])
     objects = objectify.Element("Objects")
+    obj = []
+    filelist = []
     #дальше нужно в зависимости от вида объекта формировать структуру
     if objType == '002001002000':
-        objects.append(createBuilding(objectsQuerySet))
+        obj = createBuilding(objectsQuerySet)
+    #    objects.append(obj[0])
     elif objType == '002001003000':
-        objects.append(createFlat(objectsQuerySet))
+        obj = createFlat(objectsQuerySet)
+    #    objects.append(obj[0])#здесь добавляем только валидные объекты
     elif objType == '002001004000':
-        objects.append(createConstructions(objectsQuerySet))
+        obj = createConstructions(objectsQuerySet)
+    #    objects.append(obj[0])
     elif objType == '002001005000':
-        objects.append(createUncompletedConstructions(objectsQuerySet))
+        obj = createUncompletedConstructions(objectsQuerySet)
+    #    objects.append(obj[0])
     elif objType == '002001009000':
-        objects.append(createCarParkingSpace(objectsQuerySet))
+        obj = createCarParkingSpace(objectsQuerySet)
+    objects.append(obj[0])
     #формирование арсположения на этаже для помещений вынести в отдельную функцию
     #
+    root = objectify.fromstring(xml)
+    root.set("Version", "04")
+    listInfoNode = createListInfo(obj[2], objType)
+    root.append(listInfoNode[0])
     root.append(objects)
     objectify.deannotate(root, xsi_nil=True)
     etree.cleanup_namespaces(root)
@@ -513,9 +629,51 @@ def createXML(objectsQuerySet, objType, tmpFilesDir, correction_flag=None):
     try:
         with open(fileName, 'wb') as xml_writer:
             xml_writer.write(obj_xml)
+        filelist.append(fileName)
     except:
         pass
+    if obj[1]:
+        root_invalid = objectify.fromstring(xml)
+        root_invalid.set("Version", "04")
+        listInfoNode_invalid = createListInfo(obj[3], objType)
+        root_invalid.append(listInfoNode_invalid[0])
+        objects_invalid = objectify.Element("Objects")
+        objects_invalid.append(obj[1])
+        root_invalid.append(objects_invalid)
+        objectify.deannotate(root_invalid, xsi_nil=True)
+        etree.cleanup_namespaces(root_invalid)
+        obj_xml_invalid = etree.tostring(root_invalid, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+        if correction_flag:
+            fileName = os.path.normpath(tmpFilesDir + '/' + 'ListInfo_INVALID_K_'  + listInfoNode_invalid[1] + '.xml')
+        else:
+            fileName = os.path.normpath(tmpFilesDir + '/' + 'ListInfo_INVALID_'  + listInfoNode_invalid[1] + '.xml')
+        try:
+            with open(fileName, 'wb') as xml_writer:
+                xml_writer.write(obj_xml_invalid)
+            filelist.append(fileName)
+        except:
+            pass
+    return filelist
 
+#------------------------------------------------
+def listTolist(listDest, listSource):
+    """
+    херово когда логику приходится менять уже вконце
+    """
+    for item in listSource:
+        listDest.append(item)
+    return listDest
+#------------------------------------------------
+def packToZIP(outdir, filesList):
+    """
+    упаковка полученных в формате XML перечней в архив
+    """
+    guid = str(uuid.uuid1())
+    fileZip = os.path.join(outdir, 'ListInfo_' + guid + '.zip')
+    with ZipFile(fileZip, 'w') as zipobj:
+        for f in filesList:
+            zipobj.write(f, os.path.basename(f))
+    return fileZip
 #------------------------------------------------
 def createListForRating(dateStart, dateEnd, objCount):
     """
@@ -539,41 +697,67 @@ def createListForRating(dateStart, dateEnd, objCount):
     #здесь нужна проверка на то, что в выборке действительно есть объекты, чтобы не формировать пустые файлы
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001002000', tmpFilesDir))
+        listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir)
+        listTolist(listFiles, listSource)
     #формируем перечень зданий (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001002000', tmpFilesDir, True))
+        listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir, True)
+        listTolist(listFiles, listSource)
     #формируем перечень сооружений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001004000', tmpFilesDir))
+        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir)
+        listTolist(listFiles, listSource)
     #формируем перечень сооружений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001004000', tmpFilesDir, True))
+        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir, True)
+        listTolist(listFiles, listSource)
     #формируем перечень ОНС (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001005000', tmpFilesDir))
+        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir)
+        listTolist(listFiles, listSource)
     #формируем перечень ОНС (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001005000', tmpFilesDir, True))
+        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir, True)
+        listTolist(listFiles, listSource)
     #формируем перечень помещений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001003000', tmpFilesDir))
+        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir)
+        listTolist(listFiles, listSource)
     #формируем перечень помещений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001003000', tmpFilesDir, True))
+        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir, True)
+        listTolist(listFiles, listSource)
     #формируем перечень машино-мест (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001009000', tmpFilesDir))
+        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir)
+        listTolist(listFiles, listSource)
     #формируем перечень машиномест (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
-        listFiles.append(createXML(objListQuerySet, '002001009000', tmpFilesDir, True))
+        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir, True)
+        listTolist(listFiles, listSource)
+    outdir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/data/list_rating_out/')
+    if listFiles:
+        listfileZip = packToZIP(outdir, listFiles)
+        file_url = '/media' + listfileZip.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+        listfileZipName = os.path.basename(listfileZip)
+    else:
+        listfileZipName = None
+        file_url = None
+    listratingready = ClListRatingReady(file_list_name=listfileZipName,
+                                        file_list_url=file_url,
+                                        date_period_start=datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(),
+                                        date_period_end=datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date(),
+                                        #date_list_create=,
+                                        total_objects_count=objListCreated.count() + objListChanged.count())
+    listratingready.save()
+    #записать в таблицу сформированных файлов
     return True

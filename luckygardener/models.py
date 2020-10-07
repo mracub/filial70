@@ -5,7 +5,7 @@ class Author(models.Model):
     full_name = models.TextField(blank=True, null=True)
     short_name = models.TextField(blank=True, null=True)
 
-    def __str_(self):
+    def __str__(self):
         return self.full_name
 
 
@@ -17,3 +17,5 @@ class ContestLuckyGardener(models.Model):
     image_ss = models.ImageField(upload_to='luckygardener', blank=True, null=True)#small size
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
     comment = models.CharField(max_length=1024, blank=True, null=True)
+
+

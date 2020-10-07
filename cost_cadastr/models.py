@@ -192,11 +192,11 @@ class ClListRatingReady(models.Model):
     """
     описывает сформированные перечни 
     """
-    file_list_name = models.URLField(max_length=1024, default=None) #file name
+    file_list_name = models.URLField(max_length=1024, default=None, blank=True, null=True) #file name
     file_list_url = models.URLField(max_length=1024, default=None, blank=True, null=True)#created file link
     date_period_start = models.DateField(auto_now=False) #date start of period upload
     date_period_end = models.DateField(auto_now=False) #date end of period upload
-    date_list_create = models.DateField(auto_now=False) #date create list fo rating
+    date_list_create = models.DateField(auto_now=True) #date create list fo rating
     total_objects_count = models.IntegerField()
 
     def __str_(self):

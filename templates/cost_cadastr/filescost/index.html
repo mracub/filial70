@@ -1,7 +1,6 @@
 {% extends 'template.html' %}
 {% block content %}
     <a href="/cost_cadastr/load/" class="btn btn-outline-success">Загрузить XML файлы</a>
-    <p>{{ docs_count }}</p>
     <table class="table table-bordered table-sm table-hover">
         <thead>
             <tr>
@@ -28,6 +27,36 @@
                 </td>
             </tr>
             {% endfor %}
-        </table>
     </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5">
+            </div>
+            <div class="col-2">
+                <div class="pagination nav-position">
+                    <span class="step-links">
+                        {% if docs.has_previous %}
+                        <a href="?page=1" class="btn btn-light">&lt;&lt;</a>
+                        <a href="?page={{ docs.previous_page_number }}" class="btn btn-light">&lt;</a>
+                        {% else %}
+                        <a href="#" class="btn btn-light disabled">&lt;&lt;</a>
+                        <a href="#" class="btn btn-light disabled">&lt;</a>
+                        {% endif %}
+    
+                        <span class="current">
+                            {{ docs.number }} из {{ docs.paginator.num_pages }}
+                        </span>
+    
+                        {% if docs.has_next %}
+                        <a href="?page={{ docs.next_page_number }}" class="btn btn-light">&gt;</a>
+                        <a href="?page={{ docs.paginator.num_pages }}" class="btn btn-light">&gt;&gt;</a>
+                        {% else %}
+                        <a href="#" class="btn btn-light disabled">&gt;</a>
+                        <a href="#" class="btn btn-light disabled">&gt;&gt;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

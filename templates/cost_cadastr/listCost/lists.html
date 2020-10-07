@@ -1,6 +1,8 @@
 {% extends 'template.html' %}
+{% load tz %}
 {% block content %}
-    <h3>Сформированные перечни для оценки</h3>
+    <h3>Формирование перечней ОКС (п.2 ст. 16 237-ФЗ):</h2>
+    <h5>Сформированные перечни для оценки</h3>
     <table class="table table-bordered table-sm table-hover">
         <thead>
             <tr>
@@ -8,28 +10,24 @@
                 <th>Дата формирования</th>
                 <th>Имя файла сформированного перечня</th>
                 <th>Ссыдка на архив содержащий перечень для оценки</th>
-                <!--    <th>Витрина ОКС постановка</th>
-                    <th>Витрина ОКС изменения</th>
-                    <th>Витрина помещения постановка</th>
-                    <th>Витрина помещения изменения</th>
-                    <th>Витрина связь ОКС с ЗУ</th>
-                    <th>Витрина связь помещений с ОКС</th>-->
+                <th>Количество объектов в перечне</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in data %}
+            {% for item in listFiles %}
             <tr>
-                <td>{{ item.date_start|date:'Y.m.d' }} - {{ item.date_end|date:'Y.m.d' }}</td>
-                <td>{{ item.date_load|date:'Y.m.d' }}</td>
-                <td>{{ item.files_fir }}</td>
-                <td><a href="{{ item.files_fir_url }}">Скачать</a></td>
+                <td>{{ item.date_period_start|date:'d.m.Y' }} - {{ item.date_period_end|date:'d.m.Y' }}</td>
+                <td>{{ item.date_list_create|date:'d.m.Y' }}</td>
+                <td>{{ item.file_list_name }}</td>
+                <td><a href="{{ item.file_list_url }}">Скачать</a></td>
+                <td>{{ item.total_objects_count }}</td>
             </tr>
             {% endfor %}
     </table>
     <div class="container-fluid">
         <div class="row">
             <div class="col-5">
-                <p>Количество объектов в документе: {{ listFiles_count }}</p>
+                <p>Дата актуальности сведений: {{ relevance|date:'d-m-yy' }}</p>
             </div>
             <div class="col-2">
                 <div class="pagination nav-position">
@@ -61,4 +59,47 @@
             </div>
         </div>
     </div>
+    <div class="col-12">
+        <div class="btn-position">
+            <div class="btn-style">
+                <button type="button" class="btn btn btn-outline-success" data-toggle="modal"
+                    data-target="#selectParam">Сформировать перечень для оценки</button>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="selectParam" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Параметры формирования перечня:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/cost_cadastr/cl/createdlist/" method="POST" enctype="multipart/form-data" id="createXML">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="ObjectCountSelect" class="col-12 col-form-label">Количество объектов в файле:</label>
+                    <select class="custom-select mr-sm-2" id="ObjectCountSelect" name="ObjCountSelect">
+                        <option selected>500</option>
+                        <option value="50">100</option>
+                        <option value="100">1000</option>
+                    </select>
+                    <label for="list_date_start" class="col-12 col-form-label">Дата начала периода:</label>
+                    <input class="form-control" type="date" id="list_date_start" name="list_date_start" value={{ current_date|date:'yy-m-d' }}>
+                    <label for="list_date_end" class="col-12 col-form-label">Дата окончания периода:</label>
+                    <input class="form-control" type="date"  id="list_date_end" name="list_date_end" value={{ current_date|date:'yy-m-d' }}>
+                </div>
+                <div class="invalid-feedback">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary" id="closeModal">Сформировать XML</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -28,15 +28,16 @@ def cost_index(request):
 
 def cl_index(request):
     """
-    стартовая страница раздела формирования перечней для оценки
+    стартовая страница раздела загрузки сведений ФИР
     """
+    relevance = ClDataList.objects.latest('date_end').date_end
     cldatalist = ClDataList.objects.all()
     paginator = Paginator(cldatalist, 15)
     page_number = request.GET.get('page')
     page_cldatalist = paginator.get_page(page_number)
     cldatalist_count = cldatalist.count()
     current_date = datetime.today()#.strftime('%Y-%m-%d')
-    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date}
+    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date, "relevance":relevance}
     response = render(request, 'cost_cadastr/listcost/index.html', data)
     return response
 
@@ -44,7 +45,7 @@ def cl_load_form(request):
     """
     раздел загрузки файлов содержащих характеристики объектов необходимые для формирования перечней
     """
-    template = loader.get_template('cost_cadastr/listCost/load.html')
+    template = loader.get_template('cost_cadastr/listcost/load.html')
     data = {}
     return HttpResponse(template.render(data, request))   
 
@@ -79,6 +80,8 @@ def cl_create_list(request):
     """
     формирование перечня для оценки
     """
+    current_date = datetime.today()#.strftime('%Y-%m-%d')
+    relevance = ClDataList.objects.latest('date_end').date_end
     if request.method == 'POST':
         #здесь вызов функции по формированию перечня в реквесте нужные параметры
         dateStart = request.POST["list_date_start"]
@@ -94,10 +97,16 @@ def cl_create_list(request):
         page_number = request.GET.get('page')
         page_listFiles = paginator.get_page(page_number)
         listFiles_count = listFiles.count()
-        data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count}
-    else:
-        data = {"error":"undefined erro, request method is not POST"}
-    response = render(request, 'cost_cadastr/listCost/lists.html', data)
+        data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count, "current_date":current_date, "relevance":relevance}
+    elif request.method == 'GET':
+        listFiles = ClListRatingReady.objects.all()
+        paginator = Paginator(listFiles, 15)
+        page_number = request.GET.get('page')
+        page_listFiles = paginator.get_page(page_number)
+        listFiles_count = listFiles.count()
+        data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count, "current_date":current_date, "relevance":relevance}
+        #data = {"error":"undefined erro, request method is not POST"}
+    response = render(request, 'cost_cadastr/listcost/lists.html', data)
     return response
 
 
@@ -108,7 +117,10 @@ def cost_cadastr(request):
     template = loader.get_template('cost_cadastr/filescost/index.html')
     docs_count = Docs.objects.all().count()
     docs = Docs.objects.all()
-    data = {"docs":docs, "docs_count":docs_count}
+    paginator = Paginator(docs, 15)
+    page_number = request.GET.get('page')
+    page_docs = paginator.get_page(page_number)
+    data = {"docs":page_docs, "docs_count":docs_count}
     return HttpResponse(template.render(data, request))   
 
 def cost_load_form(request):
