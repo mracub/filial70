@@ -701,12 +701,23 @@ def loadMifMid(tmpFilesDir, cadNums):
             with open(savePath, 'wb') as f:
                 f.write(r.content)
 #------------------------------------------------
+def splitQuerySet(objListQuerySet, objCount, listSource, tmpFilesDir, objType, correction_flag=None):
+    """
+    делим общий кверисет на части, для формирования файлов содержащих указанное 
+    в форме количество объектов
+    """
+    querySetCount = objListQuerySet.count()
+    for item in range(int(querySetCount / int(objCount))):
+        listSource.append(createXML(objListQuerySet[int(item):int(item) + int(objCount)], objType, tmpFilesDir, correction_flag))
+    listSource.append(createXML(objListQuerySet[querySetCount - (querySetCount % int(objCount)):int(querySetCount)], objType, tmpFilesDir, correction_flag))
+    return listSource
+#------------------------------------------------
 def createListForRating(dateStart, dateEnd, objCount):
     """
     формирование перечня для оценки
     dateStart - дата начала периода выгрузки перечня (включительно)
     dateEnd - дата окончания периода выгрузки перечня (включительно)
-    objCount - количество объектов в одном XML - файле, пока не используем
+    objCount - количество объектов в одном XML
     """
     objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
                                                                 datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
@@ -722,53 +733,63 @@ def createListForRating(dateStart, dateEnd, objCount):
     #здесь нужна проверка на то, что в выборке действительно есть объекты, чтобы не формировать пустые файлы
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001002000')
+        #listSource = createXML(objListQuerySet[:int(objCount)], '002001002000', tmpFilesDir)
+        #listFiles.append(listSource)
     #формируем перечень зданий (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001002000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001002000', tmpFilesDir, True)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001002000', True)
+        #listSource = createXML(objListQuerySet[:int(objCount)], '002001002000', tmpFilesDir, True)
+        #listFiles.append(listSource)
     #формируем перечень сооружений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001004000')
+#        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir)
+#        listFiles.append(listSource)
     #формируем перечень сооружений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001004000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir, True)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001004000', True)
+#        listSource = createXML(objListQuerySet, '002001004000', tmpFilesDir, True)
+#        listFiles.append(listSource)
     #формируем перечень ОНС (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001005000')
+#        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir)
+#        listFiles.append(listSource)
     #формируем перечень ОНС (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001005000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir, True)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001005000', True)
+#        listSource = createXML(objListQuerySet, '002001005000', tmpFilesDir, True)
+#        listFiles.append(listSource)
     #формируем перечень помещений (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001003000')
+#        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir)
+#        listFiles.append(listSource)
     #формируем перечень помещений (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001003000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir, True)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001003000', True)
+#        listSource = createXML(objListQuerySet, '002001003000', tmpFilesDir, True)
+#        listFiles.append(listSource)
     #формируем перечень машино-мест (постановка)
     objListQuerySet = objListCreated.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001009000')
+#        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir)
+#        listFiles.append(listSource)
     #формируем перечень машиномест (изменения)
     objListQuerySet = objListChanged.filter(clobjecttype__ObjectTypeCode='002001009000')
     if objListQuerySet:
-        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir, True)
-        listFiles.append(listSource)
+        splitQuerySet(objListQuerySet, objCount, listFiles, tmpFilesDir, '002001009000', True)
+#        listSource = createXML(objListQuerySet, '002001009000', tmpFilesDir, True)
+#        listFiles.append(listSource)
     #загрузка графической части перечня
     cadNums = selectCadNums(objListCreated, objListChanged)
     loadMifMid(tmpFilesDir, cadNums)

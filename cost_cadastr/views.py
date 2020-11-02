@@ -11,6 +11,7 @@ from django.db import models
 from cost_cadastr import xmlparser
 from cost_cadastr import xmlfirload
 from cost_cadastr import xmllistcreate
+from cost_cadastr import pskoload
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
@@ -18,6 +19,16 @@ from lxml import etree, objectify
 
 
 # Create your views here.
+def psko_list_load(requests):
+    """
+    view для раздела загрузки перечня сформированного в ПСКО
+    """
+    if requests.method == 'POST':
+        pass
+    elif requests.method == 'GET':
+        pass
+    pass
+#-----------------------------
 def cost_index(request):
     """
     стартовая страница раздела КС

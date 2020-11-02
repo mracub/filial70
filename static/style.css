@@ -37,6 +37,9 @@ a {
 .content {
     margin-left: 10px;
     margin-right: 10px;
+/*    background-color: #fff;
+    background-image: url(../static/images/background.jpg);
+    background-size: 100%   ;*/
 }
 
 .header-wrap {
