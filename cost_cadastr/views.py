@@ -19,15 +19,13 @@ from lxml import etree, objectify
 
 
 # Create your views here.
-def psko_list_load(requests):
+def psko_list_load(request):
     """
     view для раздела загрузки перечня сформированного в ПСКО
     """
-    if requests.method == 'POST':
-        pass
-    elif requests.method == 'GET':
-        pass
-    pass
+    template = loader.get_template('cost_cadastr/psko/index.html')
+    data = {}
+    return HttpResponse(template.render(data, request))  
 #-----------------------------
 def cost_index(request):
     """

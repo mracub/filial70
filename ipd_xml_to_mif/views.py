@@ -19,6 +19,11 @@ def index_ipd(request):
     data = {"test":"test data"}
     return HttpResponse(template.render(data))
 
+def request_list(request):
+    template = loader.get_template('ipd/request_list/index.html')
+    data = {"test":"test data"}
+    return HttpResponse(template.render(data, request))  
+
 def ipd_xml_to_mif(request):
     template = loader.get_template('ipd/xml_to_mif/index.html')
     data = {"test":"test data"}

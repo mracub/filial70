@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', ipd_xml_views.index),
     path('ipd/', ipd_xml_views.index_ipd),
+    path('ipd/request_list/', ipd_xml_views.request_list),
     path('ipd/xml_to_mif/', ipd_xml_views.ipd_xml_to_mif),
     path('ipd/xml_to_mif/convert/', ipd_xml_views.convert),
     path('ipd/xml_to_mif/ok/', ipd_xml_views.ok),
