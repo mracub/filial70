@@ -4,7 +4,7 @@
     <p>Для преобразования координат представленных в XML файлах TerritoryToGKN и MapPlan в MIF/MID формат 
         необходимо загрузить файл ZoneToGKN(или BoundToGKN) и соответствующий файл TerritoryToGKN или MapPlan. 
         Файл ZoneToGKN/BoundToGKN необходим для указания наименования зоны или границы в MID файле.</p>
-    <form action="/ipd_xml_to_mif/convert/" method="POST" enctype="multipart/form-data">
+    <form action="/ipd/xml_to_mif/convert/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div>
             <div class="btn-wrap">

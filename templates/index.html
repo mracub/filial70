@@ -1,13 +1,18 @@
 {% extends 'template.html' %}
+{% load static %}
 {% block content %}
-    <a title="Сервис позволяет получить MIF/MID файлы кординат из XML файлов TerritoryToGKN и MapPlan"
-    href="/ipd_xml_to_mif/">Сервис конвертации XML файлов в MIF/MID</a>
-    <br >
-    <a title="Ресурс содержащий сведения о кадастровой стоимости объектов недвижимости, оцененных ОГБУ ТОЦИК" 
-    href="/cost_cadastr/">Кадастровая стоимость</a>
-    <br>
-<!--    <a title="Сервис предварительной записи" 
-    href="/sheduler/">Предварительная запись</a>
-    <br>-->
-    <a title="Конкурск Удачный дачник!!!" href="/luckygardener/">Конкурс "Удачный дачник"</a>
+    <div class="block-wrapper">
+        <div class="block-item-wrapper">
+            <a href="/ipd/"><img src="{% static 'images/map.png' %}" alt="Отдел ИПД"></a>
+            <p class="p-image">Сервисы отдела инфраструктуры пространственных данных</p>
+        </div>
+        <div class="block-item-wrapper">
+            <a href="/cost_cadastr/"><img src="{% static 'images/rubl.png' %}" alt="Отдел ИПД"></a>
+            <p class="p-image">Кадастровая стоимость. Кадастровая оценка.</p>
+        </div>
+        <div class="block-item-wrapper">
+            <a href="/luckygardener/"><img src="{% static 'images/farmer.png' %}" alt="Lucky Gardener"></a>
+            <p class="p-image">Конкурск "Удачный дачник!!!"</p>
+        </div>
+    </div>
 {% endblock %}

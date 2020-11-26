@@ -95,3 +95,32 @@ a {
 .thumb {
     padding: 5px;
 }
+
+.block-wrapper {
+	background-color: #fff;
+	max-width: 1249px;
+	margin: 0 auto;
+	/*padding: 101px 0 111px;*/
+	display: flex;
+	flex-wrap: wrap;
+	align-items: start;
+	flex-direction: row;
+	justify-content: center;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+
+.block-item-wrapper {
+	display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    min-width: 300px;
+	/*justify-content: space-between;*/
+	align-items: center;
+}
+
+.p-image {
+    max-width: 250px;
+    text-align: center;
+}

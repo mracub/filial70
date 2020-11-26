@@ -1,14 +1,22 @@
 {% extends 'template.html' %}
+{% load static %}
 {% block content %}
-    <a title="Загрузка сведений о КС, поступивших от ОГБУ ТОЦИК, и формирование XML файлов для загрузки во ФГИС ЕГРН" 
-    href="/cost_cadastr/cc/">Загрузка сведений о КС</a>
-    <br >
-    <a title="Формирование перечней в соответствии со ст. 16 237-ФЗ для передачи в ОГБУ ТОЦИК" 
-    href="/cost_cadastr/cl/createdlist/">Формирование перечней для расчета КС</a>
-    <br>
-    <a title="Загрузка характеристик объектов в формате XML" 
-    href="/cost_cadastr/cl/">Загрузка сведений ФИР</a>
-    <br>
-    <a title="Формирование графической составляющей для перечня сформированного в ПСКО" 
-    href="/cost_cadastr/psko/">Формирование графики для перечня ПСКО</a>
+    <div class="block-wrapper">
+        <div class="block-item-wrapper">
+            <a href="/cost_cadastr/cc/"><img src="{% static 'images/xml_cost_load.png' %}" alt="Загрузка сведений о КС"></a>
+            <p class="p-image">Загрузка сведений о КС, поступивших от ОГБУ ТОЦИК, и формирование XML файлов для последующей загрузки во ФГИС ЕГРН</p>
+        </div>
+        <div class="block-item-wrapper">
+            <a href="/cost_cadastr/cl/createdlist/"><img src="{% static 'images/create_list.png' %}" alt="Формирование перечней для расчета КС"></a>
+            <p class="p-image">Формирование перечней в соответствии со ст. 16 237-ФЗ для передачи в ОГБУ ТОЦИК</p>
+        </div>
+        <div class="block-item-wrapper">
+            <a href="/cost_cadastr/cl/"><img src="{% static 'images/fir_data_load.png' %}" alt="Загрузка характеристик объектов в формате XML"></a>
+            <p class="p-image">Загрузка сведений ФИР</p>
+        </div>
+        <div class="block-item-wrapper">
+            <a href="/cost_cadastr/psko/"><img src="{% static 'images/mif_load.png' %}" alt="Формирование графики для перечня ПСКО"></a>
+            <p class="p-image">Формирование графической составляющей для перечня сформированного в ПСКО</p>
+        </div>
+    </div>
 {% endblock %}

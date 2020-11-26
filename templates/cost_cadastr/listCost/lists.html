@@ -32,7 +32,7 @@
             <div class="col-2">
                 <div class="pagination nav-position">
                     <span class="step-links">
-                        {% if cldatalist.has_previous %}
+                        {% if listFiles.has_previous %}
                         <a href="?page=1" class="btn btn-light">&lt;&lt;</a>
                         <a href="?page={{ listFiles.previous_page_number }}" class="btn btn-light">&lt;</a>
                         {% else %}
@@ -44,7 +44,7 @@
                             {{ listFiles.number }} из {{ listFiles.paginator.num_pages }}
                         </span>
     
-                        {% if cldatalist.has_next %}
+                        {% if listFiles.has_next %}
                         <a href="?page={{ listFiles.next_page_number }}" class="btn btn-light">&gt;</a>
                         <a href="?page={{ listFiles.paginator.num_pages }}" class="btn btn-light">&gt;&gt;</a>
                         {% else %}
@@ -86,6 +86,7 @@
                         <option selected>500</option>
                         <option value="50">100</option>
                         <option value="1000">1000</option>
+                        <option value="5000">5000</option>
                     </select>
                     <label for="list_date_start" class="col-12 col-form-label">Дата начала периода:</label>
                     <input class="form-control" type="date" id="list_date_start" name="list_date_start" value={{ current_date|date:'yy-m-d' }}>

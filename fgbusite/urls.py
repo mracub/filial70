@@ -25,9 +25,10 @@ from luckygardener import views as luckygardener_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', ipd_xml_views.index),
-    path('ipd_xml_to_mif/', ipd_xml_views.ipd_xml_to_mif),
-    path('ipd_xml_to_mif/convert/', ipd_xml_views.convert),
-    path('ipd_xml_to_mif/ok/', ipd_xml_views.ok),
+    path('ipd/', ipd_xml_views.index_ipd),
+    path('ipd/xml_to_mif/', ipd_xml_views.ipd_xml_to_mif),
+    path('ipd/xml_to_mif/convert/', ipd_xml_views.convert),
+    path('ipd/xml_to_mif/ok/', ipd_xml_views.ok),
     path('cost_cadastr/cc/', cost_views.cost_cadastr),
     path('cost_cadastr/', cost_views.cost_index),
     path('cost_cadastr/load/', cost_views.cost_load_form),

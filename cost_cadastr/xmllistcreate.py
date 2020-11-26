@@ -288,7 +288,7 @@ def createCarParkingSpace(objectsQuerySet):
         carparkingspace.set("CadastralNumber", item.CadastralNumber)
         carparkingspace.CadastralBlock = item.CadastralBlock
         carparkingspace.ObjectType = '002001009000' #можно и так, если для каждого вида объекта своя функция
-        parentOKSQuerySet = ClCadNumNum.objects.filter(cad_num_child_id=item.id).first().cad_num_parent
+        parentOKSQuerySet = ClCadNumNum.objects.filter(cad_num_child_id=item.id).first()
         if parentOKSQuerySet:
             carparkingspace.append(createParentOKSNode(parentOKSQuerySet.id))
         carparkingspace.Area = str(item.Area)
@@ -708,7 +708,7 @@ def splitQuerySet(objListQuerySet, objCount, listSource, tmpFilesDir, objType, c
     """
     querySetCount = objListQuerySet.count()
     for item in range(int(querySetCount / int(objCount))):
-        listSource.append(createXML(objListQuerySet[int(item):int(item) + int(objCount)], objType, tmpFilesDir, correction_flag))
+        listSource.append(createXML(objListQuerySet[int(item)*int(objCount):int(item)*int(objCount) + int(objCount)], objType, tmpFilesDir, correction_flag))
     listSource.append(createXML(objListQuerySet[querySetCount - (querySetCount % int(objCount)):int(querySetCount)], objType, tmpFilesDir, correction_flag))
     return listSource
 #------------------------------------------------
