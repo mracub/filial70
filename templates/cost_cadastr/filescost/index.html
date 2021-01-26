@@ -22,7 +22,7 @@
                     <form action="/cost_cadastr/docdetail/" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="docid" value="{{ doc.id }}">
-                        <input type="submit" class="btn btn-outline-info" value="Подробнее...">
+                        <input type="submit" class="btn btn-sm btn-outline-info" value="Подробнее...">
                     </form>
                 </td>
             </tr>

@@ -1,4 +1,108 @@
 {% extends 'template.html' %}
 {% block content %}
-    <h1>Сервис находится в разработке.</h1>
+    <h5>Обращения принятые Филиалом по внесению сведений в Реестр границ ЕГРН</h1>
+    {% csrf_token %}
+    <table class="table table-bordered table-sm table-hover">
+        <thead>
+            <tr>
+                <form action="/ipd/request_list/" method="POST" enctype="multipart/form-data">
+                    <th>id
+                        <input type="text" class="form-control form-control-sm">
+                    </th>
+                    <th>Номер документа(письма)
+                        <input type="text" class="form-control form-control-sm">
+                    </th>
+                    <th>Дата документа(письма)
+                        <input type="date" class="form-control form-control-sm">
+                    </th>
+                    <th>Орган направивший документ
+                        <input type="text" class="form-control form-control-sm">
+                    </th>
+                    <th>Дата регистрации в Филиале
+                        <input type="date" class="form-control form-control-sm">
+                    </th>
+                    <th>Номер регистрации в Филиале
+                        <input type="text" id="numberReg" name="numberReg" class="form-control form-control-sm">
+                    </th>
+                    <th>Вид сведений
+                        <select class="custom-select custom-select-sm">
+                            <option selected>Выберите вид объекта...</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                    </th>
+                    <th>Статус
+                        <input type="text" class="form-control form-control-sm">
+                    </th>
+                    {% csrf_token %}
+                    <th>Примечание
+                        <input type="submit" class="btn btn-sm btn-outline-success" value='Применить фильтр'>
+                    </th>
+                </form>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in docs %}
+            {% csrf_token %}
+            <tr>
+                <form action="/ipd/request_list/" method="POST" enctype="multipart/form-data"></form>
+                    <td>{{ doc.id }}</td>
+                    <td>{{ doc.docNumber }}</td>
+                    <td>{{ doc.docData|date:'Y-m-d' }}</td>
+                    <td>{{ doc.sendAuthor }}</td>
+                    <td>{{ doc.dateReg|date:'Y-m-d' }}</td>
+                    <td>{{ doc.numberReg }}</td>
+                    <td>{{ doc.dataType }}</td>
+                    <td>{{ doc.status }}</td>
+                    <td>
+                        <input type="hidden" name="docid" value="{{ doc.id }}">
+                        <input type="submit" class="btn btn-sm btn-outline-info" value="Выбрать документ">
+                    </td>
+            </form>
+            </tr>
+            {% endfor %}
+    </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5">
+                <p>Количество документов: {{ docs_count }}</p>
+            </div>
+            <div class="col-2">
+                <div class="pagination nav-position">
+                    <span class="step-links">
+                        {% if docs.has_previous %}
+                        <a href="?page=1" class="btn btn-light">&lt;&lt;</a>
+                        <a href="?page={{ docs.previous_page_number }}" class="btn btn-light">&lt;</a>
+                        {% else %}
+                        <a href="#" class="btn btn-light disabled">&lt;&lt;</a>
+                        <a href="#" class="btn btn-light disabled">&lt;</a>
+                        {% endif %}
+    
+                        <span class="current">
+                            {{ docs.number }} из {{ docs.paginator.num_pages }}
+                        </span>
+    
+                        {% if docs.has_next %}
+                        <a href="?page={{ docs.next_page_number }}" class="btn btn-light">&gt;</a>
+                        <a href="?page={{ docs.paginator.num_pages }}" class="btn btn-light">&gt;&gt;</a>
+                        {% else %}
+                        <a href="#" class="btn btn-light disabled">&gt;</a>
+                        <a href="#" class="btn btn-light disabled">&gt;&gt;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="btn-position">
+            <div class="btn-style">
+                <form action="/ipd/request_list/adddoc/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-outline-success" value="Добавить документ">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

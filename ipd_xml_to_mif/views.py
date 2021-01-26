@@ -5,6 +5,8 @@ from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 from ipd_xml_to_mif import convertm
 from django.conf import settings
+from django.core.paginator import Paginator
+from ipd_xml_to_mif.models import RequestDoc, Contractor, RequestAppeal
 
 
 # Create your views here.
@@ -19,11 +21,45 @@ def index_ipd(request):
     data = {"test":"test data"}
     return HttpResponse(template.render(data))
 
-def request_list(request):
-    template = loader.get_template('ipd/request_list/index.html')
-    data = {"test":"test data"}
-    return HttpResponse(template.render(data, request))  
+#----------------------------------------------------------
+#Login
+#----------------------------------------------------------
+def login(request):
+    """
+    бэкэнд авторизации
+    """
 
+#----------------------------------------------------------
+#Requests reestr
+#----------------------------------------------------------
+def request_list(request):
+    """
+    стартовая страница раздела IPD
+    """
+    template = loader.get_template('ipd/request_list/index.html')
+    if request.method == 'GET':
+        docs_count = RequestDoc.objects.all().count()#query count docs
+        docs = RequestDoc.objects.all() #query docs
+    elif request.method == 'POST':
+        docs = RequestDoc.objects.filter(numberReg = request.POST["numberReg"]) #query docs
+        docs_count = RequestDoc.objects.filter(numberReg = request.POST["numberReg"]).count()
+    paginator = Paginator(docs, 10)
+    page_number = request.GET.get('page')
+    page_docs = paginator.get_page(page_number)
+    data = {"docs":page_docs, "docs_count":docs_count}
+    return HttpResponse(template.render(data, request))   
+
+def adddoc(request):
+    """
+    добавление поступившего документа
+    """
+    template = loader.get_template('ipd/request_list/createdoc.html')
+    data = {"test":"test data"}
+    return HttpResponse(template.render(data, request))
+
+#----------------------------------------------------------
+#XML to MIF converter
+#----------------------------------------------------------
 def ipd_xml_to_mif(request):
     template = loader.get_template('ipd/xml_to_mif/index.html')
     data = {"test":"test data"}

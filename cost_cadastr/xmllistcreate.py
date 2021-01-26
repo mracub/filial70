@@ -290,7 +290,7 @@ def createCarParkingSpace(objectsQuerySet):
         carparkingspace.ObjectType = '002001009000' #можно и так, если для каждого вида объекта своя функция
         parentOKSQuerySet = ClCadNumNum.objects.filter(cad_num_child_id=item.id).first()
         if parentOKSQuerySet:
-            carparkingspace.append(createParentOKSNode(parentOKSQuerySet.id))
+            carparkingspace.append(createParentOKSNode(parentOKSQuerySet.cad_num_parent_id))
         carparkingspace.Area = str(item.Area)
         #position
         position = createPositionInObjectNode(item)

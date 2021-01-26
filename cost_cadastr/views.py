@@ -63,24 +63,25 @@ def cl_load_file(request):
     загрузка файлов ФИР в БД
     """
     if request.method == 'POST':
-        dir_name = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/')
+        dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/'))
         if dir_name:
             date_time_file_load = datetime.now()
             fs = FileSystemStorage(location=dir_name)
-            filename_on_storage = fs.save(request.FILES['files_fir'].name, request.FILES['files_fir'])
-            filepath_on_storage = fs.path(filename_on_storage)
-            file_url = dir_name.replace(settings.MEDIA_ROOT, '').replace('\\', '/') + '/' + filename_on_storage
-            file_url = '/media' + file_url
-            #парсим файл протокола и пишем данные в БД
-            file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
-            if not file_protocol_data['error']:
-                cldatalist = ClDataList(date_start=file_protocol_data['dateStart'], date_end=file_protocol_data['dateEnd'], 
-                    date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
-                cldatalist.save()
-                xmlfirload.parseXMLdata(file_protocol_data)
-            else:
-                pass
-                #здесь нужно вернуть ошибку парсинга протокола
+            for f in request.FILES.getlist('files_fir'):
+                filename_on_storage = fs.save(f.name, f)
+                filepath_on_storage = fs.path(filename_on_storage)
+                file_url = dir_name.replace(settings.MEDIA_ROOT, '').replace('\\', '/') + '/' + filename_on_storage
+                file_url = '/media' + file_url
+                #парсим файл протокола и пишем данные в БД
+                file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                if not file_protocol_data['error']:
+                    cldatalist = ClDataList(date_start=file_protocol_data['dateStart'], date_end=file_protocol_data['dateEnd'], 
+                        date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
+                    cldatalist.save()
+                    xmlfirload.parseXMLdata(file_protocol_data)
+                else:
+                    pass
+                    #здесь нужно вернуть ошибку парсинга протокола
     else:
         pass #написать обработчик добавив в возвращаемый шаблон строку для вывода ошибок
     return redirect('/cost_cadastr/cl/')

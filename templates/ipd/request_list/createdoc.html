@@ -1,0 +1,83 @@
+{% extends 'template.html' %}
+{% block content %}
+    <h5>Добавление документа (сопроводительного письма или заявления)</h1>
+    <form action="/ipd/request_list/" method="POST" enctype="multipart/form-data" class="was-validated">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="doc_number">Номер документа(письма)</label>
+                        <input type="text" class="form-control" id="doc_number" name="doc_number" 
+                        title="Поле Номер документа не должно быть пустым." value="{{ doc_number_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Номер документа не может быть пустым. Максимальная длинна не должна превышать 64 символа.
+                        </div>                    
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="doc_date">Дата документа (письма)</label>
+                        <input type="date" class="form-control {{ invalid_form_style }}" id="doc_date" name="doc_date" 
+                        title="Дата документа должна быть меньше или равна текущей даты" value="{{ doc_date_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Дата документа не может быть пустым. Дата документа должна быть меньше или равна текущей даты.
+                        </div>                    
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="doc_name">Орган направивший документ/собственник объекта обратившийся с заявлением</label>
+                        <input type="text" class="form-control" id="doc_name" name="doc_name"
+                        title="Поле Наименование органа принявшего и направившего документ. Не может быть пустым. Максимальная длинна не должна превышать 1024 символа." 
+                        value="{{ doc_name_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Наименование органа принявшего и направившего документ. Не может быть пустым. Максимальная длинна не должна превышать 1024 символа.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="reg_number">Номер регистрации в Филиале</label>
+                        <input type="text" class="form-control" id="reg_number" name="reg_number" 
+                        title="Поле Номер документа не должно быть пустым." value="{{ reg_number_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Номер документа не может быть пустым. Максимальная длинна не должна превышать 64 символа.
+                        </div>                    
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="reg_date">Дата регистрации в Филиале</label>
+                        <input type="date" class="form-control {{ invalid_form_style }}" id="reg_date" name="reg_date" 
+                        title="Дата документа должна быть больше 01.01.2000 и меньше или равна текущей даты" value="{{ reg_date_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Дата документа не может быть пустым. Дата документа должна быть больше 01.01.2000 и меньше или равна текущей даты.
+                        </div>                    
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="data_type">Вид направленных сведений</label>
+                        <input type="text" class="form-control" id="data_type" name="data_type" 
+                        title="Поле не должно быть пустым." value="{{ data_type_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле вид направленных сведений не может быть пустым. Максимальная длинна не должна превышать 256 символов.
+                        </div>                    
+                    </div>         
+                    <div class="form-group col-md-6">
+                        <label for="status">Статус</label>
+                        <input type="text" class="form-control {{ invalid_form_style }}" id="status" name="status" 
+                        title="Статус документа" value="{{ status_value }}" required>
+                        <div class="invalid-feedback">
+                            Поле Статус не может быть пустым.
+                        </div>                    
+                    </div>
+                    <div class="btn-wrap">
+                        <input type="submit" class="btn btn-outline-success" value='Загрузить'>
+                    </div> 
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-row">       
+                    <p>Формирование записи о документе поступившем в порядке межведомственного информационного взаимодействия. 
+                        В случае отсутствия номера у направленного документа следует вносить запись "б/н". 
+                        Вид направленных сведений выбирается из выпадающего списка.</p>
+                    <br>
+                    <p class="p-error">{{ errors }}</p>       
+                </div>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
