@@ -1,4 +1,58 @@
 {% extends 'template.html' %}
 {% block content %}
-    <h1>Сервис находится в разработке.</h1>
+<h3>Загрузка "графики" для объектов сформированных в ПСКО:</h3>
+<p>Сервис загрузки описания местоположения границ объектов, содержащихся в перечне сформированном в ПСКО, в формате MIF/MID.</p>
+<p>Дополнительно доступны функции исключения из перечня объектов по видам (для ЗУ по категориям).</p>
+<br>
+<form action="/cost_cadastr/psko/loadf/" method="POST" enctype="multipart/form-data" class="was-validated">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col col-md-7">
+            <div class="form-row border">
+                <p>Выбор файла перечня:</p>
+                <div class="form-group col-md-12">
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="file_psko" name="file_psko" accept=".zip" required
+                            title="Выберите файл(архив) перечня сформированного в ПСКО"/>
+                        <label class="custom-file-label" for="files_fir" data-browse="Выберите файл">Выберите файл(архив) перечня сформированного в ПСКО...</label>
+                    </div>
+                </div>
+                <p>Опции переформирования перечня:</p>
+                <div class="form-group col-md-12"> 
+                    <input type="checkbox" id="loadmif" name="loadmif" checked>
+                    <label for="loadmif">Загружать графику в формате MIF/MID</label>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="zuoptions">Параметры земельных участков:</label>
+                    <select class="selectpicker form-group col-md-12" id="zuoptions" name="zuoptions" multiple data-selected-text-format="count" data-size="5" data-actions-box="true">
+                        <option value="3001000000">Земли С/Х</option>
+                        <option value="3002000000">Земли населенных пунктов</option>
+                        <option value="3003000000">Земли промышленности</option>
+                        <option value="3004000000">Земли ООПТ</option>
+                        <option value="3005000000">Земли лесного фонда</option>
+                        <option value="3006000000">Земли водного фонда</option>
+                        <option value="3007000000">Земли запаса</option>
+                        <option value="3008000000">Категория не установлена</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="oksoptions">Параметры ОКС:</label>
+                    <select class="selectpicker form-group col-md-12" id="oksoptions" name="oksoptions" multiple data-selected-text-format="count" data-size="5" data-actions-box="true">
+                        <option value="002001002000" id="ddddd" selected>Здание</option>
+                        <option value="002001003000" selected>Помещение</option>
+                        <option value="002001004000" selected>Сооружение</option>
+                        <option value="002001005000" selected>Объект незавершенного строительства</option>
+                        <option value="002001008000">Единый недвижимый комплекс</option>
+                        <option value="002001009000" selected>Машино-место</option>
+                    </select>
+                </div>
+                <div class="btn-wrap">
+                    <input type="submit" class="btn btn-outline-success" value='Переформировать'>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+<p>{{ count }}</p>
+<p class="p-error">Количество объектов в перечне: {{ errors }}</p>
 {% endblock %}

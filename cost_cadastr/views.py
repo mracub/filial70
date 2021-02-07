@@ -19,13 +19,42 @@ from lxml import etree, objectify
 
 
 # Create your views here.
-def psko_list_load(request):
+def psko_index(request):
     """
     view для раздела загрузки перечня сформированного в ПСКО
     """
     template = loader.get_template('cost_cadastr/psko/index.html')
     data = {}
     return HttpResponse(template.render(data, request))  
+#-----------------------------
+def psko_load_file(request):
+    """
+    обработка файла перечня ПСКО
+    """
+    template = loader.get_template('cost_cadastr/psko/index.html')
+    data = {}
+    if request.method == 'POST':
+        dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/temp/'))
+        if dir_name:
+            fs = FileSystemStorage(location=dir_name)
+            filelist = request.FILES['file_psko']
+            filename_on_storage = fs.save(filelist.name, filelist)
+            filepath_on_storage = fs.path(filename_on_storage)
+            zuoptionslist = request.POST.getlist('zuoptions')
+            oksoptionslist = request.POST.getlist('oksoptions')
+            if 'loadmif' in request.POST:
+                loadmifoption = True
+            else:
+                loadmifoption = False
+            try:
+                result = pskoload.convertList( filepath_on_storage, zuoptionslist, oksoptionslist, loadmifoption)
+                data['count'] = result
+            except Exception as e:
+                data['errors'] = e
+        else:
+            pass
+    return HttpResponse(template.render(data, request))  
+        
 #-----------------------------
 def cost_index(request):
     """
@@ -115,7 +144,7 @@ def cl_create_list(request):
         page_listFiles = paginator.get_page(page_number)
         listFiles_count = listFiles.count()
         data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count, "current_date":current_date, "relevance":relevance}
-        #data = {"error":"undefined erro, request method is not POST"}
+        #data = {"error":"undefined error, request method is not POST"}
     response = render(request, 'cost_cadastr/listcost/lists.html', data)
     return response
 

@@ -7,7 +7,7 @@
     src:url(../static/fonts/TTNorms-Regular.otf) format("opentype");
 }
 
-p,a {
+p,a,label {
     font-family: "TT Norms Regular";/*, Helvetica, Arial, sans-serif;*/
     font-size: 18px;
     margin-bottom: 0;

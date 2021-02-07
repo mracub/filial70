@@ -43,7 +43,8 @@ urlpatterns = [
     path('cost_cadastr/cl/load/', cost_views.cl_load_form),
     path('cost_cadastr/cl/loadf/', cost_views.cl_load_file),
     path('cost_cadastr/cl/createdlist/', cost_views.cl_create_list),
-    path('cost_cadastr/psko/', cost_views.psko_list_load),
+    path('cost_cadastr/psko/', cost_views.psko_index),
+    path('cost_cadastr/psko/loadf/', cost_views.psko_load_file),
     path('luckygardener/', luckygardener_views.index),
     path('sheduler/', sheduler_views.index),
 ]
