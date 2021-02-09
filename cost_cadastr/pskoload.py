@@ -24,17 +24,16 @@ def validateXML(xmlfile):
         raise Exception("Ошибка парсинга XML-файла {0}".format(xmlfile))
     else:
         return True
-        #временно заблокировал валидацию, похоже что много сформированных файлов невалидны
-        """xml_schema_filename = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
+        xml_schema_filename = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
                 'scheme/ListForRating_v04/', 'ListForRating_v04.xsd '))
         xml_schema_doc = etree.parse(xml_schema_filename)
         xmlschema = etree.XMLSchema(xml_schema_doc)
         if xmlschema.validate(xml_doc):
             return True
         else:
-            return False"""
+            return False
 #--------------------------
-def chekfiles(fileName, zuoptionslist, oksoptionslist):
+def chekfiles(fileName, zuoptionslist, oksoptionslist, loadmifoption):
     """
     проверка файлана условия соответствия критериям выбранных объектов
     """
@@ -51,17 +50,20 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist):
                 buildingNodes = xml_doc.xpath('/ListForRating/Objects/Buildings/Building')
                 for building in buildingNodes:
                     cadnums.append(building.get('CadastralNumber'))
-#                xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                if loadmifoption:
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
             elif objecttype == '002001004000':
                 constrNodes = xml_doc.xpath('/ListForRating/Objects/Constructions/Construction')
                 for constr in constrNodes:
                     cadnums.append(constr.get('CadastralNumber'))
-#                xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                if loadmifoption:
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
             elif objecttype == '002001005000':
                 unconstrNodes = xml_doc.xpath('/ListForRating/Objects/Uncompleteds/Uncompleted')
                 for unconstr in unconstrNodes:
                     cadnums.append(unconstr.get('CadastralNumber'))
-#                xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                if loadmifoption:
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
             elif objecttype == '002001003000':
                 flatsNodes = xml_doc.xpath('/ListForRating/Objects/Flats/Flat')
                 for flat in flatsNodes:
@@ -73,11 +75,19 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist):
             return len(cadnums)
         #если объект ЗУ
         elif objecttype == '002001001000' and zuoptionslist:
-            pass#нужно переформирование XML файла, оставлять только ЗУ с нужной категорией
+            #нужно делать выборку категорий из файла и проверять есть ли такие в условиях выбранных юзером
+            #есщи нет, то сразу возвращать False + нужен подсчет количества объектов в файле
+            parcels = xml_doc.xpath('//ListForRating/Objects/Parcels/Parcel')
+            for item in parcels:
+                item_category = item.xpath('./Category')[0].text
+                if item_category not in zuoptionslist:
+                    item.getparent().remove(item)
+            xml_doc.write(fileName, encoding='UTF-8')
+            return True
         else:
             return False
         
-
+#------------------------------------
 def convertList(filelist, zuoptionslist, oksoptionslist, loadmifoption):
     """
     переформатирование перечня 
@@ -89,19 +99,22 @@ def convertList(filelist, zuoptionslist, oksoptionslist, loadmifoption):
         raise Exception("Ошибка распаковки архивного файла")
     else:
         #создадим директорию для загрузки графики
-        try:
-            normal_dir_path = os.path.normpath(os.path.dirname(xml_files_list[0]) + '\MIF')
-            os.mkdir(os.path.normpath(normal_dir_path))
-        except:
-            raise Exception("Ошибка создания директории для загрузки MIF файлов")
+        if loadmifoption:
+            try:
+                normal_dir_path = os.path.normpath(os.path.dirname(xml_files_list[0]) + '\MIF')
+                os.mkdir(os.path.normpath(normal_dir_path))
+            except:
+                raise Exception("Ошибка создания директории для загрузки MIF файлов")
         
         totalobjectscount = 0
         for item in xml_files_list:
-            count = chekfiles(item, zuoptionslist, oksoptionslist)
+            count = chekfiles(item, zuoptionslist, oksoptionslist, loadmifoption)
             if not count:
                 os.remove(item)
             else:
                 totalobjectscount += count
-        return totalobjectscount
+        out_dir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/temp')
+        file_out = xmllistcreate.packToZIP2(out_dir, os.path.dirname(xml_files_list[0]))
+        return totalobjectscount, file_out
         
 

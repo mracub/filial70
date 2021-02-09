@@ -25,14 +25,14 @@
                 <div class="form-group col-md-6">
                     <label for="zuoptions">Параметры земельных участков:</label>
                     <select class="selectpicker form-group col-md-12" id="zuoptions" name="zuoptions" multiple data-selected-text-format="count" data-size="5" data-actions-box="true">
-                        <option value="3001000000">Земли С/Х</option>
-                        <option value="3002000000">Земли населенных пунктов</option>
-                        <option value="3003000000">Земли промышленности</option>
-                        <option value="3004000000">Земли ООПТ</option>
-                        <option value="3005000000">Земли лесного фонда</option>
-                        <option value="3006000000">Земли водного фонда</option>
-                        <option value="3007000000">Земли запаса</option>
-                        <option value="3008000000">Категория не установлена</option>
+                        <option value="003001000000">Земли С/Х</option>
+                        <option value="003002000000">Земли населенных пунктов</option>
+                        <option value="003003000000">Земли промышленности</option>
+                        <option value="003004000000">Земли ООПТ</option>
+                        <option value="003005000000">Земли лесного фонда</option>
+                        <option value="003006000000">Земли водного фонда</option>
+                        <option value="003007000000">Земли запаса</option>
+                        <option value="003008000000">Категория не установлена</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
@@ -54,5 +54,6 @@
     </div>
 </form>
 <p>{{ count }}</p>
-<p class="p-error">Количество объектов в перечне: {{ errors }}</p>
+<a href="{{ link }}">{{ link_name }}</a>
+<p class="p-error">{{ errors }}</p>
 {% endblock %}

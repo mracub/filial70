@@ -48,7 +48,12 @@ def psko_load_file(request):
                 loadmifoption = False
             try:
                 result = pskoload.convertList( filepath_on_storage, zuoptionslist, oksoptionslist, loadmifoption)
-                data['count'] = result
+                data['count'] = 'Количество объектов в перечне: {0}'.format(result[0])
+                fstorage = FileSystemStorage(location=os.path.dirname(result[1]))
+                file_url_on_storage = os.path.normpath('/media/cost_cadastr/temp/' + 
+                    os.path.basename(fstorage.base_location) + '/' +  os.path.basename(result[1]))
+                data['link'] = file_url_on_storage
+                data['link_name'] = 'Скачать готовый перечень'
             except Exception as e:
                 data['errors'] = e
         else:
