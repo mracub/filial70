@@ -51,19 +51,19 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist, loadmifoption):
                 for building in buildingNodes:
                     cadnums.append(building.get('CadastralNumber'))
                 if loadmifoption:
-                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName)), cadnums)
             elif objecttype == '002001004000':
                 constrNodes = xml_doc.xpath('/ListForRating/Objects/Constructions/Construction')
                 for constr in constrNodes:
                     cadnums.append(constr.get('CadastralNumber'))
                 if loadmifoption:
-                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName)), cadnums)
             elif objecttype == '002001005000':
                 unconstrNodes = xml_doc.xpath('/ListForRating/Objects/Uncompleteds/Uncompleted')
                 for unconstr in unconstrNodes:
                     cadnums.append(unconstr.get('CadastralNumber'))
                 if loadmifoption:
-                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName) + '\MIF'), cadnums)
+                    xmllistcreate.loadMifMid(os.path.normpath(os.path.dirname(fileName)), cadnums)
             elif objecttype == '002001003000':
                 flatsNodes = xml_doc.xpath('/ListForRating/Objects/Flats/Flat')
                 for flat in flatsNodes:
@@ -75,15 +75,27 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist, loadmifoption):
             return len(cadnums)
         #если объект ЗУ
         elif objecttype == '002001001000' and zuoptionslist:
-            #нужно делать выборку категорий из файла и проверять есть ли такие в условиях выбранных юзером
-            #есщи нет, то сразу возвращать False + нужен подсчет количества объектов в файле
-            parcels = xml_doc.xpath('//ListForRating/Objects/Parcels/Parcel')
-            for item in parcels:
-                item_category = item.xpath('./Category')[0].text
-                if item_category not in zuoptionslist:
-                    item.getparent().remove(item)
-            xml_doc.write(fileName, encoding='UTF-8')
-            return True
+            categories = xml_doc.xpath('//ListForRating/ListInfo/Categories/Category')
+            chek_cat = False
+            for item in categories:
+                if item.text in zuoptionslist:
+                    chek_cat = True
+            if not chek_cat:
+                return False
+            else:        
+                parcels = xml_doc.xpath('//ListForRating/Objects/Parcels/Parcel')
+                count = int(xml_doc.xpath('//ListForRating/ListInfo/Quantity')[0].text)
+                for item in parcels:
+                    item_category = item.xpath('./Category')[0].text
+                    if item_category not in zuoptionslist:
+                        item.getparent().remove(item)
+                        count -= 1
+                if count > 0:
+                    xml_doc.xpath('//ListForRating/ListInfo/Quantity')[0].text = str(count)
+                    xml_doc.write(fileName, encoding='UTF-8')
+                    return count
+                else:
+                    return False
         else:
             return False
         
@@ -99,12 +111,12 @@ def convertList(filelist, zuoptionslist, oksoptionslist, loadmifoption):
         raise Exception("Ошибка распаковки архивного файла")
     else:
         #создадим директорию для загрузки графики
-        if loadmifoption:
-            try:
-                normal_dir_path = os.path.normpath(os.path.dirname(xml_files_list[0]) + '\MIF')
-                os.mkdir(os.path.normpath(normal_dir_path))
-            except:
-                raise Exception("Ошибка создания директории для загрузки MIF файлов")
+#        if loadmifoption:
+#            try:
+#                normal_dir_path = os.path.normpath(os.path.dirname(xml_files_list[0]))
+#                os.mkdir(os.path.normpath(normal_dir_path))
+#            except:
+#                raise Exception("Ошибка создания директории для загрузки MIF файлов")
         
         totalobjectscount = 0
         for item in xml_files_list:

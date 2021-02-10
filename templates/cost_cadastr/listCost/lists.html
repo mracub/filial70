@@ -1,5 +1,6 @@
 {% extends 'template.html' %}
 {% load tz %}
+{% load static %}
 {% block content %}
     <h3>Формирование перечней ОКС (п.2 ст. 16 237-ФЗ):</h2>
     <h5>Сформированные перечни для оценки</h3>
@@ -103,4 +104,21 @@
         </div>
     </div>
 </div>
+<div class="loadmodal modal fade" id="showLoader" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <img src="{% static 'images/loader.gif' %}" class="img-thumbnail" alt="Обработка перечня...">
+        </div>
+    </div>
+</div>
+<p>{{ count }}</p>
+<a href="{{ link }}">{{ link_name }}</a>
+<p class="p-error">{{ errors }}</p>
+<script>
+    $('#selectParam').submit(function() {
+        $('#showLoader').modal({backdrop: 'static', keyboard: false})
+        $('#selectParam').modal('hide');
+        $('#showLoader').modal('show');
+    });
+</script>
 {% endblock %}

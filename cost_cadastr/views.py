@@ -211,7 +211,12 @@ def cost_load(request):
                 "doc_number_value":request.POST["doc_number"],"doc_date_value":request.POST["doc_date"],
                 "doc_author_value":request.POST["doc_author"]})
     
-
+#---------------------------------
+def search(requests):
+    """
+    поиск объекта
+    """
+    #необходимо реализовать поиск объекта и вывод результатов
 
 def doc_detail(request):
     """

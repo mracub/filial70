@@ -1,10 +1,11 @@
 {% extends 'template.html' %}
 {% block content %}
+{% load static %}
 <h3>Загрузка "графики" для объектов сформированных в ПСКО:</h3>
 <p>Сервис загрузки описания местоположения границ объектов, содержащихся в перечне сформированном в ПСКО, в формате MIF/MID.</p>
 <p>Дополнительно доступны функции исключения из перечня объектов по видам (для ЗУ по категориям).</p>
 <br>
-<form action="/cost_cadastr/psko/loadf/" method="POST" enctype="multipart/form-data" class="was-validated">
+<form action="/cost_cadastr/psko/loadf/" method="POST" id="loadPSKO" enctype="multipart/form-data" class="was-validated">
     {% csrf_token %}
     <div class="form-row">
         <div class="col col-md-7">
@@ -53,7 +54,20 @@
         </div>
     </div>
 </form>
+<div class="loadmodal modal fade" id="showLoader" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <img src="{% static 'images/loader.gif' %}" class="img-thumbnail" alt="Обработка перечня...">
+        </div>
+    </div>
+</div>
 <p>{{ count }}</p>
 <a href="{{ link }}">{{ link_name }}</a>
 <p class="p-error">{{ errors }}</p>
+<script>
+    $('#loadPSKO').submit(function() {
+        $('#showLoader').modal({backdrop: 'static', keyboard: false})
+        $('#showLoader').modal('show');
+    });
+</script>
 {% endblock %}

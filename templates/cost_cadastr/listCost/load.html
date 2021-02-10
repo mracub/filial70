@@ -1,7 +1,8 @@
 {% extends 'template.html' %}
 {% block content %}
+{% load static %}
     <h3>Загрузка сведений об объекта, поставленных на учет за указанный период, а также объектах, характеристики которых были изменены</h3>
-    <form action="/cost_cadastr/cl/loadf/" method="POST" enctype="multipart/form-data" class="was-validated">
+    <form action="/cost_cadastr/cl/loadf/" method="POST" enctype="multipart/form-data" class="was-validated" id="loadFIR">
         {% csrf_token %}
         <div class="form-row">
             <div class="col">
@@ -43,4 +44,17 @@
 
         </div>
     </form>
+    <div class="loadmodal modal fade" id="showLoader" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <img src="{% static 'images/loader.gif' %}" class="img-thumbnail" alt="Обработка перечня...">
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#loadFIR').submit(function() {
+            $('#showLoader').modal({backdrop: 'static', keyboard: false})
+            $('#showLoader').modal('show');
+        });
+    </script>
 {% endblock %}

@@ -39,6 +39,7 @@ urlpatterns = [
     path('cost_cadastr/docdetail/', cost_views.doc_detail),
     path('cost_cadastr/createxml/', cost_views.create_xml),
     path('cost_cadastr/deletedoc/', cost_views.delete_doc),
+    path('cost_cadastr/search/', cost_views.search),
     path('cost_cadastr/cl/', cost_views.cl_index),
     path('cost_cadastr/cl/load/', cost_views.cl_load_form),
     path('cost_cadastr/cl/loadf/', cost_views.cl_load_file),
