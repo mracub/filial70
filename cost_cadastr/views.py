@@ -216,8 +216,23 @@ def search(requests):
     """
     поиск объекта
     """
-    #необходимо реализовать поиск объекта и вывод результатов
+    if requests.method == 'POST':
+        cadnum = requests.POST['cadnum']
+        obj = Object.objects.filter(cad_num = cadnum)
+    elif requests.method == 'GET':
+        cadnum = requests.COOKIES['cadnum']
+        obj = Object.objects.filter(cad_num = cadnum)
+    paginator = Paginator(obj, 15)
+    page_number = requests.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    data = {"obj":page_obj, "cadnum":cadnum, "obj_count":obj.count()}
+    response = render(requests, 'cost_cadastr/filescost/search.html', data)
+    if requests.method == 'POST':
+        response.set_cookie('cadnum', cadnum)
+    return response
 
+    #необходимо реализовать поиск объекта и вывод результатов
+#---------------------------------
 def doc_detail(request):
     """
     детальная информация об объектах и КС поступивших с актом КС от ТОЦИК

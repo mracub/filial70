@@ -72,11 +72,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/cost_cadastr/cl/search/" method="POST" enctype="multipart/form-data" id="createXML">
+                <form action="/cost_cadastr/search/" method="POST" enctype="multipart/form-data" id="createXML">
                     {% csrf_token %}
                     <div class="modal-body input-group">
                         <label for="ObjectCountSelect" class="col-12 col-form-label">Кадастровый номер:</label>
-                        <input class="input-group" id="cadnum" type="text" />
+                        <input class="input-group" id="cadnum" name="cadnum" type="text" />
                     </div>
                     <div class="invalid-feedback">
                     </div>
