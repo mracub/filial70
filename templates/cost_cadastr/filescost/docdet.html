@@ -101,9 +101,9 @@
                             </select>     
                             {% for d in doc %}
                             <label for="approvement-date-input" class="col-12 col-form-label">Дата утверждения</label>
-                            <input class="form-control" type="date" value={{ d.doc_date|date:'yy-m-d' }} id="approvement-date-input" name="approvement-date-input">          
+                            <input class="form-control" type="date" value={{ d.doc_date|date:'Y-m-d' }} id="approvement-date-input" name="approvement-date-input">          
                             <label for="determination-date-input" class="col-12 col-form-label">Дата определения</label>
-                            <input class="form-control" type="date" value={{ d.doc_date|date:'yy-m-d' }} id="determination-date-input" name="determination-date-input">                       
+                            <input class="form-control" type="date" value={{ d.doc_date|date:'Y-m-d' }} id="determination-date-input" name="determination-date-input">                       
                             {% endfor %} 
                         </div>
                         <div class="invalid-feedback">

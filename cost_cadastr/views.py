@@ -160,7 +160,7 @@ def cost_cadastr(request):
     """
     template = loader.get_template('cost_cadastr/filescost/index.html')
     docs_count = Docs.objects.all().count()
-    docs = Docs.objects.all()
+    docs = Docs.objects.all().order_by('doc_date').reverse()
     paginator = Paginator(docs, 15)
     page_number = request.GET.get('page')
     page_docs = paginator.get_page(page_number)
