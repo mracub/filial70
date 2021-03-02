@@ -54,10 +54,10 @@ def save_cost_data(costdata, filecost, costdoc):
         return True
     
 def create_folders(dt):
-    xml_storage_dir = settings.MEDIA_ROOT + '/cost_cadastr/'
+    xml_storage_dir = settings.MEDIA_ROOT + '/cost_cadastr/data/cadastral_cost/'
     folder_name = datetime.strftime(dt, "%Y-%m-%d_%H-%M-%S")
     full_path = xml_storage_dir + folder_name
-    dir_name = '/cost_cadastr/' + folder_name + '/'
+    dir_name = '/cost_cadastr/data/cadastral_cost/' + folder_name + '/'
     try:
         os.mkdir(os.path.normpath(full_path))
         return os.path.normpath(dir_name)

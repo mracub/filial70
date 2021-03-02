@@ -72,7 +72,7 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist, loadmifoption):
                 carsNodes = xml_doc.xpath('/ListForRating/Objects/CarParkingSpaces/CarParkingSpace')
                 for car in carsNodes:
                     cadnums.append(car.get('CadastralNumber'))
-            return len(cadnums)
+            return len(cadnums), xml_doc.xpath('/ListForRating/ListInfo')[0].get('DateForm')
         #если объект ЗУ
         elif objecttype == '002001001000' and zuoptionslist:
             categories = xml_doc.xpath('//ListForRating/ListInfo/Categories/Category')
@@ -93,7 +93,7 @@ def chekfiles(fileName, zuoptionslist, oksoptionslist, loadmifoption):
                 if count > 0:
                     xml_doc.xpath('//ListForRating/ListInfo/Quantity')[0].text = str(count)
                     xml_doc.write(fileName, encoding='UTF-8')
-                    return count
+                    return count, xml_doc.xpath('/ListForRating/ListInfo')[0].get('DateForm')
                 else:
                     return False
         else:
@@ -119,14 +119,16 @@ def convertList(filelist, zuoptionslist, oksoptionslist, loadmifoption):
 #                raise Exception("Ошибка создания директории для загрузки MIF файлов")
         
         totalobjectscount = 0
+        datecreate = ''
         for item in xml_files_list:
             count = chekfiles(item, zuoptionslist, oksoptionslist, loadmifoption)
             if not count:
                 os.remove(item)
             else:
-                totalobjectscount += count
+                totalobjectscount += count[0]
+                datecreate = count[1]
         out_dir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/temp')
         file_out = xmllistcreate.packToZIP2(out_dir, os.path.dirname(xml_files_list[0]))
-        return totalobjectscount, file_out
+        return totalobjectscount, file_out, datecreate
         
 

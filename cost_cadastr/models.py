@@ -4,11 +4,21 @@ from datetime import date
 # Create your models here.
 #модели для конвертации перечня оцененных объектов полученных из ТОЦИКа
 
+class FileDocs(models.Model):
+    filename = models.CharField(max_length=256)
+    filepath = models.CharField(max_length=256, default=None)
+    urlfile = models.URLField(max_length=1024, default=None)
+    datetime_load = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.filename
+
 class Docs(models.Model):
     doc_name = models.CharField(max_length=1024)
     doc_number = models.CharField(max_length=64)
     doc_date = models.DateField(default=date.today)
     doc_author = models.CharField(max_length=256)
+    filedocs = models.ForeignKey(FileDocs, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
     def __str__(self):
         return self.doc_name

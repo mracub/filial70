@@ -15,6 +15,10 @@
                 <input type="file" class="btn btn-outline-primary" name="territorytogkn" 
                 value="Загрузить файл TerritoryToGKN(MapPlan)"> Файл TerritoryToGKN_*.xml(MapPlan_*.xml)</input>
             </div>
+            <div class="form-group"> 
+                <input type="checkbox" id="checkxml" name="checkxml" checked>
+                <label for="checkxml">Проверять XML-файлы на соответствие XSD-схеме</label>
+            </div>
             <div class="btn-wrap">
                 <input type="submit" class="btn btn-outline-success" value='Конвертировать'/>
             </div>
@@ -22,7 +26,7 @@
     </form>   
     <p class="p-error">{{ errors }}</p>
     {% if visible %}
-    <ul class="p-error">
+    <ul class="p-info">
         <li>Файл ZoneToGKN_*.xml должен соответствовать XML схеме ZoneToGKN_v05 утвержденной приказом Росреестра № П/0465 от 15.09.2016</li>
         <li>Файл BoundToGKN_*.xml должен соответствовать XML схеме BoundToGKN_v03 утвержденой приказом Росреестра П/369 от 01.08.2014</li>
         <li>Файл TerritoryToGKN_*.xml должен соответствовать XML схеме TerritoryToGKN_v01 утвержденой приказом Росреестра № П/0465 от 15.09.2016</li>

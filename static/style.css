@@ -35,6 +35,11 @@ a {
     font-size: large;
 }
 
+.p-info {
+    color: green;
+    font-size: large;
+}
+
 .content {
     margin-left: 10px;
     margin-right: 10px;

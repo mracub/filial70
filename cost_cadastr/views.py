@@ -5,7 +5,7 @@ from datetime import datetime, date, time
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
-from cost_cadastr.models import FilesCost, Docs, Object, CadastrCosts
+from cost_cadastr.models import FilesCost, Docs, Object, CadastrCosts, FileDocs
 from cost_cadastr.models import ClDataList, ClObject, ClElementConstr, ClCadCost, ClKeyParam, ClCadNumNum, ClLocation, ClListRatingReady
 from django.db import models
 from cost_cadastr import xmlparser
@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from lxml import etree, objectify
+import dateutil.parser
 
 
 # Create your views here.
@@ -48,12 +49,13 @@ def psko_load_file(request):
                 loadmifoption = False
             try:
                 result = pskoload.convertList( filepath_on_storage, zuoptionslist, oksoptionslist, loadmifoption)
-                data['count'] = 'Количество объектов в перечне: {0}'.format(result[0])
+                data['count'] = result[0]
                 fstorage = FileSystemStorage(location=os.path.dirname(result[1]))
                 file_url_on_storage = os.path.normpath('/media/cost_cadastr/temp/' + 
                     os.path.basename(fstorage.base_location) + '/' +  os.path.basename(result[1]))
                 data['link'] = file_url_on_storage
                 data['link_name'] = 'Скачать готовый перечень'
+                data['datecreate'] = result[2]
             except Exception as e:
                 data['errors'] = e
         else:
@@ -160,7 +162,7 @@ def cost_cadastr(request):
     """
     template = loader.get_template('cost_cadastr/filescost/index.html')
     docs_count = Docs.objects.all().count()
-    docs = Docs.objects.all().order_by('doc_date').reverse()
+    docs = Docs.objects.all().order_by('doc_date', 'doc_number').reverse()
     paginator = Paginator(docs, 15)
     page_number = request.GET.get('page')
     page_docs = paginator.get_page(page_number)
@@ -184,12 +186,22 @@ def cost_load(request):
         startdate = datetime.strptime(startdatestr, '%Y-%m-%d')
         selected_date = datetime.strptime(request.POST["doc_date"], '%Y-%m-%d')
         if selected_date.date() >= startdate.date() and selected_date.date() <= date.today():
-            costdoc = Docs(doc_name=request.POST["doc_name"], doc_number=request.POST["doc_number"], 
-                    doc_date=request.POST["doc_date"], doc_author=request.POST["doc_author"])
-            costdoc.save()
             date_time_file_load = datetime.now()
             dir_name = xmlparser.create_folders(date_time_file_load)
             fs = FileSystemStorage(location=settings.MEDIA_ROOT + dir_name)
+            #------------docs cost load--------
+            cadcostdoc = request.FILES['cadcostdoc']
+            filename_on_storage = fs.save(cadcostdoc.name, cadcostdoc)
+            filepath_on_storage = fs.path(filename_on_storage)
+            file_url_on_storage = os.path.normpath('/media/' + dir_name + '/' +  filename_on_storage)
+            #----------------------------------
+            fdocs = FileDocs(filename=filename_on_storage, filepath=filepath_on_storage,
+                    urlfile=file_url_on_storage, datetime_load=date_time_file_load)
+            fdocs.save()
+            costdoc = Docs(doc_name=request.POST["doc_name"], doc_number=request.POST["doc_number"], 
+                    doc_date=request.POST["doc_date"], doc_author=request.POST["doc_author"],
+                    filedocs=fdocs)
+            costdoc.save()
             for f in request.FILES.getlist('cadcost'):
                 filename_on_storage = fs.save(f.name, f)
                 filepath_on_storage = fs.path(filename_on_storage)
@@ -211,6 +223,59 @@ def cost_load(request):
                 "doc_number_value":request.POST["doc_number"],"doc_date_value":request.POST["doc_date"],
                 "doc_author_value":request.POST["doc_author"]})
     
+#---------------------------------
+def editsave(request):
+    """
+    сохранение документа после редактирования
+    """
+    #почичтить куки
+    #путь до папки взять из БД
+    obj = Object.objects.filter(cost__doc_cost = request.COOKIES['docid'])
+    doc = Docs.objects.filter(pk = request.COOKIES['docid'])
+    if doc[0].filedocs:
+        fdocs = FileDocs.objects.filter(pk = doc[0].filedocs.id)
+    else:
+        fdocs = None
+    if request.method == 'POST':
+        startdatestr = '2000-01-01'
+        startdate = datetime.strptime(startdatestr, '%Y-%m-%d')
+        selected_date = datetime.strptime(request.POST["doc_date"], '%Y-%m-%d')
+        if selected_date.date() >= startdate.date() and selected_date.date() <= date.today():
+            date_time_file_load = datetime.now()
+            dir_name = xmlparser.create_folders(date_time_file_load)
+            fs = FileSystemStorage(location=settings.MEDIA_ROOT + dir_name)
+            #------------docs cost load--------
+            if 'cadcostdoc' in request.FILES:
+                cadcostdoc = request.FILES['cadcostdoc']
+                filename_on_storage = fs.save(cadcostdoc.name, cadcostdoc)
+                filepath_on_storage = fs.path(filename_on_storage)
+                file_url_on_storage = os.path.normpath('/media/' + dir_name + '/' +  filename_on_storage)
+            #----------------------------------
+                if fdocs:
+                    fdocs.update(filename=filename_on_storage, filepath=filepath_on_storage,
+                        urlfile=file_url_on_storage, datetime_load=date_time_file_load)
+                    fdocs = fdocs.first()
+                else:
+                    fdocs = FileDocs(filename=filename_on_storage, filepath=filepath_on_storage,
+                        urlfile=file_url_on_storage, datetime_load=date_time_file_load)
+                    fdocs.save()
+                doc.update(doc_name=request.POST["doc_name"], doc_number=request.POST["doc_number"], 
+                        doc_date=dateutil.parser.parse(request.POST["doc_date"]), doc_author=request.POST["doc_author"],
+                        filedocs=fdocs)
+            else:
+                doc.update(doc_name=request.POST["doc_name"], doc_number=request.POST["doc_number"], 
+                        doc_date=dateutil.parser.parse(request.POST["doc_date"]), doc_author=request.POST["doc_author"])                
+            return redirect('/cost_cadastr/')
+        else:
+            return render(request, 'cost_cadastr/filescost/load.html', 
+                    {"invalid_form_style":"is-invalid", "doc_name_value":request.POST["doc_name"],
+                    "doc_number_value":request.POST["doc_number"],
+                    "doc_author_value":request.POST["doc_author"]})
+    else:
+        return render(request, 'cost_cadastr/filescost/load.html', 
+                {"errors":"Произошда какая-то неведомая херня :-(((", "doc_name_value":request.POST["doc_name"],
+                "doc_number_value":request.POST["doc_number"],"doc_date_value":request.POST["doc_date"],
+                "doc_author_value":request.POST["doc_author"]})
 #---------------------------------
 def search(requests):
     """
@@ -255,7 +320,22 @@ def doc_detail(request):
         response.set_cookie('docid', request.POST['docid'])
     return response
 
-
+#---------------------------------------------
+def editdoc(request):
+    """
+    редактирование документа
+    """
+    obj = Object.objects.filter(cost__doc_cost = request.COOKIES['docid'])
+    doc = Docs.objects.filter(pk = request.COOKIES['docid'])
+    data = {"doc_name_value":doc[0].doc_name, "doc_number_value":doc[0].doc_number,
+            "doc_date_value":doc[0].doc_date, "doc_author_value":doc[0].doc_author}
+    if doc[0].filedocs:
+        data["doc_image"] = doc[0].filedocs.filepath
+    else:
+        data["doc_image"] = None
+    response = render(request, 'cost_cadastr/filescost/docedit.html', data)
+    return response
+#---------------------------------------------
 def create_xml(request):
     """
     Формирование XML файлов по схеме interactrealty.

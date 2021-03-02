@@ -36,6 +36,8 @@ urlpatterns = [
     path('cost_cadastr/', cost_views.cost_index),
     path('cost_cadastr/load/', cost_views.cost_load_form),
     path('cost_cadastr/loadf/', cost_views.cost_load),
+    path('cost_cadastr/editdoc/', cost_views.editdoc),
+    path('cost_cadastr/editsave/', cost_views.editsave),
     path('cost_cadastr/docdetail/', cost_views.doc_detail),
     path('cost_cadastr/createxml/', cost_views.create_xml),
     path('cost_cadastr/deletedoc/', cost_views.delete_doc),
