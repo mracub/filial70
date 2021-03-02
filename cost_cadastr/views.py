@@ -228,8 +228,6 @@ def editsave(request):
     """
     сохранение документа после редактирования
     """
-    #почичтить куки
-    #путь до папки взять из БД
     obj = Object.objects.filter(cost__doc_cost = request.COOKIES['docid'])
     doc = Docs.objects.filter(pk = request.COOKIES['docid'])
     if doc[0].filedocs:
@@ -242,10 +240,15 @@ def editsave(request):
         selected_date = datetime.strptime(request.POST["doc_date"], '%Y-%m-%d')
         if selected_date.date() >= startdate.date() and selected_date.date() <= date.today():
             date_time_file_load = datetime.now()
-            dir_name = xmlparser.create_folders(date_time_file_load)
-            fs = FileSystemStorage(location=settings.MEDIA_ROOT + dir_name)
             #------------docs cost load--------
             if 'cadcostdoc' in request.FILES:
+                if obj[0].filecost:
+                    dir_path = os.path.dirname(obj[0].filecost.filepath)
+                    fs = FileSystemStorage(os.path.normpath(dir_path + '/'))
+                    dir_name = dir_path.split('media')[1]
+                else:
+                    dir_name = xmlparser.create_folders(date_time_file_load)
+                    fs = FileSystemStorage(location=settings.MEDIA_ROOT + dir_name)
                 cadcostdoc = request.FILES['cadcostdoc']
                 filename_on_storage = fs.save(cadcostdoc.name, cadcostdoc)
                 filepath_on_storage = fs.path(filename_on_storage)
