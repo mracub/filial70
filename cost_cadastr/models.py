@@ -97,6 +97,16 @@ class ClLocation(models.Model):
     def __str__(self):
         return self.note
 
+class ClElementConstr(models.Model):
+    """
+    описывает конструктивные элементы(материал стен) объекта - справочник
+    """
+    
+    ClElementConstrCode = models.CharField(max_length=12)
+    ClElementConstrName = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.ClElementConstrName
 
 class ClCadCost(models.Model):
     """
@@ -114,17 +124,6 @@ class ClCadCost(models.Model):
 
     def __str__(self):
         return self.value
-
-class ClElementConstr(models.Model):
-    """
-    описывает конструктивные элементы(материал стен) объекта
-    """
-    
-    ClElementConstrCode = models.CharField(max_length=12)
-    ClElementConstrName = models.CharField(max_length=64)
-
-    def __str__(self):
-        return self.ClElementConstrName
 
 
 class ClObjectType(models.Model):
@@ -252,6 +251,20 @@ class ClObject(models.Model):
         indexes = [
             models.Index(fields=['CadastralNumber', 'DateCreated', 'DateCadastralRecord',]),
         ]
+#--------------
+class ClElementConstrObj(models.Model):
+    """
+    описывает конструктивные элементы(материал стен) непосредственно объекта
+    """
+   
+    valuetype = models.ForeignKey(ClElementConstr, blank=True, null=True, on_delete=models.DO_NOTHING)
+    clobject = models.ForeignKey(ClObject, blank=True, null=True, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.valuetype
+
+#--------------
+
 #--------------
 class ClLevels(models.Model):
     """

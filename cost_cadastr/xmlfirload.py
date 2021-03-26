@@ -423,8 +423,13 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             cadnumrelation = ClCadNumNum.objects.filter(cad_num_child=clobject[0].pk)
             if cadnumparent and cadnumrelation and not ClObjectDict['DateRemoved']:
                 cadnumrelation.update(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
-            elif cadnumrelation and ClObjectDict['DateRemoved']:
+            elif cadnumparent and not ClObjectDict['DateRemoved']:
+                #create relation
+                cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
+                cadnumrelation.save()
+            elif cadnumrelation and not cadnumparent: #ClObjectDict['DateRemoved'] убрал условие удаление связи с архивным родителем
                 cadnumrelation.delete()
+
     else:
         #создание нового объекта в БД
         #адрес

@@ -104,7 +104,8 @@ def createParentOKSNode(parentId):
     создание родительского узла для помещений и машиномест
     """
     parentoks = objectify.Element("ParentOKS")
-    parentobj = ClObject.objects.filter(pk=parentId).filter(DateRemoved__isnull=True).first()
+    #parentobj = ClObject.objects.filter(pk=parentId).filter(DateRemoved__isnull=True).first()
+    parentobj = ClObject.objects.filter(pk=parentId).first()
     if parentobj:
         parentoks.CadastralNumberOKS = parentobj.CadastralNumber
         parentoks.ObjectType = parentobj.clobjecttype.ObjectTypeCode
@@ -520,8 +521,8 @@ def createBuilding(objectsQuerySet):
         if parentNode:
             building.append(parentNode)
         building.Name = item.Name
-        building.ObjectType = '002001002000' #можно и так, если для каждого вида объекта своя функция
-        
+        building.ObjectType = '002001002000' #можно и так, если для каждого вида объекта своя функция.
+               
         if item.classignationbuilding:
             assignationBuildingQuerySet = ClAssignationBuilding.objects.filter(pk=item.classignationbuilding_id)
             building.AssignationBuilding = assignationBuildingQuerySet.first().AssignationBuildingCode
