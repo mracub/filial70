@@ -5,7 +5,7 @@ from datetime import date
 #модели для конвертации перечня оцененных объектов полученных из ТОЦИКа
 
 class FileDocs(models.Model):
-    filename = models.CharField(max_length=256)
+    filename = models.CharField(max_length=256, default=None, blank=True, null=True)
     filepath = models.CharField(max_length=256, default=None, blank=True, null=True)
     urlfile = models.URLField(max_length=1024, default=None, blank=True, null=True)
     datetime_load = models.DateTimeField(auto_now=True)
