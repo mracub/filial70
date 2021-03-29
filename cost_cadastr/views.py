@@ -194,14 +194,17 @@ def cost_load(request):
             dir_name = xmlparser.create_folders(date_time_file_load)
             fs = FileSystemStorage(location=settings.MEDIA_ROOT + dir_name)
             #------------docs cost load--------
-            cadcostdoc = request.FILES['cadcostdoc']
-            filename_on_storage = fs.save(cadcostdoc.name, cadcostdoc)
-            filepath_on_storage = fs.path(filename_on_storage)
-            file_url_on_storage = os.path.normpath('/media/' + dir_name + '/' +  filename_on_storage)
+            if 'cadcostdoc' in request.FILES:
+                cadcostdoc = request.FILES['cadcostdoc']
+                filename_on_storage = fs.save(cadcostdoc.name, cadcostdoc)
+                filepath_on_storage = fs.path(filename_on_storage)
+                file_url_on_storage = os.path.normpath('/media/' + dir_name + '/' +  filename_on_storage)
             #----------------------------------
-            fdocs = FileDocs(filename=filename_on_storage, filepath=filepath_on_storage,
-                    urlfile=file_url_on_storage, datetime_load=date_time_file_load)
-            fdocs.save()
+                fdocs = FileDocs(filename=filename_on_storage, filepath=filepath_on_storage,
+                        urlfile=file_url_on_storage, datetime_load=date_time_file_load)
+                fdocs.save()
+            else:
+                fdocs = None
             costdoc = Docs(doc_name=request.POST["doc_name"], doc_number=request.POST["doc_number"], 
                     doc_date=request.POST["doc_date"], doc_author=request.POST["doc_author"],
                     filedocs=fdocs)
