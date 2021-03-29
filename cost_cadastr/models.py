@@ -6,8 +6,8 @@ from datetime import date
 
 class FileDocs(models.Model):
     filename = models.CharField(max_length=256)
-    filepath = models.CharField(max_length=256, default=None)
-    urlfile = models.URLField(max_length=1024, default=None)
+    filepath = models.CharField(max_length=256, default=None, blank=True, null=True)
+    urlfile = models.URLField(max_length=1024, default=None, blank=True, null=True)
     datetime_load = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -32,7 +32,7 @@ class CadastrCosts(models.Model):
         return self.cost
 
 class FilesCost(models.Model):
-    filename = models.CharField(max_length=256)
+    filename = models.CharField(max_length=256, default=None)
     filepath = models.CharField(max_length=256, default=None)
     urlfile = models.URLField(max_length=1024, default=None)
     datetime_load = models.DateTimeField(auto_now=True)
@@ -97,6 +97,16 @@ class ClLocation(models.Model):
     def __str__(self):
         return self.note
 
+class ClElementConstr(models.Model):
+    """
+    описывает конструктивные элементы(материал стен) объекта - справочник
+    """
+    
+    ClElementConstrCode = models.CharField(max_length=12)
+    ClElementConstrName = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.ClElementConstrName
 
 class ClCadCost(models.Model):
     """
@@ -114,17 +124,6 @@ class ClCadCost(models.Model):
 
     def __str__(self):
         return self.value
-
-class ClElementConstr(models.Model):
-    """
-    описывает конструктивные элементы(материал стен) объекта
-    """
-    
-    ClElementConstrCode = models.CharField(max_length=12)
-    ClElementConstrName = models.CharField(max_length=64)
-
-    def __str__(self):
-        return self.ClElementConstrName
 
 
 class ClObjectType(models.Model):
@@ -239,7 +238,7 @@ class ClObject(models.Model):
     classignationtype = models.ForeignKey(ClAssignationType, blank=True, null=True, on_delete=models.DO_NOTHING)#тип назначения
     classignationbuilding = models.ForeignKey(ClAssignationBuilding, blank=True, null=True, on_delete=models.DO_NOTHING)#назначение здания
     clexploitationchar = models.ForeignKey(ClExploitationChar, blank=True, null=True, on_delete=models.DO_NOTHING)#год постройки год ввода
-    clementconstr = models.ForeignKey(ClElementConstr, blank=True, null=True, on_delete=models.DO_NOTHING)#конструктивные элементы
+    #clementconstr = models.ForeignKey(ClElementConstr, blank=True, null=True, on_delete=models.DO_NOTHING)#конструктивные элементы
     clcadcost = models.ForeignKey(ClCadCost, blank=True, null=True, on_delete=models.DO_NOTHING)#кадастровая стоимость
     cadnumnum = models.ManyToManyField('self', through='ClCadNumNum', symmetrical=False, blank=True)#связь между объектами Здание-Помещения
     cllistratingready = models.ForeignKey(ClListRatingReady, blank=True, null=True, on_delete=models.DO_NOTHING)#связь объекта с выгрузками
@@ -252,6 +251,20 @@ class ClObject(models.Model):
         indexes = [
             models.Index(fields=['CadastralNumber', 'DateCreated', 'DateCadastralRecord',]),
         ]
+#--------------
+class ClElementConstrObj(models.Model):
+    """
+    описывает конструктивные элементы(материал стен) непосредственно объекта
+    """
+   
+    valuetype = models.ForeignKey(ClElementConstr, blank=True, null=True, on_delete=models.DO_NOTHING)
+    clobject = models.ForeignKey(ClObject, blank=True, null=True, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.valuetype
+
+#--------------
+
 #--------------
 class ClLevels(models.Model):
     """

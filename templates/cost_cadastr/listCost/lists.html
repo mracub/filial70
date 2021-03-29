@@ -93,6 +93,14 @@
                     <input class="form-control" type="date" id="list_date_start" name="list_date_start" value={{ current_date|date:'Y-m-d' }}>
                     <label for="list_date_end" class="col-12 col-form-label">Дата окончания периода:</label>
                     <input class="form-control" type="date"  id="list_date_end" name="list_date_end" value={{ current_date|date:'Y-m-d' }}>
+                    <!--  -->
+                    <!--
+                    <input type="checkbox" id="createKNlist" name="createKNlist">
+                    <label for="createKNlist">Сформировать перечень для списка объектов</label>
+                    <div class="modal-body input-group">
+                        <label for="cadnumlist" class="col-12 col-form-label">Список кадастровых номеров:</label>
+                        <input class="form-control" id="cadnum" name="cadnum" type="text" visibility="hidden"/>
+                    </div> -->
                 </div>
                 <div class="invalid-feedback">
                 </div>
@@ -120,5 +128,12 @@
         $('#selectParam').modal('hide');
         $('#showLoader').modal('show');
     });
+    $('#createKNlist').on('click', function () {
+    if ( $(this).is(':checked') ) {
+        document.getElementById("cadnum").style.visibility = "visible";
+    } else {
+        document.getElementById("cadnum").style.visibility = "hidden";
+    }
+})
 </script>
 {% endblock %}

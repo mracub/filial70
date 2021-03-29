@@ -6,7 +6,7 @@ from datetime import datetime, date, time
 from cost_cadastr.models import CadastrCosts, Object, Docs, FilesCost
 from cost_cadastr.models import ClObject, ClCadNumNum, ClExploitationChar, ClAssignationType, ClAssignationCode
 from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCadastralNumbers, ClElementConstr
-from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels
+from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClElementConstrObj
 from lxml import etree, objectify
 import uuid
 import glob
@@ -227,9 +227,9 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
                 assignationCode['assignationBuilding'] = None
             #материал стен
             constrElementNode = item.xpath('./Elements_Construct/Material')
-            #materialWallCode = ''
+            materialWallCode = []
             if constrElementNode:
-                materialWallCode = constrElementNode[0].get('Wall')
+                materialWallCode = parseXMLconstrElementNode(constrElementNode)
             else:
                 materialWallCode = None
             #эксплуатайионные характеристики год ввода/год постройки
@@ -359,14 +359,14 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         else:
             pass
         #обновляем материал стен
-        if materialWallCode:
-            materialWallCodeTemp = ClElementConstr.objects.filter(ClElementConstrCode=materialWallCode)
-        else:
-            materialWallCodeTemp = None
-        if materialWallCodeTemp:
-            materialWallCodeQuerySet = materialWallCodeTemp.first()
-        else:
-            materialWallCodeQuerySet = None
+#        if materialWallCode:
+#            materialWallCodeTemp = ClElementConstr.objects.filter(ClElementConstrCode=materialWallCode)
+#        else:
+#            materialWallCodeTemp = None
+#        if materialWallCodeTemp:
+#            materialWallCodeQuerySet = materialWallCodeTemp.first()
+#        else:
+#            materialWallCodeQuerySet = None
         #обновляем эксплуатационные характеристики
         if ClExploitationDict:
             exploitationQuerySet = ClExploitationChar.objects.filter(pk=clobject[0].clexploitationchar_id)
@@ -404,7 +404,7 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             clobjecttype=objectTypeQuerySet,
             classignationbuilding=assignationCodeQuerySet,
             clexploitationchar=exploitationQuerySet,
-            clementconstr=materialWallCodeQuerySet,
+#            clementconstr=materialWallCodeQuerySet,
             clcadcost=costQuerySet,
             classignationcode=assignationCodeFlatQuerySet,
             classignationtype=assignationTypeFlatQuerySet)
@@ -414,6 +414,10 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         #обновляем родительские ЗУ
         if parentCadNums:
             saveParentCadastarlNumbers(parentCadNums, clobject.first())
+        #сохраняем материал стен
+        #materialWallCode
+        if materialWallCode:
+            saveMaterialWall(materialWallCode, clobject.first())
         #сохранение ключевых параметров для соружений
         if keyParam:
             saveKeyParametersData(keyParam, clobject.first())
@@ -423,8 +427,13 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             cadnumrelation = ClCadNumNum.objects.filter(cad_num_child=clobject[0].pk)
             if cadnumparent and cadnumrelation and not ClObjectDict['DateRemoved']:
                 cadnumrelation.update(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
-            elif cadnumrelation and ClObjectDict['DateRemoved']:
+            elif cadnumparent and not ClObjectDict['DateRemoved']:
+                #create relation
+                cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
+                cadnumrelation.save()
+            elif cadnumrelation and not cadnumparent: #ClObjectDict['DateRemoved'] убрал условие удаление связи с архивным родителем
                 cadnumrelation.delete()
+
     else:
         #создание нового объекта в БД
         #адрес
@@ -488,7 +497,7 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
                                     clobjecttype=objectTypeQuerySet,
                                     classignationbuilding=assignationCodeQuerySet,
                                     clexploitationchar=exploitationQuerySet,
-                                    clementconstr=materialWallCodeQuerySet,
+                                    #clementconstr=materialWallCodeQuerySet,
                                     clcadcost=costQuerySet,
                                     classignationcode=assignationCodeFlatQuerySet,
                                     classignationtype=assignationTypeFlatQuerySet)
@@ -499,6 +508,9 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         #формируем и сохраняем список родительских кадастровых номеров для зданий, сооружений и ОНС
         if parentCadNums:
             saveParentCadastarlNumbers(parentCadNums, objectQuerySet)
+        #материал стен
+        if materialWallCode:
+            saveMaterialWall(materialWallCode, clobject)
         #сохранение ключевых параметров для сооружения
         if keyParam:
             saveKeyParametersData(keyParam, objectQuerySet)
@@ -550,6 +562,20 @@ def saveParentCadastarlNumbers(parentCadNums, objectQuerySet=None):
         cadNumSet = ClParenCadastralNumbers(CadastralNumber=cadNum, clobject=objectQuerySet)
         cadNumSet.save()
 
+#-------------------
+def saveMaterialWall(materialWallCode, objectQuerySet=None):
+    """
+    сохранение материала стен
+    """
+    walls = ClElementConstrObj.objects.filter(clobject_id=objectQuerySet.id)
+    if walls:
+        walls.delete()
+    for wall in materialWallCode:
+        wallDict = ClElementConstr.objects.filter(ClElementConstrCode=wall)
+        wallSet = ClElementConstrObj(valuetype=wallDict[0], clobject=objectQuerySet)
+        wallSet.save()
+
+#-------------------
 
 def saveExploitationData(ClExploitationDict, exploitationQuerySet=None):
     """
@@ -663,6 +689,15 @@ def parseXMLassignationFlatsNode(assignationNode, assignationCode):
         assignationCode['assignationFlatType'] = None
     return assignationCode
 
+def parseXMLconstrElementNode(constrElementNode):
+    """
+    парсинг узла Elements_Construct - материал стен
+    """
+    constrElement = []
+    #walls = constrElementNode.xpath('./Material')
+    for item in constrElementNode:
+        constrElement.append(item.get('Wall'))
+    return constrElement
 
 def parseXMLparentCadnumNode(parentNode):
     """

@@ -4,7 +4,7 @@ from datetime import datetime, date, time
 from cost_cadastr.models import CadastrCosts, Object, Docs, FilesCost
 from cost_cadastr.models import ClObject, ClCadNumNum, ClExploitationChar, ClAssignationType, ClAssignationCode
 from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCadastralNumbers, ClElementConstr
-from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClListRatingReady
+from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClListRatingReady, ClElementConstrObj
 from lxml import etree, objectify
 import uuid
 import glob
@@ -104,7 +104,8 @@ def createParentOKSNode(parentId):
     создание родительского узла для помещений и машиномест
     """
     parentoks = objectify.Element("ParentOKS")
-    parentobj = ClObject.objects.filter(pk=parentId).filter(DateRemoved__isnull=True).first()
+    #parentobj = ClObject.objects.filter(pk=parentId).filter(DateRemoved__isnull=True).first()
+    parentobj = ClObject.objects.filter(pk=parentId).first()
     if parentobj:
         parentoks.CadastralNumberOKS = parentobj.CadastralNumber
         parentoks.ObjectType = parentobj.clobjecttype.ObjectTypeCode
@@ -136,6 +137,17 @@ def createParentOKSNode(parentId):
             parentoks.Floors.set("UndergroundFloors", parentobj.UndergroundFloors)
     return parentoks
 
+def CreateElementConstruct(objectQuerySet):
+    """
+    создание узла материал стен
+    """
+    materialWall = objectify.Element("ElementsConstruct")
+    elementConstrQuerySet = ClElementConstrObj.objects.filter(clobject=objectQuerySet.id)
+    for item in elementConstrQuerySet:
+        wall = objectify.SubElement(materialWall, 'Material')
+        wall.set("Wall", ClElementConstr.objects.filter(pk=item.valuetype_id)[0].ClElementConstrCode)
+    return materialWall
+#------------------------
 def createPositionInObjectNode(objectQuerySet):
     """
     создание узла расположение в строении
@@ -520,20 +532,29 @@ def createBuilding(objectsQuerySet):
         if parentNode:
             building.append(parentNode)
         building.Name = item.Name
-        building.ObjectType = '002001002000' #можно и так, если для каждого вида объекта своя функция
-        
+        building.ObjectType = '002001002000' #можно и так, если для каждого вида объекта своя функция.
+               
         if item.classignationbuilding:
             assignationBuildingQuerySet = ClAssignationBuilding.objects.filter(pk=item.classignationbuilding_id)
             building.AssignationBuilding = assignationBuildingQuerySet.first().AssignationBuildingCode
         else:
             pass#возможно здесь будет лучше добавить пустой закрытый тег
-        if item.clementconstr:
-            elementConstrQuerySet = ClElementConstr.objects.filter(pk=item.clementconstr_id)
-            materialWall = objectify.SubElement(building, "ElementsConstruct")
-            materialWall.Material = None
-            materialWall.Material.set("Wall", elementConstrQuerySet.first().ClElementConstrCode)
+        #материал стен
+        #--------------
+        elementConstrQuerySet = ClElementConstrObj.objects.filter(clobject=item.id)
+        if elementConstrQuerySet:
+            walls = CreateElementConstruct(item)
+            building.append(walls)
         else:
             pass
+        #--------------    
+#        if item.clementconstr:
+#            elementConstrQuerySet = ClElementConstr.objects.filter(pk=item.clementconstr_id)
+#            materialWall = objectify.SubElement(building, "ElementsConstruct")
+#            materialWall.Material = None
+#            materialWall.Material.set("Wall", elementConstrQuerySet.first().ClElementConstrCode)
+#        else:
+#            pass
             #building.ElementsConstruct = None
         building.ExploitationChar = None
         if item.clexploitationchar:

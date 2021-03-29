@@ -1,6 +1,7 @@
 {% extends 'template.html' %}
 {% load tz %}
 {% block content %}
+{% load static %}
 {% for d in doc %}
 <p>Наименование документа: {{ d.doc_name }}</p>
 <p>Номер документа: {{ d.doc_number }}</p>
@@ -162,13 +163,21 @@
         </div>
     </div>
 </div>
+<div class="loadmodal modal fade" id="showLoader" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <img src="{% static 'images/loader.gif' %}" class="img-thumbnail" alt="Обработка перечня...">
+        </div>
+    </div>
+</div>
 <script>
     $('#createXML').submit(function () {
 
         // submission stuff
 
         $('#selectParam').modal('hide');
-        return true;
+
     });
+
 </script>
 {% endblock %}
