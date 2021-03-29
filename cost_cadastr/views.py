@@ -133,7 +133,11 @@ def cl_create_list(request):
         dateStart = request.POST["list_date_start"]
         dateEnd = request.POST["list_date_end"]
         objCount = request.POST["ObjCountSelect"]
-        if xmllistcreate.createListForRating(dateStart, dateEnd, objCount): 
+        if "createKNlist" in request.POST:
+            cadNumList = request.POST["cadnum"].split(",")
+        else:
+            cadNumList = None
+        if xmllistcreate.createListForRating(dateStart, dateEnd, objCount, cadNumList): 
             pass
         else:
             #data["error"] = "Ошибка формирования перечня"

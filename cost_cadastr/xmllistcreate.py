@@ -733,19 +733,27 @@ def splitQuerySet(objListQuerySet, objCount, listSource, tmpFilesDir, objType, c
     listSource.append(createXML(objListQuerySet[querySetCount - (querySetCount % int(objCount)):int(querySetCount)], objType, tmpFilesDir, correction_flag))
     return listSource
 #------------------------------------------------
-def createListForRating(dateStart, dateEnd, objCount):
+def createListForRating(dateStart, dateEnd, objCount, cadNumList):
     """
     формирование перечня для оценки
     dateStart - дата начала периода выгрузки перечня (включительно)
     dateEnd - дата окончания периода выгрузки перечня (включительно)
     objCount - количество объектов в одном XML
     """
-    objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
-    objListChanged = ClObject.objects.filter(DateCadastralRecord__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).exclude(
-                                                                    DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+    if cadNumList:
+        objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
+        objListChanged = ClObject.objects.filter(DateCadastralRecord__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).exclude(
+                                                                        DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+                                                                        datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
+    else:
+        objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
                                                                     datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
+        objListChanged = ClObject.objects.filter(DateCadastralRecord__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).exclude(
+                                                                        DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
+                                                                        datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)                                                                
     #сразу в выборке исключить объекты без назначения для зданий, сооружений, помещений и без площади для
     #зданий, помещений и машиномест, также исключить снятые с учета объекты
     tmpFilesDir = xmlfirload.createDir(settings.MEDIA_ROOT + '/cost_cadastr/temp/')

@@ -94,13 +94,9 @@
                     <label for="list_date_end" class="col-12 col-form-label">Дата окончания периода:</label>
                     <input class="form-control" type="date"  id="list_date_end" name="list_date_end" value={{ current_date|date:'Y-m-d' }}>
                     <!--  -->
-                    <!--
                     <input type="checkbox" id="createKNlist" name="createKNlist">
                     <label for="createKNlist">Сформировать перечень для списка объектов</label>
-                    <div class="modal-body input-group">
-                        <label for="cadnumlist" class="col-12 col-form-label">Список кадастровых номеров:</label>
-                        <input class="form-control" id="cadnum" name="cadnum" type="text" visibility="hidden"/>
-                    </div> -->
+                    <input class="form-control" id="cadnum" name="cadnum" type="text" title="Список кадастровых номеров через запятую без пробелов"/>
                 </div>
                 <div class="invalid-feedback">
                 </div>
@@ -134,6 +130,9 @@
     } else {
         document.getElementById("cadnum").style.visibility = "hidden";
     }
-})
+    });
+    $('#selectParam').on('show.bs.modal', function (e) {
+        document.getElementById("cadnum").style.visibility = "hidden";
+    })
 </script>
 {% endblock %}
