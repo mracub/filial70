@@ -98,6 +98,8 @@ def cl_load_file(request):
     """
     загрузка файлов ФИР в БД
     """
+    error = []
+    error_log_url = []
     if request.method == 'POST':
         dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/'))
         if dir_name:
@@ -114,13 +116,28 @@ def cl_load_file(request):
                     cldatalist = ClDataList(date_start=file_protocol_data['dateStart'], date_end=file_protocol_data['dateEnd'], 
                         date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
                     cldatalist.save()
-                    xmlfirload.parseXMLdata(file_protocol_data)
+                    logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                    if logerror:
+                        error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                        error_log_url.append('/media' + error_log_url_str)
+                        error.append('При загрузке сведений по одному или нескольким объектам возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
                 else:
-                    pass
-                    #здесь нужно вернуть ошибку парсинга протокола
+                    error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
+        else:
+            error = 'Ошибка сохранения файла'
     else:
-        pass #написать обработчик добавив в возвращаемый шаблон строку для вывода ошибок
-    return redirect('/cost_cadastr/cl/')
+        pass
+    relevance = ClDataList.objects.latest('date_end').date_end
+    cldatalist = ClDataList.objects.all()
+    paginator = Paginator(cldatalist, 15)
+    page_number = request.GET.get('page')
+    page_cldatalist = paginator.get_page(page_number)
+    cldatalist_count = cldatalist.count()
+    current_date = datetime.today()#.strftime('%Y-%m-%d')
+    errors = zip(error, error_log_url)
+    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date, "relevance":relevance, "errors":errors}
+    response = render(request, 'cost_cadastr/listcost/index.html', data)
+    return response
 
 def cl_create_list(request):
     """

@@ -65,7 +65,7 @@ class XmlDocEgrn(models.Model):
         return self.filename
 
 
-#модели для подготовки перечня объектов для направления в ТОЦИК
+#модели для загрузки и хранения данных об объектах.
 
 class ClLocation(models.Model):
     """
@@ -211,13 +211,137 @@ class ClListRatingReady(models.Model):
     def __str_(self):
         return self.file_list_name
 
+class ClState(models.Model):
+    """
+    справочник статусов объекта
+    """
+    statusCode = models.CharField(max_length=12)
+    statusName = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.statusName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['statusCode',]),
+        ]
+
+#-------------------------------------
+class ClZuTypes(models.Model):
+    """
+    справочник видов земельных участков
+    """
+    objectTypeCode = models.CharField(max_length=12)
+    objectTypeName = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.objectTypeName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['objectTypeCode',]),
+        ]
+#-------------------------------------
+class ClAreaCode(models.Model):
+    """
+    справочник типов площадей
+    """
+    areaCode = models.CharField(max_length=12)
+    areaName = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.areaName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['areaCode',]),
+        ]
+#-------------------------------------
+class ClUnits(models.Model):
+    """
+    справочник единиц измерения
+    """
+    unitCode = models.CharField(max_length=12)
+    unitName = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.unitName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['unitCode',]),
+        ]
+#-------------------------------------
+class ClUtilizationsCode(models.Model):
+    """
+    справочник видов разрешенного использования (классификатор)
+    """
+    utilizationCode = models.CharField(max_length=12)
+    utilizationName = models.CharField(max_length=512)
+
+    def __str__(self):
+        return self.utilizationName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['utilizationCode',]),
+        ]
+#-------------------------------------
+class ClUtilizationsLandUse(models.Model):
+    """
+    справочник видов разрешенного использования (классификатор минэкономразвития)
+    """
+    utilizationCode = models.CharField(max_length=12)
+    utilizationName = models.CharField(max_length=512)
+
+    def __str__(self):
+        return self.utilizationName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['utilizationCode',]),
+        ]
+#-------------------------------------
+class ClUtilizations(models.Model):
+    """
+    разрешенное использование
+    """
+    utilizationByDoc = models.CharField(max_length=2048, blank=True, null=True)
+    utilizationCode = models.ForeignKey(ClUtilizationsCode, blank=True, null=True, on_delete=models.DO_NOTHING)
+    utilizationLandUseCode = models.ForeignKey(ClUtilizationsLandUse, blank=True, null=True, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.utilizationByDoc
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['utilizationCode','utilizationByDoc',]),
+        ]
+
+#-------------------------------------
+class ClLandUse(models.Model):
+    """
+    справочник видов категорий земель
+    """
+    landUseCode = models.CharField(max_length=12)
+    landUseName = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.landUseName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['landUseCode',]),
+        ]
+
+#-------------------------------------
 class ClObject(models.Model):
     """
     описывает объект
     """
     CadastralNumber = models.CharField(max_length=64)#кадастровый номер
     DateCreated = models.DateField(auto_now=False)#дата внесения в ЕГРН
+    DateCreatedDoc = models.DateField(auto_now=False, blank=True, null=True)#дата постановки на учет по документу
     DateRemoved = models.DateField(auto_now=False, blank=True, null=True)#дата исключения из ЕГРН
     DateCadastralRecord = models.DateField(auto_now=False, blank=True, null=True)#дата внесения изменений в ЕГРН
     CadastralBlock = models.CharField(max_length=64)#кадастровый квартал
@@ -225,21 +349,28 @@ class ClObject(models.Model):
     AssignationConsName = models.CharField(max_length=1024, blank=True, null=True)
     Floors = models.CharField(max_length=64, blank=True, null=True)
     UndergroundFloors = models.CharField(max_length=64, blank=True, null=True)
-    Area = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    Area = models.DecimalField(max_digits=30, decimal_places=2, blank=True, null=True)
+    clareacode = models.ForeignKey(ClAreaCode, blank=True, null=True, on_delete=models.DO_NOTHING)#вид площади
+    clunits = models.ForeignKey(ClUnits, blank=True, null=True, on_delete=models.DO_NOTHING)#единицы измерения площади
+    Inaccuracy = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)#погрешность(дельта) измерения площади
     #Number_OnPlan = models.CharField(max_length=256, null=True, blank=True)
     #LevelNumber = models.CharField(max_length=64, blank=True, null=True)
     #LevelType = models.CharField(max_length=64, blank=True, null=True)
     DegreeReadiness = models.CharField(max_length=8, blank=True,null=True)
-    #keys
     #cllevels = models.ForeignKey(ClLevels, blank=True, null=True, on_delete=models.CASCADE)#уровни
+    clstate = models.ForeignKey(ClState, blank=True, null=True, on_delete=models.DO_NOTHING)#статус
+    clzutype = models.ForeignKey(ClZuTypes, blank=True, null=True, on_delete=models.DO_NOTHING)#вид ЗУ
     cllocation = models.ForeignKey(ClLocation, blank=True, null=True, on_delete=models.CASCADE)#адрес
     clobjecttype = models.ForeignKey(ClObjectType, blank=True, null=True, on_delete=models.DO_NOTHING)#тип объекта
+    cllanduse = models.ForeignKey(ClLandUse, blank=True, null=True, on_delete=models.DO_NOTHING)#код категории земель
+    clutilization = models.ForeignKey(ClUtilizations, blank=True, null=True, on_delete=models.DO_NOTHING)#разрешенное использование
     classignationcode = models.ForeignKey(ClAssignationCode, blank=True, null=True, on_delete=models.DO_NOTHING)#код назначения
     classignationtype = models.ForeignKey(ClAssignationType, blank=True, null=True, on_delete=models.DO_NOTHING)#тип назначения
     classignationbuilding = models.ForeignKey(ClAssignationBuilding, blank=True, null=True, on_delete=models.DO_NOTHING)#назначение здания
     clexploitationchar = models.ForeignKey(ClExploitationChar, blank=True, null=True, on_delete=models.DO_NOTHING)#год постройки год ввода
     #clementconstr = models.ForeignKey(ClElementConstr, blank=True, null=True, on_delete=models.DO_NOTHING)#конструктивные элементы
     clcadcost = models.ForeignKey(ClCadCost, blank=True, null=True, on_delete=models.DO_NOTHING)#кадастровая стоимость
+    #cloldnumbers = models.ForeignKey(ClOldNumbers, blank=True, null=True, on_delete=models.DO_NOTHING)#старые(ранее присвоенные) номера
     cadnumnum = models.ManyToManyField('self', through='ClCadNumNum', symmetrical=False, blank=True)#связь между объектами Здание-Помещения
     cllistratingready = models.ForeignKey(ClListRatingReady, blank=True, null=True, on_delete=models.DO_NOTHING)#связь объекта с выгрузками
 
@@ -263,8 +394,37 @@ class ClElementConstrObj(models.Model):
     def __str__(self):
         return self.valuetype
 
-#--------------
+#-------------------------------------
+class ClOldNumbersTypes(models.Model):
+    """
+    справочник типов "старых" номеров
+    """
+    oldNumberCode = models.CharField(max_length=12)
+    oldNumberName = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.oldNumberName
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['oldNumberCode',]),
+        ]
+#-------------------------------------
+class ClOldNumbers(models.Model):
+    """
+    ранее присвоенные номера
+    """
+    oldNumber = models.CharField(max_length=256, blank=True, null=True)
+    oldNumberCode = models.ForeignKey(ClOldNumbersTypes, blank=True, null=True, on_delete=models.DO_NOTHING)
+    clobject = models.ForeignKey(ClObject, blank=True, null=True, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.oldNumber
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['oldNumber',]),
+        ]
 #--------------
 class ClLevels(models.Model):
     """

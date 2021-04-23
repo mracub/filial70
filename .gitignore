@@ -1,5 +1,16 @@
-/ static / *
+#/ static / *
 *.xml
 *.mif
 *.mid
 *.zip
+*.log
+*.pyc
+__pycache__/
+migrations/*
+media/
+static/bootstrap
+static/bootstrap_select
+static/bootstrap_table
+static/fancybox
+static/jquery
+static/popper

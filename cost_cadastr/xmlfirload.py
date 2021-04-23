@@ -7,6 +7,9 @@ from cost_cadastr.models import CadastrCosts, Object, Docs, FilesCost
 from cost_cadastr.models import ClObject, ClCadNumNum, ClExploitationChar, ClAssignationType, ClAssignationCode
 from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCadastralNumbers, ClElementConstr
 from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClElementConstrObj
+from cost_cadastr.models import ClState, ClZuTypes, ClAreaCode, ClUnits, ClOldNumbersTypes
+from cost_cadastr.models import ClOldNumbers, ClUtilizationsCode, ClUtilizationsLandUse
+from cost_cadastr.models import ClUtilizations, ClLandUse
 from lxml import etree, objectify
 import uuid
 import glob
@@ -60,6 +63,14 @@ def parseXMLprotocol(arch_file):
                 data['dateStart'] = dateutil.parser.parse(startDate)
                 endDate = xml_doc.xpath('/Extract/Period/Date_End[1]/text()')[0]
                 data['dateEnd'] = dateutil.parser.parse(endDate)
+                parcelsNodes = xml_doc.xpath('/Extract/Files/Groups/Group[@Type="Parcels"]/File_Name')
+                if parcelsNodes:
+                    parcelsList = []
+                    for item in parcelsNodes:
+                        parcelsList.append(item.text)
+                    data['filesParcels'] = parcelsList
+                else:
+                    data['filesParcels'] = []
                 buildingsNodes = xml_doc.xpath('/Extract/Files/Groups/Group[@Type="Buildings"]/File_Name')
                 if buildingsNodes:
                     buildingsFilesList = []
@@ -105,8 +116,16 @@ def parseXMLdata(data):
     на входе словарь полученный после парсинга протокола
     """
     dataFiles = exctractZip(data['dataarchfilenamewithpath'])
+    statusError = False
     for f in dataFiles:
         try:
+            for filesParcel in data['filesParcels']:
+                if f.endswith(filesParcel):
+                    with open(f, 'rb') as xml_file:
+                        xml_doc = etree.parse(xml_file)
+                        parcelNodes = xml_doc.xpath('/GKN2FIR/Package/Parcels/Parcel')
+                        if parseXMLobjectNode(parcelNodes, '002001001000', f):
+                            statusError = True
             for filesB in data['filesBuildings']:
                 if f.endswith(filesB):
                     with open(f, 'rb') as xml_file:
@@ -139,6 +158,10 @@ def parseXMLdata(data):
             with open(os.path.normpath(logFile), 'a') as mylog:
                 mylog.write(os.path.basename(f))
                 mylog.write('\n')
+    if statusError:
+        return os.path.dirname(f) + '/' + 'filesDataErrors.log'
+    else:
+        return False
 
 def parseXMLobjectNode(xmlNode, objectType, fileName):
     """
@@ -152,8 +175,10 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
         now = datetime.datetime.now()
         mylog.write(os.path.basename(fileName) + ' ' + str(len(xmlNode)) + ' ' + now.strftime("%d/%m/%Y %H:%M:%S"))
         mylog.write('\n')
-    try:
-        for index, item in enumerate(xmlNode):
+
+    errorFlag = False #флаг ошибки
+    for index, item in enumerate(xmlNode):
+        try:
             ClObjectDict = {}
             ClObjectDict['CadastralNumber'] = item.get('CadastralNumber')
             DateCreated = item.get('DateCreated')
@@ -161,11 +186,30 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
                 ClObjectDict['DateCreated'] = dateutil.parser.parse(DateCreated).date()
             else:
                 ClObjectDict['DateCreated'] = None
+            #DateCreatedDoc
+            DateCreatedDoc = item.get('DateCreatedDoc')
+            if DateCreatedDoc:
+                ClObjectDict['DateCreatedDoc'] = dateutil.parser.parse(DateCreatedDoc).date()
+            else:
+                ClObjectDict['DateCreatedDoc'] = None
+            #--------------
             DateRemoved = item.get('DateRemoved')
             if DateRemoved:
                 ClObjectDict['DateRemoved'] = dateutil.parser.parse(DateRemoved).date()
             else:
                 ClObjectDict['DateRemoved'] = None
+            #-------------Name and State, Name only for Zu-----------------------
+            ObjName = item.get('Name')
+            if ObjName:
+                ClObjectDict['ParcelName'] = ObjName
+            else:
+                ClObjectDict['ParcelName'] = None
+            ObjState = item.get('State')
+            if ObjState:
+                ClObjectDict['State'] = ObjState
+            else:
+                ClObjectDict['State'] = None
+            #--------------------------------------------------------------------
             datecadastralrecord = item.xpath('.//Cadastral_Record/DateRecord')
             if datecadastralrecord:
                 daterecord = datecadastralrecord[0].text
@@ -200,14 +244,54 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
             else:
                 ClObjectDict['Floors'] = None
                 ClObjectDict['UndergroundFloors'] = None
-            #площадь
+            #Old_Numbers parseXMLoldnumbersNode
+            oldNumbersNode = item.xpath('./Old_Numbers/Old_Number')
+            oldNumbers = []
+            if oldNumbersNode:
+                oldNumbers = parseXMLoldnumbersNode(oldNumbersNode)
+            else:
+                pass
+            #категория земель
+            categoryNode = item.xpath('./Category')
+            if categoryNode:
+                ClObjectDict['Category'] = categoryNode[0].get('Category')
+            else:
+                ClObjectDict['Category'] = None
+            #разрешенное использование
+            utilizationNode = item.xpath('./Utilization')
+            utilizationDict = {}
+            if utilizationNode:
+                utilizationDict = parseUtilizationNode(utilizationNode[0])
+            else:
+                utilizationDict = {}
+            #площадь для ОКСов
             areaBuilding = item.xpath('./Area')
             if areaBuilding:
                 ClObjectDict['Area'] = Decimal(areaBuilding[0].text)
+                ClObjectDict['Inaccuracy'] = None
             else:
                 ClObjectDict['Area'] = None
+                ClObjectDict['Inaccuracy'] = None
+            #площадь для ЗУ
+            areasNode = item.xpath('./Areas/Area')
+            areasDict = {}
+            if areasNode:
+                areasDict = parseXMLareasNode(areasNode[0])
+                if 'area' in areasDict:
+                    ClObjectDict['Area'] = areasDict['area']
+                else:
+                    ClObjectDict['Area'] = None
+                if 'inaccuracy' in areasDict:
+                    ClObjectDict['Inaccuracy'] = areasDict['inaccuracy']
+                else:
+                    ClObjectDict['Inaccuracy'] = None
+            else:
+                pass
             #адрес
-            locationNode = item.xpath('./Location')
+            if objectType == '002001001000':
+                locationNode = item.xpath('./Location/Address')
+            else:
+                locationNode = item.xpath('./Location')
             if locationNode:
                 ClLocationDict = parseXMLlocationNode(locationNode[0])
             else:
@@ -281,28 +365,29 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
             #save data
             saveData(ClObjectDict, ClLocationDict, 
                             ClCostDict, assignationCode, keyParam, 
-                            materialWallCode, ClExploitationDict, parentCadNums, objectType, ClLevelsDictsList)
-#            with open(os.path.normpath(logFile), 'a') as mylog:
-#                #now = datetime.datetime.now()
-#                mylog.write(ClObjectDict['CadastralNumber'] + ' parse_time: {0}'.format(str(parse_time)) + 
-#                    ' save_time: {0}'.format(str(save_time['save_time'])) + ' save_location: {0}'.format(str(save_time['save_time_location'])) +
-#                    ' save_obj: {0}'.format(str(save_time['save_time_obj'])) + ' save_parent: {0}'.format(str(save_time['save_time_parent'])) +
-#                    ' save_test: {0}'.format(str(save_time['save_time_test'])))
-#                mylog.write('\n')
-        return True
-    except:
-        #в лог пишем кадастровый номер объекта при обработке которого возникло исключение
-        # надеясь на то, что при чтении кадастрового номера из файла ошибок не возникнет 
-        #logDir = os.path.dirname(fileName)
-        logFile = logDir + '/' + 'filesDataErrors.log'
-        with open(os.path.normpath(logFile), 'a') as mylog:
-            mylog.write(os.path.basename(fileName) + ' ' +ClObjectDict['CadastralNumber'] + 
-                ' {0} from {1}'.format(index, len(xmlNode)))
-            mylog.write('\n')
-        return False
+                            materialWallCode, ClExploitationDict, parentCadNums, objectType, ClLevelsDictsList, utilizationDict, areasDict, oldNumbers)
+    #            with open(os.path.normpath(logFile), 'a') as mylog:
+    #                #now = datetime.datetime.now()
+    #                mylog.write(ClObjectDict['CadastralNumber'] + ' parse_time: {0}'.format(str(parse_time)) + 
+    #                    ' save_time: {0}'.format(str(save_time['save_time'])) + ' save_location: {0}'.format(str(save_time['save_time_location'])) +
+    #                    ' save_obj: {0}'.format(str(save_time['save_time_obj'])) + ' save_parent: {0}'.format(str(save_time['save_time_parent'])) +
+    #                    ' save_test: {0}'.format(str(save_time['save_time_test'])))
+    #                mylog.write('\n')
+        except Exception as e:
+            #в лог пишем кадастровый номер объекта при обработке которого возникло исключение
+            #logDir = os.path.dirname(fileName)
+            logFile = logDir + '/' + 'filesDataErrors.log'
+            with open(os.path.normpath(logFile), 'a') as mylog:
+                mylog.write('File name: ' + os.path.basename(fileName) + ' Cadastral number: ' +ClObjectDict['CadastralNumber'] + 
+                    ' {0} from {1} Error: {2}'.format(index + 1, len(xmlNode), e.args[0]))
+                mylog.write('\n')
+            errorFlag = True
+            #return False
+    return errorFlag
+
 #-----------------------------------------
 def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materialWallCode, 
-                 ClExploitationDict, parentCadNums, objectType, ClLevelsDictsList):
+                 ClExploitationDict, parentCadNums, objectType, ClLevelsDictsList, utilizationDict, areasDict, oldNumbers):
     """
     функция сохранения сведений об объекте
     """
@@ -328,6 +413,15 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             costQuerySet = saveCostData(ClCostDict)
         else:
             costQuerySet = None#это наверное лишнее, если ничего не выбрали в запросе, то значит и обновлять нечего
+        #обновляем разрешенное использование
+        if utilizationDict:
+            utilizationQuerySet = ClUtilizations.objects.filter(pk=clobject[0].clutilization_id)
+        else:
+            utilizationQuerySet = None
+        if utilizationDict and utilizationQuerySet:
+            utilizationQuerySet = saveUtilizationsData(utilizationDict, utilizationQuerySet).first()
+        elif utilizationDict:
+            utilizationQuerySet = saveUtilizationsData(utilizationDict)
         #обновляем код назначения здания
         if assCode['assignationBuilding']:
             assignationCodeTemp = ClAssignationBuilding.objects.filter(AssignationBuildingCode=assCode['assignationBuilding'])
@@ -388,26 +482,60 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         else:
             objectTypeQuerySet = None
             #clobject.update(clobjecttype=objectTypeQuerySet)
+        #статус объекта
+        if ClObjectDict['State']:
+            objectStateQuerySet = ClState.objects.filter(statusCode=ClObjectDict['State']).first()
+        else:
+            objectStateQuerySet = None
+        #вид ЗУ
+        if ClObjectDict['ParcelName']:
+            parcelNameQuerySet = ClZuTypes.objects.filter(objectTypeCode=ClObjectDict['ParcelName']).first()
+        else:
+            parcelNameQuerySet = None
+        #категория ЗУ
+        if ClObjectDict['Category']:
+            categoryQuerySet = ClLandUse.objects.filter(landUseCode=ClObjectDict['Category']).first()
+        else:
+            categoryQuerySet = None
+        #классификаторы для площади ЗУ
+        if 'areaCode' in areasDict:
+            areaCodeQuerySet = ClAreaCode.objects.filter(areaCode=areasDict['areaCode']).first()
+        else:
+            areaCodeQuerySet = None
+        if 'unit' in areasDict:
+            areaUnitQuerySet = ClUnits.objects.filter(unitCode=areasDict['unit']).first()
+        else:
+            areaUnitQuerySet = None
         #обновляем данные объекта ClObject
-        clobject.update(CadastralNumber=ClObjectDict['CadastralNumber'],
-            DateCreated=ClObjectDict['DateCreated'],
-            DateRemoved=ClObjectDict['DateRemoved'],
-            DateCadastralRecord=ClObjectDict['DateCadastralRecord'],
-            CadastralBlock=ClObjectDict['CadastralBlock'],
-            Name=ClObjectDict['Name'],
-            Floors=ClObjectDict['Floors'],
-            UndergroundFloors=ClObjectDict['UndergroundFloors'],
-            Area=ClObjectDict['Area'],
-            AssignationConsName = ClObjectDict['AssignationConsName'],
-            DegreeReadiness=ClObjectDict['DegreeReadiness'],
-            cllocation=locationQuerySet,
-            clobjecttype=objectTypeQuerySet,
-            classignationbuilding=assignationCodeQuerySet,
-            clexploitationchar=exploitationQuerySet,
-#            clementconstr=materialWallCodeQuerySet,
-            clcadcost=costQuerySet,
-            classignationcode=assignationCodeFlatQuerySet,
-            classignationtype=assignationTypeFlatQuerySet)
+        try:
+            clobject.update(CadastralNumber=ClObjectDict['CadastralNumber'],
+    #            DateCreated=ClObjectDict['DateCreated'],
+                DateCreatedDoc=ClObjectDict['DateCreatedDoc'],
+                DateRemoved=ClObjectDict['DateRemoved'],
+                DateCadastralRecord=ClObjectDict['DateCadastralRecord'],
+                CadastralBlock=ClObjectDict['CadastralBlock'],
+                Name=ClObjectDict['Name'],
+                Floors=ClObjectDict['Floors'],
+                UndergroundFloors=ClObjectDict['UndergroundFloors'],
+                Area=ClObjectDict['Area'],
+                Inaccuracy=ClObjectDict['Inaccuracy'],
+                AssignationConsName = ClObjectDict['AssignationConsName'],
+                DegreeReadiness=ClObjectDict['DegreeReadiness'],
+                cllocation=locationQuerySet,
+                clobjecttype=objectTypeQuerySet,
+                classignationbuilding=assignationCodeQuerySet,
+                clexploitationchar=exploitationQuerySet,
+    #            clementconstr=materialWallCodeQuerySet,
+                clcadcost=costQuerySet,
+                classignationcode=assignationCodeFlatQuerySet,
+                classignationtype=assignationTypeFlatQuerySet,
+                clstate=objectStateQuerySet,
+                clzutype=parcelNameQuerySet,
+                cllanduse=categoryQuerySet,
+                clareacode=areaCodeQuerySet,
+                clunits=areaUnitQuerySet)
+        except:
+            raise Exception('Error update data')
         #уровни
         if objectType == '002001003000' or objectType == '002001009000':
             saveLevels(ClLevelsDictsList, clobject.first())
@@ -418,6 +546,9 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         #materialWallCode
         if materialWallCode:
             saveMaterialWall(materialWallCode, clobject.first())
+        #OldNumbers - ранее присвоеные номера saveOldNumbers
+        if oldNumbers:
+            saveOldNumbers(oldNumbers, clobject.first())
         #сохранение ключевых параметров для соружений
         if keyParam:
             saveKeyParametersData(keyParam, clobject.first())
@@ -470,47 +601,90 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             materialWallCodeQuerySet = materialWallCodeTemp[0]
         else:
             materialWallCodeQuerySet = None
-        #вип объекта
+        #вид объекта
         #обновляем вид объекта
         if objectType == '002001003000' and not assCode['assignationFlatCode'] and not assCode['assignationFlatType']:
             objectTypeQuerySet = ClObjectType.objects.filter(ObjectTypeCode='002001009000').first()
         else:
             objectTypeQuerySet = ClObjectType.objects.filter(ObjectTypeCode=objectType).first()
+        #статус объекта
+        if ClObjectDict['State']:
+            objectStateQuerySet = ClState.objects.filter(statusCode=ClObjectDict['State']).first()
+        else:
+            objectStateQuerySet = None
+        #вид ЗУ
+        if ClObjectDict['ParcelName']:
+            parcelNameQuerySet = ClZuTypes.objects.filter(objectTypeCode=ClObjectDict['ParcelName']).first()
+        else:
+            parcelNameQuerySet = None
+        #категория ЗУ
+        if ClObjectDict['Category']:
+            categoryQuerySet = ClLandUse.objects.filter(landUseCode=ClObjectDict['Category']).first()
+        else:
+            categoryQuerySet = None
+        #разрешенное использование ЗУ
+        if utilizationDict:
+            utilizationQuerySet = saveUtilizationsData(utilizationDict)
+        else:
+            utilizationQuerySet = None
+        #классификаторы для площади ЗУ
+        if 'areaCode' in areasDict:
+            areaCodeQuerySet = ClAreaCode.objects.filter(areaCode=areasDict['areaCode']).first()
+        else:
+            areaCodeQuerySet = None
+        if 'unit' in areasDict:
+            areaUnitQuerySet = ClUnits.objects.filter(unitCode=areasDict['unit']).first()
+        else:
+            areaUnitQuerySet = None
         #эксплуатационные характеристики
         if ClExploitationDict:
             exploitationQuerySet = saveExploitationData(ClExploitationDict)
         else:
             exploitationQuerySet = None
         #сохраняем объект
-        objectQuerySet = ClObject(CadastralNumber=ClObjectDict['CadastralNumber'],
-                                    DateCreated=ClObjectDict['DateCreated'],
-                                    DateRemoved=ClObjectDict['DateRemoved'],
-                                    DateCadastralRecord=ClObjectDict['DateCadastralRecord'],
-                                    CadastralBlock=ClObjectDict['CadastralBlock'],
-                                    Name=ClObjectDict['Name'],
-                                    Floors=ClObjectDict['Floors'],
-                                    UndergroundFloors=ClObjectDict['UndergroundFloors'],
-                                    Area=ClObjectDict['Area'],
-                                    DegreeReadiness=ClObjectDict['DegreeReadiness'],
-                                    AssignationConsName = ClObjectDict['AssignationConsName'],
-                                    cllocation=locationQuerySet,
-                                    clobjecttype=objectTypeQuerySet,
-                                    classignationbuilding=assignationCodeQuerySet,
-                                    clexploitationchar=exploitationQuerySet,
-                                    #clementconstr=materialWallCodeQuerySet,
-                                    clcadcost=costQuerySet,
-                                    classignationcode=assignationCodeFlatQuerySet,
-                                    classignationtype=assignationTypeFlatQuerySet)
-        objectQuerySet.save()
+        try:
+            objectQuerySet = ClObject(CadastralNumber=ClObjectDict['CadastralNumber'],
+                                        DateCreated=ClObjectDict['DateCreated'],
+                                        DateCreatedDoc=ClObjectDict['DateCreatedDoc'],
+                                        DateRemoved=ClObjectDict['DateRemoved'],
+                                        DateCadastralRecord=ClObjectDict['DateCadastralRecord'],
+                                        CadastralBlock=ClObjectDict['CadastralBlock'],
+                                        Name=ClObjectDict['Name'],
+                                        Floors=ClObjectDict['Floors'],
+                                        UndergroundFloors=ClObjectDict['UndergroundFloors'],
+                                        Area=ClObjectDict['Area'],
+                                        Inaccuracy=ClObjectDict['Inaccuracy'],
+                                        DegreeReadiness=ClObjectDict['DegreeReadiness'],
+                                        AssignationConsName = ClObjectDict['AssignationConsName'],
+                                        cllocation=locationQuerySet,
+                                        clobjecttype=objectTypeQuerySet,
+                                        classignationbuilding=assignationCodeQuerySet,
+                                        clexploitationchar=exploitationQuerySet,
+                                        #clementconstr=materialWallCodeQuerySet,
+                                        clcadcost=costQuerySet,
+                                        classignationcode=assignationCodeFlatQuerySet,
+                                        classignationtype=assignationTypeFlatQuerySet,
+                                        clstate=objectStateQuerySet,
+                                        clzutype=parcelNameQuerySet,
+                                        cllanduse=categoryQuerySet,
+                                        clareacode=areaCodeQuerySet,
+                                        clunits=areaUnitQuerySet,
+                                        clutilization=utilizationQuerySet)
+            objectQuerySet.save()
+        except:
+            raise Exception('Error save data')
         #уровни
         if objectType == '002001003000' or objectType == '002001009000':
             saveLevels(ClLevelsDictsList, objectQuerySet)
         #формируем и сохраняем список родительских кадастровых номеров для зданий, сооружений и ОНС
         if parentCadNums:
             saveParentCadastarlNumbers(parentCadNums, objectQuerySet)
+        #OldNumbers - ранее присвоеные номера saveOldNumbers
+        if oldNumbers:
+            saveOldNumbers(oldNumbers, objectQuerySet)
         #материал стен
         if materialWallCode:
-            saveMaterialWall(materialWallCode, clobject)
+            saveMaterialWall(materialWallCode, objectQuerySet)
         #сохранение ключевых параметров для сооружения
         if keyParam:
             saveKeyParametersData(keyParam, objectQuerySet)
@@ -523,98 +697,158 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
 #    save_time['save_time'] = time.time() - save_time_start
     return True
 #-----------------------------------------
-
+def saveUtilizationsData(utilizationDict, utilizationQuerySet=None):
+    """
+    запись сведений о виде разрешенного использования для ЗУ
+    """
+    try:
+        landUse = ClUtilizationsLandUse.objects.filter(utilizationCode=utilizationDict['landUse']).first()
+        kind = ClUtilizationsCode.objects.filter(utilizationCode=utilizationDict['kind']).first()
+        if utilizationQuerySet:
+            utilizationQuerySet.update(utilizationByDoc=utilizationDict['byDoc'],
+                                        utilizationCode=kind,
+                                        utilizationLandUseCode=landUse)
+        else:
+            utilizationQuerySet = ClUtilizations(utilizationByDoc=utilizationDict['byDoc'],
+                                        utilizationCode=kind,
+                                        utilizationLandUseCode=landUse)
+            utilizationQuerySet.save()
+    except:
+        raise Exception('Error save utilization')
+    return utilizationQuerySet
+#-----------------------------------------
 def saveLevels(ClLevelsDictsList, objectQuerySet=None):
     """
     сохранение уровней
     """
-    levels = ClLevels.objects.filter(clobject_id=objectQuerySet.id)
-    if levels:
-        levels.delete()
-    for item in ClLevelsDictsList:
-        levelsSet = ClLevels(Number_OnPlan=item['Number_OnPlan'], 
-                        LevelNumber=item['LevelNumber'], 
-                        LevelType=item['LevelType'],
-                        clobject=objectQuerySet)
-        levelsSet.save()
+    try:
+        levels = ClLevels.objects.filter(clobject_id=objectQuerySet.id)
+        if levels:
+            levels.delete()
+        for item in ClLevelsDictsList:
+            levelsSet = ClLevels(Number_OnPlan=item['Number_OnPlan'], 
+                            LevelNumber=item['LevelNumber'], 
+                            LevelType=item['LevelType'],
+                            clobject=objectQuerySet)
+            levelsSet.save()
+    except:
+        raise Exception('Error save levels')
 #-----------------------------------------
 def saveKeyParametersData(keyParam, objectQuerySet=None):
     """
     сохранение ключевых параметров для Сооружений и ОНС
     """
-    keyparams = ClKeyParam.objects.filter(clobject_id=objectQuerySet.id)
-    if keyparams:
-        keyparams.delete()
-    for item in keyParam:
-        keyParamTypeSet = ClKeyParamTypes.objects.filter(ClKeyParamCode=item['Type'])
-        keyParamSet = ClKeyParam(value=float(item['Value']), valuetype=keyParamTypeSet[0], clobject=objectQuerySet)
-        keyParamSet.save()
+    try:
+        keyparams = ClKeyParam.objects.filter(clobject_id=objectQuerySet.id)
+        if keyparams:
+            keyparams.delete()
+        for item in keyParam:
+            keyParamTypeSet = ClKeyParamTypes.objects.filter(ClKeyParamCode=item['Type'])
+            keyParamSet = ClKeyParam(value=float(item['Value']), valuetype=keyParamTypeSet[0], clobject=objectQuerySet)
+            keyParamSet.save()
+    except:
+        raise Exception('Error save key parameters (only for constructions or uncompleted constructions)')
 
 def saveParentCadastarlNumbers(parentCadNums, objectQuerySet=None):
     """
     созданение кадастровых номеров ЗУ являющихся родителями для Зданий, Сооружений и ОНС
     """
-    numbers = ClParenCadastralNumbers.objects.filter(clobject_id=objectQuerySet.id)
-    if numbers:
-        numbers.delete()
-        pass
-    for cadNum in parentCadNums:
-        cadNumSet = ClParenCadastralNumbers(CadastralNumber=cadNum, clobject=objectQuerySet)
-        cadNumSet.save()
+    try:
+        numbers = ClParenCadastralNumbers.objects.filter(clobject_id=objectQuerySet.id)
+        if numbers:
+            numbers.delete()
+            pass
+        for cadNum in parentCadNums:
+            cadNumSet = ClParenCadastralNumbers(CadastralNumber=cadNum, clobject=objectQuerySet)
+            cadNumSet.save()
+    except:
+        raise Exception('Error save parent cadastral numbers')
 
 #-------------------
 def saveMaterialWall(materialWallCode, objectQuerySet=None):
     """
     сохранение материала стен
     """
-    walls = ClElementConstrObj.objects.filter(clobject_id=objectQuerySet.id)
-    if walls:
-        walls.delete()
-    for wall in materialWallCode:
-        wallDict = ClElementConstr.objects.filter(ClElementConstrCode=wall)
-        wallSet = ClElementConstrObj(valuetype=wallDict[0], clobject=objectQuerySet)
-        wallSet.save()
-
+    try:
+        walls = ClElementConstrObj.objects.filter(clobject_id=objectQuerySet.id)
+        if walls:
+            walls.delete()
+        for wall in materialWallCode:
+            wallDict = ClElementConstr.objects.filter(ClElementConstrCode=wall)
+            wallSet = ClElementConstrObj(valuetype=wallDict[0], clobject=objectQuerySet)
+            wallSet.save()
+    except:
+        raise Exception('Error save material wall`s')
 #-------------------
-
+def saveOldNumbers(oldNumbers, objectQuerySet=None):
+    """
+    сохранение ранее присвоеных номеров
+    """
+    try:
+        numbers = ClOldNumbers.objects.filter(clobject_id=objectQuerySet.id)
+        if numbers:
+            numbers.delete()
+        for num in oldNumbers:
+            if 'Type' in num:
+                numDict = ClOldNumbersTypes.objects.filter(oldNumberCode=num['Type'])
+            else:
+                numDict=None
+            if 'Number' in num:
+                numSet = ClOldNumbers(oldNumber=num['Number'], oldNumberCode=numDict[0], clobject=objectQuerySet)
+                numSet.save()
+            elif numDict:
+                numSet = ClOldNumbers(oldNumber=None, oldNumberCode=numDict, clobject=objectQuerySet)
+                numSet.save()
+            else:
+                numSet = ClOldNumbers(oldNumber=None, oldNumberCode=None, clobject=objectQuerySet)
+                numSet.save()
+    except:
+        raise Exception('Error save old numbers')
+#-------------------
 def saveExploitationData(ClExploitationDict, exploitationQuerySet=None):
     """
     запись сведений о годе ввода/постройки
     """
-    exploitationQueryTemp = exploitationQuerySet
-    if exploitationQueryTemp:
-        exploitationQueryTemp.update(year_build=ClExploitationDict['year_build'],
-                                                    year_used=ClExploitationDict['year_used'])
-    else:
-        exploitationQueryTemp = ClExploitationChar(year_build=ClExploitationDict['year_build'],
-                                                    year_used=ClExploitationDict['year_used'])
-        exploitationQueryTemp.save()
+    try:
+        exploitationQueryTemp = exploitationQuerySet
+        if exploitationQueryTemp:
+            exploitationQueryTemp.update(year_build=ClExploitationDict['year_build'],
+                                                        year_used=ClExploitationDict['year_used'])
+        else:
+            exploitationQueryTemp = ClExploitationChar(year_build=ClExploitationDict['year_build'],
+                                                        year_used=ClExploitationDict['year_used'])
+            exploitationQueryTemp.save()
+    except:
+        raise Exception('Error save exploitation data')
     return exploitationQueryTemp
 
 def saveCostData(ClCostDict, costQuerySet=None):
     """
     запись сведений о КС
     """
-    costQuerySetTemp = costQuerySet
-    if ClCostDict['value']:
-        costValue = float(ClCostDict['value'])
-    else:
-        costValue = None
-    if costQuerySetTemp:
-        costQuerySetTemp.update(value=costValue,
-                                    unit=ClCostDict['unit'],
-                                    date_entering=ClCostDict['date_entering'],
-                                    date_approval=ClCostDict['date_approval'],
-                                    date_application=ClCostDict['date_application'],
-                                    date_valuation=ClCostDict['date_valuation'])
-    else:
-        costQuerySetTemp = ClCadCost(value=costValue,
-                                    unit=ClCostDict['unit'],
-                                    date_entering=ClCostDict['date_entering'],
-                                    date_approval=ClCostDict['date_approval'],
-                                    date_application=ClCostDict['date_application'],
-                                    date_valuation=ClCostDict['date_valuation'])
-        costQuerySetTemp.save()
+    try:
+        costQuerySetTemp = costQuerySet
+        if ClCostDict['value']:
+            costValue = float(ClCostDict['value'])
+        else:
+            costValue = None
+        if costQuerySetTemp:
+            costQuerySetTemp.update(value=costValue,
+                                        unit=ClCostDict['unit'],
+                                        date_entering=ClCostDict['date_entering'],
+                                        date_approval=ClCostDict['date_approval'],
+                                        date_application=ClCostDict['date_application'],
+                                        date_valuation=ClCostDict['date_valuation'])
+        else:
+            costQuerySetTemp = ClCadCost(value=costValue,
+                                        unit=ClCostDict['unit'],
+                                        date_entering=ClCostDict['date_entering'],
+                                        date_approval=ClCostDict['date_approval'],
+                                        date_application=ClCostDict['date_application'],
+                                        date_valuation=ClCostDict['date_valuation'])
+            costQuerySetTemp.save()
+    except:
+        raise Exception('Error save cost data')
     return costQuerySetTemp
 
 def saveLocationData(ClLocationDict, locationQuerySet=None):
@@ -622,52 +856,104 @@ def saveLocationData(ClLocationDict, locationQuerySet=None):
     запись сведений об адресе в БД.
     """
     locationQuerySetTemp = locationQuerySet
-    if locationQuerySetTemp:
-        locationQuerySetTemp.update(okato=ClLocationDict['okato'],
-                                kladr=ClLocationDict['kladr'],
-                                postal=ClLocationDict['postal'],
-                                region=ClLocationDict['region'],
-                                district_type=ClLocationDict['district_type'],
-                                district_name=ClLocationDict['district_name'],
-                                city_type=ClLocationDict['city_type'],
-                                city_name=ClLocationDict['city_name'],
-                                locality_type=ClLocationDict['locality_type'],
-                                locality_name=ClLocationDict['locality_name'],
-                                street_type=ClLocationDict['street_type'],
-                                street_name=ClLocationDict['street_name'],
-                                home_type=ClLocationDict['home_type'],
-                                home_number=ClLocationDict['home_number'],
-                                corp_type=ClLocationDict['corp_type'],
-                                corp_number=ClLocationDict['corp_number'],
-                                str_type=ClLocationDict['str_type'],
-                                str_number=ClLocationDict['str_number'],
-                                apart_type=ClLocationDict['apart_type'],
-                                apart_number=ClLocationDict['apart_number'],
-                                note=ClLocationDict['note'])
-    else:
-        locationQuerySetTemp = ClLocation(okato=ClLocationDict['okato'],
-                                kladr=ClLocationDict['kladr'],
-                                postal=ClLocationDict['postal'],
-                                region=ClLocationDict['region'],
-                                district_type=ClLocationDict['district_type'],
-                                district_name=ClLocationDict['district_name'],
-                                city_type=ClLocationDict['city_type'],
-                                city_name=ClLocationDict['city_name'],
-                                locality_type=ClLocationDict['locality_type'],
-                                locality_name=ClLocationDict['locality_name'],
-                                street_type=ClLocationDict['street_type'],
-                                street_name=ClLocationDict['street_name'],
-                                home_type=ClLocationDict['home_type'],
-                                home_number=ClLocationDict['home_number'],
-                                corp_type=ClLocationDict['corp_type'],
-                                corp_number=ClLocationDict['corp_number'],
-                                str_type=ClLocationDict['str_type'],
-                                str_number=ClLocationDict['str_number'],
-                                apart_type=ClLocationDict['apart_type'],
-                                apart_number=ClLocationDict['apart_number'],
-                                note=ClLocationDict['note'])
-        locationQuerySetTemp.save()
+    try:
+        if locationQuerySetTemp:
+            locationQuerySetTemp.update(okato=ClLocationDict['okato'],
+                                    kladr=ClLocationDict['kladr'],
+                                    postal=ClLocationDict['postal'],
+                                    region=ClLocationDict['region'],
+                                    district_type=ClLocationDict['district_type'],
+                                    district_name=ClLocationDict['district_name'],
+                                    city_type=ClLocationDict['city_type'],
+                                    city_name=ClLocationDict['city_name'],
+                                    locality_type=ClLocationDict['locality_type'],
+                                    locality_name=ClLocationDict['locality_name'],
+                                    street_type=ClLocationDict['street_type'],
+                                    street_name=ClLocationDict['street_name'],
+                                    home_type=ClLocationDict['home_type'],
+                                    home_number=ClLocationDict['home_number'],
+                                    corp_type=ClLocationDict['corp_type'],
+                                    corp_number=ClLocationDict['corp_number'],
+                                    str_type=ClLocationDict['str_type'],
+                                    str_number=ClLocationDict['str_number'],
+                                    apart_type=ClLocationDict['apart_type'],
+                                    apart_number=ClLocationDict['apart_number'],
+                                    note=ClLocationDict['note'])
+        else:
+            locationQuerySetTemp = ClLocation(okato=ClLocationDict['okato'],
+                                    kladr=ClLocationDict['kladr'],
+                                    postal=ClLocationDict['postal'],
+                                    region=ClLocationDict['region'],
+                                    district_type=ClLocationDict['district_type'],
+                                    district_name=ClLocationDict['district_name'],
+                                    city_type=ClLocationDict['city_type'],
+                                    city_name=ClLocationDict['city_name'],
+                                    locality_type=ClLocationDict['locality_type'],
+                                    locality_name=ClLocationDict['locality_name'],
+                                    street_type=ClLocationDict['street_type'],
+                                    street_name=ClLocationDict['street_name'],
+                                    home_type=ClLocationDict['home_type'],
+                                    home_number=ClLocationDict['home_number'],
+                                    corp_type=ClLocationDict['corp_type'],
+                                    corp_number=ClLocationDict['corp_number'],
+                                    str_type=ClLocationDict['str_type'],
+                                    str_number=ClLocationDict['str_number'],
+                                    apart_type=ClLocationDict['apart_type'],
+                                    apart_number=ClLocationDict['apart_number'],
+                                    note=ClLocationDict['note'])
+            locationQuerySetTemp.save()
+    except:
+        raise Exception('Error save location')
     return locationQuerySetTemp
+#-------------------------
+def parseUtilizationNode(utilizationNode):
+    """
+    парсинг узла Utilization - разрешенное использование
+    """
+    utilizationDict = {}
+    landUse = utilizationNode.get('LandUse')
+    if landUse:
+        utilizationDict['landUse'] = landUse
+    else:
+        utilizationDict['landUse'] = None
+    utilizationKind = utilizationNode.get('Kind')
+    if utilizationKind:
+        utilizationDict['kind'] = utilizationKind
+    else:
+        utilizationDict['kind'] = None
+    utilizationByDoc = utilizationNode.get('ByDoc')
+    if utilizationByDoc:
+        utilizationDict['byDoc'] = utilizationByDoc
+    else:
+        utilizationDict['byDoc'] = None
+    return utilizationDict
+#-------------------------
+def parseXMLareasNode(areasNode):
+    """
+    парсинг узла площади для ЗУ
+    """
+    areas = {}
+    areaCode = areasNode.xpath('./AreaCode')
+    if areaCode:
+        areas['areaCode'] = areaCode[0].text
+    else:
+        areas['areaCode'] = None
+    area = areasNode.xpath('./Area')
+    if area:
+        areas['area'] = area[0].text
+    else:
+        areas['area'] = None
+    areaUnit = areasNode.xpath('./Unit')
+    if areaUnit:
+        areas['unit'] = areaUnit[0].text
+    else:
+        areas['unit'] = None
+    areaInaccuracy = areasNode.xpath('./Inaccuracy')
+    if areaInaccuracy:
+        areas['inaccuracy'] = areaInaccuracy[0].text
+    else:
+        areas['inaccuracy'] = None
+    return areas
 
 def parseXMLassignationFlatsNode(assignationNode, assignationCode):
     """
@@ -688,7 +974,27 @@ def parseXMLassignationFlatsNode(assignationNode, assignationCode):
         assignationCode['assignationFlatCode'] = None
         assignationCode['assignationFlatType'] = None
     return assignationCode
-
+#------------------------------------------
+def parseXMLoldnumbersNode(oldNumbersNode):
+    """
+    парсим узел Old_Numbers
+    """
+    oldNum = []
+    oldNumElement = {}
+    for item in oldNumbersNode:
+        numberType = item.get('Type')
+        if numberType:
+            oldNumElement['Type'] = numberType
+        else:
+            oldNumElement['Type'] = None
+        number = item.get('Number')
+        if number:
+            oldNumElement['Number'] = number
+        else:
+            oldNumElement['Number'] = None
+        oldNum.append(oldNumElement)
+    return oldNum
+#------------------------------------------
 def parseXMLconstrElementNode(constrElementNode):
     """
     парсинг узла Elements_Construct - материал стен
@@ -698,7 +1004,7 @@ def parseXMLconstrElementNode(constrElementNode):
     for item in constrElementNode:
         constrElement.append(item.get('Wall'))
     return constrElement
-
+#------------------------------------------
 def parseXMLparentCadnumNode(parentNode):
     """
     парсим узел Parent_CadastralNumbers - родительские кадастровые номера

@@ -61,4 +61,10 @@
         </div>
     </div>
 </div>
+<div class="col-12">
+    {% for e, l in errors %}
+        <a href="{{ l }}" class="p-error">{{ e }}</a>
+        <br>
+    {% endfor %}
+</div>
 {% endblock %}

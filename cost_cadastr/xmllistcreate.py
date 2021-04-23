@@ -741,12 +741,9 @@ def createListForRating(dateStart, dateEnd, objCount, cadNumList):
     objCount - количество объектов в одном XML
     """
     if cadNumList:
-        objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
-        objListChanged = ClObject.objects.filter(DateCadastralRecord__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                    datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).exclude(
-                                                                        DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
-                                                                        datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
+        #дату не учитываем, выгружаем актуальную на текущий момент информацию по списку кадастровых номеров объектов
+        objListCreated = ClObject.objects.filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
+        objListChanged = ClObject.objects.filter(DateRemoved__isnull=True).filter(CadastralNumber__in=cadNumList)
     else:
         objListCreated = ClObject.objects.filter(DateCreated__range=[datetime.datetime.strptime(dateStart, "%Y-%m-%d").date(), 
                                                                     datetime.datetime.strptime(dateEnd, "%Y-%m-%d").date()]).filter(DateRemoved__isnull=True)
