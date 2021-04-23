@@ -556,15 +556,27 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
         if objectType == '002001003000' and ClObjectDict['cadastralNumberOKS']:
             cadnumparent = ClObject.objects.filter(CadastralNumber=ClObjectDict['cadastralNumberOKS'])
             cadnumrelation = ClCadNumNum.objects.filter(cad_num_child=clobject[0].pk)
-            if cadnumparent and cadnumrelation and not ClObjectDict['DateRemoved']:
+            if cadnumparent and cadnumrelation:
                 cadnumrelation.update(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
-            elif cadnumparent and not ClObjectDict['DateRemoved']:
+            elif cadnumparent:
                 #create relation
                 cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
                 cadnumrelation.save()
             elif cadnumrelation and not cadnumparent: #ClObjectDict['DateRemoved'] убрал условие удаление связи с архивным родителем
                 cadnumrelation.delete()
-
+        #связь ОКС с ЗУ many to many
+        if objectType in ('002001002000', '002001004000', '002001005000') and parentCadNums:
+            for item in parentCadNums:
+                cadnumparent = ClObject.objects.filter(CadastralNumber=item)
+                if cadnumparent:
+                    isRelation = ClCadNumNum.objects.filter(cad_num_parent=cadnumparent[0].pk, cad_num_child=clobject[0].pk)
+                else:
+                    isRelation = None
+                if isRelation:
+                    isRelation.delete()
+                if cadnumparent:
+                    cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=clobject[0])
+                    cadnumrelation.save()
     else:
         #создание нового объекта в БД
         #адрес
@@ -694,6 +706,16 @@ def saveData(ClObjectDict, ClLocationDict, ClCostDict, assCode, keyParam, materi
             if cadnumparent and not ClObjectDict['DateRemoved']:
                 cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=objectQuerySet)
                 cadnumrelation.save()
+        #связь ОКС с ЗУ many to many
+        if objectType in ('002001002000', '002001004000', '002001005000') and parentCadNums:
+            for item in parentCadNums:
+                cadnumparent = ClObject.objects.filter(CadastralNumber=item)
+                isRelation = ClCadNumNum.objects.filter(cad_num_parent=cadnumparent[0], cad_num_child=objectQuerySet)
+                if isRelation:
+                    isRelation.delete()
+                if cadnumparent:
+                    cadnumrelation = ClCadNumNum(cad_num_parent=cadnumparent[0], cad_num_child=objectQuerySet)
+                    cadnumrelation.save()
 #    save_time['save_time'] = time.time() - save_time_start
     return True
 #-----------------------------------------

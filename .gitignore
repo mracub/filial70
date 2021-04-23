@@ -8,6 +8,15 @@
 __pycache__/
 migrations/*
 media/
+cost_cadastr/__pycache__/
+cost_cadastr/migrations/
+ipd_xml_to_mif/__pycache__/
+ipd_xml_to_mif/migrations/
+luckygardener/__pycache__/
+luckygardener/migrations/
+sheduler/__pycache__/
+sheduler/migrations/
+fgbusite/__pycache__/
 static/bootstrap
 static/bootstrap_select
 static/bootstrap_table
