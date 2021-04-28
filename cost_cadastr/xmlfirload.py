@@ -9,16 +9,80 @@ from cost_cadastr.models import ClAssignationBuilding, ClObjectType, ClParenCada
 from cost_cadastr.models import ClCadCost, ClKeyParam, ClKeyParamTypes, ClLocation, ClLevels, ClElementConstrObj
 from cost_cadastr.models import ClState, ClZuTypes, ClAreaCode, ClUnits, ClOldNumbersTypes
 from cost_cadastr.models import ClOldNumbers, ClUtilizationsCode, ClUtilizationsLandUse
-from cost_cadastr.models import ClUtilizations, ClLandUse
+from cost_cadastr.models import ClUtilizations, ClLandUse, ClDataList
 from lxml import etree, objectify
 import uuid
 import glob
 from zipfile import ZipFile
-import datetime
+from datetime import datetime, date, time
 import time
 import dateutil.parser
 from decimal import Decimal
+import requests
 
+#-----------------------
+def saveDbFileFIR(dateStart, dateEnd, date_time_file_load, filepath_on_storage, file_url):
+    """
+    сохранение данных о файле ФИР в БД
+    """
+    try:
+        cldatalist = ClDataList(date_start=dateStart, date_end=dateEnd, 
+                    date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
+        cldatalist.save()
+    except:
+        return False
+    return True
+#------------------------
+def createFileURL(dirName, fileName):
+    """
+    возвращает URL файла
+    """
+    file_url = dirName.replace(settings.MEDIA_ROOT, '').replace('\\', '/') + '/' + fileName
+    file_url = '/media' + file_url
+    return file_url
+#------------------------
+def loadDataFIR(dateStart, dateEnd, dir_name, cadNums=None):
+    """
+    загрузка данных из ФИР
+    """
+    URL = 'http://ir-app-lk-bal-01.prod.egrn:8080/firtir/getfirzip/70/'
+    dateStart = datetime.strptime(dateStart, "%Y-%m-%d").strftime("%d.%m.%Y")
+    dateEnd = datetime.strptime(dateEnd, "%Y-%m-%d").strftime("%d.%m.%Y")
+    if cadNums:
+        dataURL = URL + cadNums
+        savePath = dir_name + 'package_fir_{0}.zip'.format(str(uuid.uuid1()))
+        try:
+            r = requests.get(dataURL)
+            r.raise_for_status()
+        except Exception as err:
+            return False, err
+        else:
+            with open(savePath, 'wb') as f:
+                f.write(r.content)
+            return True, savePath
+    else:
+        periodURL = URL + dateStart + '/' + dateEnd + '/true/true/false/false'
+        savePath = dir_name + 'package_fir_{0}.zip'.format(str(uuid.uuid1()))
+        try:
+            r = requests.get(periodURL)
+            r.raise_for_status()
+        except Exception as err:
+            return False, err
+        else:
+            with open(savePath, 'wb') as f:
+                f.write(r.content)
+            return True, savePath
+
+#------------------------
+def compareDate(date1, date2):
+    """
+    сравнение дат
+    """
+    if datetime.strptime(date1, '%Y-%m-%d') <= datetime.strptime(date2, '%Y-%m-%d'):
+        return True
+    else:
+        return False
+#------------------------
 def createDir(dirpath):
     """
     создаем директорию в формате uuid
@@ -172,7 +236,7 @@ def parseXMLobjectNode(xmlNode, objectType, fileName):
     logDir = os.path.dirname(fileName)
     logFile = logDir + '/' + 'data.log'
     with open(os.path.normpath(logFile), 'a') as mylog:
-        now = datetime.datetime.now()
+        now = datetime.now()
         mylog.write(os.path.basename(fileName) + ' ' + str(len(xmlNode)) + ' ' + now.strftime("%d/%m/%Y %H:%M:%S"))
         mylog.write('\n')
 

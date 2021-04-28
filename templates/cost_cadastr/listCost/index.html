@@ -54,6 +54,10 @@
 <div class="col-12">
     <div class="btn-position">
         <div class="btn-style">
+            <button type="button" class="btn btn btn-outline-success" data-toggle="modal"
+                data-target="#selectParam">Поиск объекта</button>
+        </div>
+        <div class="btn-style">
             <form action="/cost_cadastr/cl/load/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="submit" class="btn btn-outline-success" value="Загрузить сведения за период">
@@ -62,6 +66,10 @@
     </div>
 </div>
 <div class="col-12">
+    {% if perror %}
+        <p class="p-error">{{ perror }}</p>
+        <br>
+    {% endif %}
     {% for e, l in errors %}
         <a href="{{ l }}" class="p-error">{{ e }}</a>
         <br>

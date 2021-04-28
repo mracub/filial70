@@ -8,10 +8,34 @@
             <div class="col">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <div class="custom-file mb-3">
-                            <input type="file" class="custom-file-input" id="files_fir" name="files_fir" accept=".zip" required multiple
-                                title="Выберите файл выгрузки в ФИР"/>
-                            <label class="custom-file-label" for="files_fir" data-browse="Выберите файл">Выберите файл(архив) выгрузки сведений в ФИР...</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="loadselect" id="periodselect" value="period" checked>
+                            <label class="form-check-label" for="periodselect">Выбрать период загрузки</label>
+                            <div class="custom-file mb-3">
+                                <label for="date-start" class="col-6 col-form-label">Дата начала периода</label>
+                                <input class="form-control" type="date" id="date-start" name="date-start" required>
+                                <label for="date-end" class="col-6 col-form-label">Дата окончания периода</label>
+                                <input class="form-control" type="date" id="date-end" name="date-end" required>                   
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="loadselect" id="fileselect" value="file">
+                            <label class="form-check-label" for="fileselect">Выбрать файл для загрузки</label>
+                            <div class="custom-file mb-3">
+                                <input type="file" class="custom-file-input" id="files_fir" name="files_fir" accept=".zip" required multiple
+                                    title="Выберите файл выгрузки в ФИР" disabled/>
+                                <label class="custom-file-label" for="files_fir" data-browse="Выберите файл">Выберите файл(архив) выгрузки сведений в ФИР...</label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="loadselect" id="objectselect" value="object">
+                            <label class="form-check-label" for="objectselect">Загрузка сведений по кадастровому номеру объекта</label>
+                            <div class="custom-file mb-3">
+                                <input class="form-control" id="cadnum" name="cadnum" type="text" placeholder="Укажите кадастровый номер объекта" required disabled/>
+                            </div>
                         </div>
                     </div>
                     <!--<div class="form-group col-md-12">
@@ -56,5 +80,25 @@
             $('#showLoader').modal({backdrop: 'static', keyboard: false})
             $('#showLoader').modal('show');
         });
+        $(document).on('change', 'input:radio[id="periodselect"]', function (event) {
+            $( "#files_fir" ).prop( "disabled", true );
+            $( "#date-start" ).prop( "disabled", false );
+            $( "#date-end" ).prop( "disabled", false );
+            $( "#cadnum" ).prop( "disabled", true );
+        });
+        $(document).on('change', 'input:radio[id="fileselect"]', function (event) {
+            $( "#files_fir" ).prop( "disabled", false );
+            $( "#date-start" ).prop( "disabled", true );
+            $( "#date-end" ).prop( "disabled", true );
+            $( "#cadnum" ).prop( "disabled", true );
+        });
+        $(document).on('change', 'input:radio[id="objectselect"]', function (event) {
+            $( "#files_fir" ).prop( "disabled", true );
+            $( "#date-start" ).prop( "disabled", true );
+            $( "#date-end" ).prop( "disabled", true );
+            $( "#cadnum" ).prop( "disabled", false );
+        });
+        $(":input").inputmask();
+        $("#cadnum").inputmask({"mask": "99:99:9999999:9[9][9][9][9]"});
     </script>
 {% endblock %}

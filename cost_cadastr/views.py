@@ -17,6 +17,7 @@ from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from lxml import etree, objectify
 import dateutil.parser
+import shutil
 
 
 # Create your views here.
@@ -75,8 +76,8 @@ def cl_index(request):
     """
     стартовая страница раздела загрузки сведений ФИР
     """
-    relevance = ClDataList.objects.latest('date_end').date_end
-    cldatalist = ClDataList.objects.all()
+    relevance = ClObject.objects.latest('DateCadastralRecord').DateCadastralRecord
+    cldatalist = ClDataList.objects.all().order_by('date_load').reverse()
     paginator = Paginator(cldatalist, 15)
     page_number = request.GET.get('page')
     page_cldatalist = paginator.get_page(page_number)
@@ -100,45 +101,93 @@ def cl_load_file(request):
     """
     error = []
     error_log_url = []
+    paramError = ''
     if request.method == 'POST':
         dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/'))
         if dir_name:
             date_time_file_load = datetime.now()
-            fs = FileSystemStorage(location=dir_name)
-            for f in request.FILES.getlist('files_fir'):
-                filename_on_storage = fs.save(f.name, f)
-                filepath_on_storage = fs.path(filename_on_storage)
-                file_url = dir_name.replace(settings.MEDIA_ROOT, '').replace('\\', '/') + '/' + filename_on_storage
-                file_url = '/media' + file_url
-                #парсим файл протокола и пишем данные в БД
-                file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
-                if not file_protocol_data['error']:
-                    cldatalist = ClDataList(date_start=file_protocol_data['dateStart'], date_end=file_protocol_data['dateEnd'], 
-                        date_load=date_time_file_load, files_fir=filepath_on_storage, files_fir_url=file_url)
-                    cldatalist.save()
-                    logerror = xmlfirload.parseXMLdata(file_protocol_data)
-                    if logerror:
-                        error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
-                        error_log_url.append('/media' + error_log_url_str)
-                        error.append('При загрузке сведений по одному или нескольким объектам возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+            if request.POST['loadselect'] == 'period':
+                dateSart = request.POST['date-start']
+                dateEnd = request.POST['date-end']
+                if dateSart and dateEnd and xmlfirload.compareDate(dateSart, dateEnd):
+                    loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name)
+                    if loadData[0]:
+                        #pass#load file to DB
+                        filepath_on_storage = shutil.copy(loadData[1], dir_name)
+                        filename_on_storage = os.path.basename(filepath_on_storage)
+                        file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
+                        file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                        if not file_protocol_data['error']:
+                            xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
+                            logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                            if logerror:
+                                error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                                error_log_url.append('/media' + error_log_url_str)
+                                error.append('При загрузке сведений по одному или нескольким объектам возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+                        else:
+                            error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
+                    else:
+                        paramError = loadData[1]
+                elif dateSart and dateEnd and not xmlfirload.compareDate(dateSart, dateEnd):
+                    paramError = 'Дата окончания периода должна быть больше или равна дате начала периода'
                 else:
-                    error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
+                    paramError = 'Необходимо выбрать дату начала и окончания периода'
+            elif request.POST['loadselect'] == 'file':
+                fs = FileSystemStorage(location=dir_name)
+                for f in request.FILES.getlist('files_fir'):
+                    filename_on_storage = fs.save(f.name, f)
+                    filepath_on_storage = fs.path(filename_on_storage)
+                    file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
+                    #парсим файл протокола и пишем данные в БД
+                    file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                    if not file_protocol_data['error']:
+                        xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
+                        logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                        if logerror:
+                            error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                            error_log_url.append('/media' + error_log_url_str)
+                            error.append('При загрузке сведений по одному или нескольким объектам возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+                    else:
+                        paramError = 'Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений'
+            else:
+                #проверить кадастровый номер на соовтетствие шаблону
+                dateSart = 'fake'
+                dateEnd = 'fake'
+                loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name)
+                if loadData[0]:
+                    #pass#load file to DB
+                    filepath_on_storage = shutil.copy(loadData[1], dir_name)
+                    filename_on_storage = os.path.basename(filepath_on_storage)
+                    file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
+                    file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                    if not file_protocol_data['error']:
+                        xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
+                        logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                        if logerror:
+                            error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                            error_log_url.append('/media' + error_log_url_str)
+                            error.append('При загрузке сведений возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+                    else:
+                        error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
+                else:
+                    paramError = loadData[1]
         else:
-            error = 'Ошибка сохранения файла'
+            paramError = 'Ошибка сохранения файла'
     else:
         pass
-    relevance = ClDataList.objects.latest('date_end').date_end
-    cldatalist = ClDataList.objects.all()
+    #relevance = ClDataList.objects.latest('date_end').date_end
+    relevance = ClObject.objects.latest('DateCadastralRecord').DateCadastralRecord
+    cldatalist = ClDataList.objects.all().order_by('date_load').reverse()
     paginator = Paginator(cldatalist, 15)
     page_number = request.GET.get('page')
     page_cldatalist = paginator.get_page(page_number)
     cldatalist_count = cldatalist.count()
     current_date = datetime.today()#.strftime('%Y-%m-%d')
     errors = zip(error, error_log_url)
-    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date, "relevance":relevance, "errors":errors}
+    data = {"cldatalist":page_cldatalist, "cldatalist_count":cldatalist_count, "current_date":current_date, "relevance":relevance, "errors":errors, "perror":paramError}
     response = render(request, 'cost_cadastr/listcost/index.html', data)
     return response
-
+#---------------------------------
 def cl_create_list(request):
     """
     формирование перечня для оценки
@@ -151,7 +200,7 @@ def cl_create_list(request):
         dateEnd = request.POST["list_date_end"]
         objCount = request.POST["ObjCountSelect"]
         if "createKNlist" in request.POST:
-            cadNumList = request.POST["cadnum"].split(",")
+            cadNumList = request.POST["cadnum"].split(";")
         else:
             cadNumList = None
         if xmllistcreate.createListForRating(dateStart, dateEnd, objCount, cadNumList): 
@@ -175,8 +224,7 @@ def cl_create_list(request):
         #data = {"error":"undefined error, request method is not POST"}
     response = render(request, 'cost_cadastr/listcost/lists.html', data)
     return response
-
-
+#---------------------------------
 def cost_cadastr(request):
     """
     стартовая страница раздела загрузка сведений о КС
@@ -189,7 +237,7 @@ def cost_cadastr(request):
     page_docs = paginator.get_page(page_number)
     data = {"docs":page_docs, "docs_count":docs_count}
     return HttpResponse(template.render(data, request))   
-
+#---------------------------------
 def cost_load_form(request):
     """
     раздел загрузки файлов с КС поступивших от ТОЦИК
