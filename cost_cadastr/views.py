@@ -201,58 +201,61 @@ def cl_update_object(request):
     template = loader.get_template('cost_cadastr/listcost/search.html')
     if request.method == 'POST':
         dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/'))
-        if 'cadnum' in request.POST:
-            cadnum =  request.POST['cadnum'].replace(' ', '')
-            #проверить кадастровый номер на соовтетствие шаблону
-            dateSart = 'fake'
-            dateEnd = 'fake'
-            loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name, request.POST['cadnum'])
-            if loadData[0]:
-                #pass#load file to DB
-                filepath_on_storage = shutil.copy(loadData[1], dir_name)
-                filename_on_storage = os.path.basename(filepath_on_storage)
-                file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
-                file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
-                if not file_protocol_data['error']:
-                    xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
-                    logerror = xmlfirload.parseXMLdata(file_protocol_data)
-                    if logerror:
-                        error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
-                        error_log_url.append('/media' + error_log_url_str)
-                        error.append('При загрузке сведений возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+        if dir_name:
+            date_time_file_load = datetime.now()
+            if 'cadnum' in request.POST:
+                cadnum =  request.POST['cadnum'].replace(' ', '')
+                #проверить кадастровый номер на соовтетствие шаблону
+                dateSart = 'fake'
+                dateEnd = 'fake'
+                loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name, request.POST['cadnum'])
+                if loadData[0]:
+                    #pass#load file to DB
+                    filepath_on_storage = shutil.copy(loadData[1], dir_name)
+                    filename_on_storage = os.path.basename(filepath_on_storage)
+                    file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
+                    file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                    if not file_protocol_data['error']:
+                        xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
+                        logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                        if logerror:
+                            error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                            error_log_url.append('/media' + error_log_url_str)
+                            error.append('При загрузке сведений возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+                    else:
+                        error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
                 else:
-                    error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
-            else:
-                paramError = 'Ошибка загрузки сведений из ФИР'  
-            cadnum = request.POST['cadnum']
-            obj = ClObject.objects.filter(CadastralNumber=cadnum)
-            if obj:
-                material = ClElementConstrObj.objects.filter(clobject=obj[0].id)
-                keyparam = ClKeyParam.objects.filter(clobject=obj[0].id)
-                if obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
-                    cadnumnum = ClCadNumNum.objects.filter(cad_num_child_id=obj[0].id)
-                    parentobj = ClObject.objects.filter(pk=cadnumnum.first().cad_num_parent.id)
+                    paramError = 'Ошибка загрузки сведений из ФИР'  
+                cadnum = request.POST['cadnum']
+                errors = zip(error, error_log_url)
+                obj = ClObject.objects.filter(CadastralNumber=cadnum)
+                if obj:
+                    material = ClElementConstrObj.objects.filter(clobject=obj[0].id)
+                    keyparam = ClKeyParam.objects.filter(clobject=obj[0].id)
+                    if obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                        cadnumnum = ClCadNumNum.objects.filter(cad_num_child_id=obj[0].id)
+                        parentobj = ClObject.objects.filter(pk=cadnumnum.first().cad_num_parent.id)
+                    else:
+                        parentobj = []
+                    if obj[0].clobjecttype.ObjectTypeCode in ('002001002000', '002001004000', '002001005000'):
+                        cadnumparent = ClParenCadastralNumbers.objects.filter(clobject=obj[0].id)
+                        cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                        cadnumchild = cadnumnum
+                        #cadnumchild = ClObject.objects.filter(pk__in=cadnumnum. )
+                    elif obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                        cadnumparent = parentobj
+                        cadnumchild = []
+                    elif obj[0].clobjecttype.ObjectTypeCode == '002001001000':
+                        cadnumparent = []
+                        cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                        cadnumchild = cadnumnum
                 else:
+                    material = []
+                    keyparam = []
                     parentobj = []
-                if obj[0].clobjecttype.ObjectTypeCode in ('002001002000', '002001004000', '002001005000'):
-                    cadnumparent = ClParenCadastralNumbers.objects.filter(clobject=obj[0].id)
-                    cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
-                    cadnumchild = cadnumnum
-                    #cadnumchild = ClObject.objects.filter(pk__in=cadnumnum. )
-                elif obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
-                    cadnumparent = parentobj
-                    cadnumchild = []
-                elif obj[0].clobjecttype.ObjectTypeCode == '002001001000':
                     cadnumparent = []
-                    cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
-                    cadnumchild = cadnumnum
-            else:
-                material = []
-                keyparam = []
-                parentobj = []
-                cadnumparent = []
-                cadnumchild = []
-            data = {"cadnum":cadnum, "obj":obj, "material":material, "keyparam":keyparam, "parentobj":parentobj, "cadnumparent":cadnumparent, "cadnumchild":cadnumchild, "errors":errors, "perror":paramError}        
+                    cadnumchild = []
+                data = {"cadnum":cadnum, "obj":obj, "material":material, "keyparam":keyparam, "parentobj":parentobj, "cadnumparent":cadnumparent, "cadnumchild":cadnumchild, "errors":errors, "perror":paramError}        
         return HttpResponse(template.render(data, request)) 
 #---------------------------------
 def cl_search_object(request):
