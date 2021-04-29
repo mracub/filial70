@@ -44,6 +44,8 @@ urlpatterns = [
     path('cost_cadastr/search/', cost_views.search),
     path('cost_cadastr/cl/', cost_views.cl_index),
     path('cost_cadastr/cl/load/', cost_views.cl_load_form),
+    path('cost_cadastr/cl/search/', cost_views.cl_search_object),
+    path('cost_cadastr/cl/update/', cost_views.cl_update_object),
     path('cost_cadastr/cl/loadf/', cost_views.cl_load_file),
     path('cost_cadastr/cl/createdlist/', cost_views.cl_create_list),
     path('cost_cadastr/psko/', cost_views.psko_index),

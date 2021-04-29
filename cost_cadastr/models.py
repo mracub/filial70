@@ -108,16 +108,21 @@ class ClElementConstr(models.Model):
     def __str__(self):
         return self.ClElementConstrName
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['ClElementConstrCode',]),
+        ]
+
 class ClCadCost(models.Model):
     """
     описывает кадастровую стоимость объекта
     """
     value = models.FloatField(default=None, blank=True, null=True)
     unit = models.CharField(max_length=64, default=None, blank=True, null=True)
-    date_entering = models.DateField(auto_now=False, default=None, blank=True, null=True)
-    date_approval = models.DateField(auto_now=False, default=None, blank=True, null=True)
-    date_application = models.DateField(auto_now=False, default=None, blank=True, null=True)
-    date_valuation = models.DateField(auto_now=False, default=None, blank=True, null=True)
+    date_entering = models.DateField(auto_now=False, default=None, blank=True, null=True)#дата внесения
+    date_approval = models.DateField(auto_now=False, default=None, blank=True, null=True)#дата утверждения
+    date_application = models.DateField(auto_now=False, default=None, blank=True, null=True)#дата начала применения
+    date_valuation = models.DateField(auto_now=False, default=None, blank=True, null=True)#дата определения
     doc_num = models.CharField(max_length=64, default=None, blank=True, null=True)
     doc_date = models.DateField(auto_now=False, default=None, blank=True, null=True)
     doc_name = models.CharField(max_length=256, default=None, blank=True, null=True)
@@ -210,6 +215,11 @@ class ClListRatingReady(models.Model):
 
     def __str_(self):
         return self.file_list_name
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['date_list_create',]),
+        ]
 
 class ClState(models.Model):
     """
@@ -380,6 +390,9 @@ class ClObject(models.Model):
 
     class Meta:
         indexes = [
+            models.Index(fields=['CadastralNumber',]),
+            models.Index(fields=['DateCreated',]),
+            models.Index(fields=['DateCadastralRecord',]),
             models.Index(fields=['CadastralNumber', 'DateCreated', 'DateCadastralRecord',]),
         ]
 #--------------

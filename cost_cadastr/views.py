@@ -6,7 +6,8 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
 from cost_cadastr.models import FilesCost, Docs, Object, CadastrCosts, FileDocs
-from cost_cadastr.models import ClDataList, ClObject, ClElementConstr, ClCadCost, ClKeyParam, ClCadNumNum, ClLocation, ClListRatingReady
+from cost_cadastr.models import ClDataList, ClObject, ClElementConstr, ClCadCost, ClKeyParam
+from cost_cadastr.models import ClCadNumNum, ClLocation, ClListRatingReady, ClElementConstrObj, ClParenCadastralNumbers
 from django.db import models
 from cost_cadastr import xmlparser
 from cost_cadastr import xmlfirload
@@ -153,7 +154,7 @@ def cl_load_file(request):
                 #проверить кадастровый номер на соовтетствие шаблону
                 dateSart = 'fake'
                 dateEnd = 'fake'
-                loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name)
+                loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name, request.POST['cadnum'])
                 if loadData[0]:
                     #pass#load file to DB
                     filepath_on_storage = shutil.copy(loadData[1], dir_name)
@@ -188,6 +189,114 @@ def cl_load_file(request):
     response = render(request, 'cost_cadastr/listcost/index.html', data)
     return response
 #---------------------------------
+def cl_update_object(request):
+    """
+    обновление/загрузка сведений об объекте
+    """
+    template = loader.get_template('cost_cadastr/listcost/search.html')
+    error = []
+    error_log_url = []
+    paramError = ''
+    data = {}
+    template = loader.get_template('cost_cadastr/listcost/search.html')
+    if request.method == 'POST':
+        dir_name = xmlfirload.createDir(os.path.normpath(settings.MEDIA_ROOT + '/cost_cadastr/data/fir_data_in/'))
+        if 'cadnum' in request.POST:
+            cadnum =  request.POST['cadnum'].replace(' ', '')
+            #проверить кадастровый номер на соовтетствие шаблону
+            dateSart = 'fake'
+            dateEnd = 'fake'
+            loadData = xmlfirload.loadDataFIR(dateSart, dateEnd, dir_name, request.POST['cadnum'])
+            if loadData[0]:
+                #pass#load file to DB
+                filepath_on_storage = shutil.copy(loadData[1], dir_name)
+                filename_on_storage = os.path.basename(filepath_on_storage)
+                file_url = xmlfirload.createFileURL(dir_name, filename_on_storage)
+                file_protocol_data = xmlfirload.parseXMLprotocol(filepath_on_storage)
+                if not file_protocol_data['error']:
+                    xmlfirload.saveDbFileFIR(file_protocol_data['dateStart'],file_protocol_data['dateEnd'], date_time_file_load,filepath_on_storage,file_url)
+                    logerror = xmlfirload.parseXMLdata(file_protocol_data)
+                    if logerror:
+                        error_log_url_str = logerror.replace(settings.MEDIA_ROOT, '').replace('\\', '/')
+                        error_log_url.append('/media' + error_log_url_str)
+                        error.append('При загрузке сведений возникла ошибка, см. лог файл {0}'.format(os.path.normpath(logerror)))
+                else:
+                    error.append('Ошибка парсинга файла протокола, проверьте корректность загружаемых сведений')
+            else:
+                paramError = 'Ошибка загрузки сведений из ФИР'  
+            cadnum = request.POST['cadnum']
+            obj = ClObject.objects.filter(CadastralNumber=cadnum)
+            if obj:
+                material = ClElementConstrObj.objects.filter(clobject=obj[0].id)
+                keyparam = ClKeyParam.objects.filter(clobject=obj[0].id)
+                if obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                    cadnumnum = ClCadNumNum.objects.filter(cad_num_child_id=obj[0].id)
+                    parentobj = ClObject.objects.filter(pk=cadnumnum.first().cad_num_parent.id)
+                else:
+                    parentobj = []
+                if obj[0].clobjecttype.ObjectTypeCode in ('002001002000', '002001004000', '002001005000'):
+                    cadnumparent = ClParenCadastralNumbers.objects.filter(clobject=obj[0].id)
+                    cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                    cadnumchild = cadnumnum
+                    #cadnumchild = ClObject.objects.filter(pk__in=cadnumnum. )
+                elif obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                    cadnumparent = parentobj
+                    cadnumchild = []
+                elif obj[0].clobjecttype.ObjectTypeCode == '002001001000':
+                    cadnumparent = []
+                    cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                    cadnumchild = cadnumnum
+            else:
+                material = []
+                keyparam = []
+                parentobj = []
+                cadnumparent = []
+                cadnumchild = []
+            data = {"cadnum":cadnum, "obj":obj, "material":material, "keyparam":keyparam, "parentobj":parentobj, "cadnumparent":cadnumparent, "cadnumchild":cadnumchild, "errors":errors, "perror":paramError}        
+        return HttpResponse(template.render(data, request)) 
+#---------------------------------
+def cl_search_object(request):
+    """
+    вывод результата поиска объекта
+    """
+    template = loader.get_template('cost_cadastr/listcost/search.html')
+    data = {}
+    if request.method == 'POST':
+        cadnum = request.POST['cadnum']
+        obj = ClObject.objects.filter(CadastralNumber=cadnum)
+        if obj:
+            material = ClElementConstrObj.objects.filter(clobject=obj[0].id)
+            keyparam = ClKeyParam.objects.filter(clobject=obj[0].id)
+            if obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                cadnumnum = ClCadNumNum.objects.filter(cad_num_child_id=obj[0].id)
+                parentobj = ClObject.objects.filter(pk=cadnumnum.first().cad_num_parent.id)
+            else:
+                parentobj = []
+            if obj[0].clobjecttype.ObjectTypeCode in ('002001002000', '002001004000', '002001005000'):
+                cadnumparent = ClParenCadastralNumbers.objects.filter(clobject=obj[0].id)
+                cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                cadnumchild = cadnumnum
+                #cadnumchild = ClObject.objects.filter(pk__in=cadnumnum. )
+            elif obj[0].clobjecttype.ObjectTypeCode in ('002001003000', '002001009000'):
+                cadnumparent = parentobj
+                cadnumchild = []
+            elif obj[0].clobjecttype.ObjectTypeCode == '002001001000':
+                cadnumparent = []
+                cadnumnum = ClCadNumNum.objects.filter(cad_num_parent_id=obj[0].id)
+                cadnumchild = cadnumnum
+        else:
+            material = []
+            keyparam = []
+            parentobj = []
+            cadnumparent = []
+            cadnumchild = []
+        data = {"cadnum":cadnum, "obj":obj, "material":material, "keyparam":keyparam, "parentobj":parentobj, "cadnumparent":cadnumparent, "cadnumchild":cadnumchild}
+    else:
+        pass
+    return HttpResponse(template.render(data, request)) 
+
+
+#---------------------------------
 def cl_create_list(request):
     """
     формирование перечня для оценки
@@ -208,14 +317,14 @@ def cl_create_list(request):
         else:
             #data["error"] = "Ошибка формирования перечня"
             pass
-        listFiles = ClListRatingReady.objects.all()
+        listFiles = ClListRatingReady.objects.all().order_by('date_list_create').reverse()
         paginator = Paginator(listFiles, 15)
         page_number = request.GET.get('page')
         page_listFiles = paginator.get_page(page_number)
         listFiles_count = listFiles.count()
         data = {"listFiles":page_listFiles, "listFiles_count":listFiles_count, "current_date":current_date, "relevance":relevance}
     elif request.method == 'GET':
-        listFiles = ClListRatingReady.objects.all()
+        listFiles = ClListRatingReady.objects.all().order_by('date_list_create').reverse()
         paginator = Paginator(listFiles, 15)
         page_number = request.GET.get('page')
         page_listFiles = paginator.get_page(page_number)

@@ -1,0 +1,416 @@
+{% extends 'template.html' %}
+{% load tz %}
+{% block content %}
+    <h4>Результат поиска кадастровой стоимости объекта {{ cadnum }}:</h4>
+    <form action="/cost_cadastr/cl/update/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="cadnum" value="{{ cadnum }}">
+        <input type="submit" class="btn btn-outline-info" value="Обновить/Загрузить данные">
+        <a href="{{ HTTP_HOST }}/cost_cadastr/cl/" class="btn btn btn-outline-primary">Вернуться к списку документов</a>
+    </form>
+    <table class="table table-bordered table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Кадастровый номер</th>
+                <th>Дата постановки на учет</th>
+                <th>Дата снятия с учета</th>
+                <th>Дата обновления в витрине</th>
+                <th>Характеристики объекта</th>
+                <th>Адрес</th>
+                <th>Кадастровая стоимость</th>
+                <th>Связь с КН</th>
+            </tr>
+        </thead>
+        {% for item in obj %}   
+        <tbody>
+            <tr>
+                <td>{{ item.CadastralNumber }}</td>
+                <td>{{ item.DateCreated|date:'d-m-Y' }}</td>
+                <td>
+                {% if item.DateRemoved %}
+                    {{ item.DateRemoved }}
+                {% endif %}                   
+                </td>
+                <td>{{ item.DateCadastralRecord|date:'d-m-Y' }}</td>
+                <td><a class="a-table" data-toggle="modal" href="#building">Показать</a></td>
+                <td><a class="a-table" data-toggle="modal" href="#address">Показать</a></td>
+                <td><a class="a-table" data-toggle="modal" href="#cost">Показать</a></td>
+                <td><a class="a-table" data-toggle="modal" href="#relations">Показать</a></td>
+            </tr>
+        </tbody>
+    </table>
+<!-- Modal -->
+<!-- Characteristic Building -->
+<div class="modal fade" id="building" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Характеристики объекта:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <table class="table table-bordered table-sm table-hover">
+                <tbody>
+                    <tr>
+                        <td>Номер кадастрового квартала</td>
+                        <td>{{ item.CadastralBlock }}</td>
+                    </tr>
+                    {% if parentobj %}
+                    {% for p in parentobj %}
+                        <td>Кадастровый номер родителя</td>
+                        <td>{{ p.CadastralNumber }}</td>
+                    {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td>Вид объекта</td>
+                        <td>{{ item.clobjecttype.ObjectTypeName }}</td>                        
+                    </tr>
+                    {% if item.clstate %}
+                    <tr>
+                        <td>Статус</td>
+                        <td>{{ item.clstate.statusName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.clzutype %}
+                    <tr>
+                        <td>Вид земельного участка</td>
+                        <td>{{ item.clzutype.objectTypeName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.cllanduse %}
+                    <tr>
+                        <td>Категория земель</td>
+                        <td>{{ item.cllanduse.landUseName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.clutilization.utilizationCode %}
+                    <tr>
+                        <td>Разрешенное использование по классификатору Росреестра</td>
+                        <td>{{ item.clutilization.utilizationCode.utilizationName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.clutilization.utilizationLandUseCode %}
+                    <tr>
+                        <td>Разрешенное использование по классификатору Минэка</td>
+                        <td>{{ item.clutilization.utilizationLandUseCode.utilizationName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.clutilization.utilizationByDoc %}
+                    <tr>
+                        <td>Разрешенное использование по документу</td>
+                        <td>{{ item.clutilization.utilizationByDoc }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        {% if item.Area %}
+                            <td>Площадь</td>
+                            <td>{{ item.Area }}</td>   
+                        {% endif %}                     
+                    </tr>
+                    {% if item.clareacode %}
+                    <tr>
+                        <td>Вид площади</td>
+                        <td>{{ item.clareacode.areaName }}</td>
+                    </tr>
+                    {% endif %}
+                    {% for k in keyparam %}
+                    <tr>
+                        <td>{{ k.valuetype.ClKeyParamName }}</td>
+                        <td>{{ k.value }}</td>             
+                    </tr>
+                    {% endfor %}
+                    {% if item.DegreeReadiness %}
+                    <tr>
+                        <td>Степень готовности</td>
+                        <td>{{ item.DegreeReadiness }}</td>             
+                    </tr>
+                    {% endif %}
+                    {% if item.Floors %}                    
+                    <tr>
+                        <td>Количество этажей</td>
+                        <td>{{ item.Floors }}</td>                        
+                    </tr>
+                    {% endif %}
+                    {% if item.UndergroundFloors %}
+                    <tr>
+                        <td>Количество подземных этажей</td>
+                        <td>
+                            {{ item.UndergroundFloors }}
+                        </td>                        
+                    </tr>
+                    {% endif %}
+                    {% if item.classignationbuilding %}
+                    <tr>
+                        <td>Назначение</td>
+                        <td>{{ item.classignationbuilding.AssignationBuildingName }}</td>                        
+                    </tr>
+                    {% endif %}
+                    {% if item.AssignationConsName %}
+                    <tr>
+                        <td>Назначение</td>
+                        <td>{{ item.AssignationConsName }}</td>                        
+                    </tr> 
+                    {% endif %}          
+                    {% if item.clobjecttype.ObjectTypeCode == '002001003000' %}      
+                        {% if item.classignationcode %}
+                        <tr>
+                            <td>Назначение помещения</td>
+                            <td>{{ item.classignationcode.AssignationFlatName }}</td>
+                        </tr>  
+                        {% endif %} 
+                        {% if item.classignationtype %}
+                        <tr>
+                            <td>Вид жилого помещения</td>
+                            <td>{{ item.classignationtype.AssignationTypeName }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endif %}
+                    {% if item.Name %}
+                    <tr>
+                        <td>Наименование</td>
+                        <td>{{ item.Name }}</td>                        
+                    </tr>
+                    {% endif %}
+                    {% if material %}
+                    {% for el in material %}
+                    <tr>
+                        <td>Материал стен</td>
+                        <td>{{ el.valuetype.ClElementConstrName }}</td>                        
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    {% if item.clexploitationchar.year_build %}
+                    <tr>
+                        <td>Год завершения строительства</td>
+                        <td>{{ item.clexploitationchar.year_build }}</td>                        
+                    </tr>
+                    {% endif %}
+                    {% if item.clexploitationchar.year_used %}
+                    <tr>
+                        <td>Год ввода в эксплуатацию</td>
+                        <td>{{ item.clexploitationchar.year_used }}</td>                       
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+<!--Objects Relations-->
+<div class="modal fade" id="relations" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Связь с кадастровыми номерами:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <h5>Список родительских объектов:</h5>
+            <table class="table table-bordered table-sm table-hover">
+                <tbody>
+                    {% for cp in cadnumparent %}
+                    {% if item.clobjecttype.ObjectTypeCode == '002001003000' or item.clobjecttype.ObjectTypeCode == '002001009000' %}
+                    <tr>
+                        <td>{{ cp.CadastralNumber }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if item.clobjecttype.ObjectTypeCode == '002001002000' or item.clobjecttype.ObjectTypeCode == '002001004000' or item.clobjecttype.ObjectTypeCode == '002001005000' %}
+                    <tr>
+                        <td>{{ cp.CadastralNumber }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h5>Список дочерних объектов:</h5>
+            <table class="table table-bordered table-sm table-hover">
+                <tbody>
+                    {% for cp in cadnumchild %}
+                    {% if item.clobjecttype.ObjectTypeCode == '002001002000' or item.clobjecttype.ObjectTypeCode == '002001004000' or item.clobjecttype.ObjectTypeCode == '002001005000' %}
+                    <tr>
+                        <td>{{ cp.cad_num_child.CadastralNumber }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+<!-- Cost -->
+<div class="modal fade" id="cost" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Кадастровая стоимость объекта:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <table class="table table-bordered table-sm table-hover">
+                <tbody>
+                    <tr>
+                        <td>Кадастровая стоимость</td>
+                        <td>{{ item.clcadcost.value }}</td>
+                    </tr>
+                    <tr>
+                        {% if item.clcadcost.date_entering %}
+                        <td>Дата внесения</td>
+                        <td>{{ item.clcadcost.date_entering|date:'d-m-Y' }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.clcadcost.date_approval %}
+                        <td>Дата утверждения</td>
+                        <td>{{ item.clcadcost.date_approval|date:'d-m-Y' }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.clcadcost.date_application %}
+                        <td>Дата начала применения</td>
+                        <td>{{ item.clcadcost.date_application|date:'d-m-Y' }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.clcadcost.date_valuation %}
+                        <td>Дата определения</td>
+                        <td>{{ item.clcadcost.date_valuation|date:'d-m-Y' }}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+<!-- address -->
+<div class="modal fade" id="address" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Адрес объекта:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <table class="table table-bordered table-sm table-hover">
+                <tbody>
+                    <tr>
+                        {% if item.cllocation.okato %}
+                        <td>ОКАТО</td>
+                        <td>{{ item.cllocation.okato }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.kladr %}
+                        <td>КЛАДР</td>
+                        <td>{{ item.cllocation.kladr }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.oktmo %}
+                        <td>ОКТМО</td>
+                        <td>{{ item.cllocation.oktmo }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.postal %}
+                        <td>Индекс</td>
+                        <td>{{ item.cllocation.postal }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.region %}
+                        <td>Код региона</td>
+                        <td>{{ item.cllocation.region }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.district_type or item.cllocation.district_name %}
+                        <td>Район</td>
+                        <td>{{ item.cllocation.district_type }} {{ item.cllocation.district_name }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.city_type or item.cllocation.city_name %}
+                        <td>Город</td>
+                        <td>{{ item.cllocation.city_type }} {{ item.cllocation.city_name }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.locality_type or item.cllocation.locality_name %}
+                        <td>Населенный пункт</td>
+                        <td>{{ item.cllocation.locality_type }} {{ item.cllocation.locality_name }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.street_type or item.cllocation.street_name %}
+                        <td>Улица</td>
+                        <td>{{ item.cllocation.street_type }} {{ item.cllocation.street_name }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.home_type or item.cllocation.home_number %}
+                        <td>Дом</td>
+                        <td>{{ item.cllocation.home_type }} {{ item.cllocation.home_number }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.corp_type or item.cllocation.corp_number %}
+                        <td>Корпус</td>
+                        <td>{{ item.cllocation.corp_type }} {{ item.cllocation.corp_number }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.str_type or item.cllocation.str_number %}
+                        <td>Строение</td>
+                        <td>{{ item.cllocation.str_type }} {{ item.cllocation.str_number }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.apart_type or item.cllocation.apart_number %}
+                        <td>Помещение/Квартира</td>
+                        <td>{{ item.cllocation.apart_type }} {{ item.cllocation.apart_number }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if item.cllocation.note %}
+                        <td>Адрес</td>
+                        <td>{{ item.cllocation.note }}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#createXML').submit(function() {
+
+    // submission stuff
+
+    $('#selectParam').modal('hide');
+    return true;
+    });
+</script>
+{% endfor %}
+<div class="col-12">
+    {% if perror %}
+        <p class="p-error">{{ perror }}</p>
+        <br>
+    {% endif %}
+    {% for e, l in errors %}
+        <a href="{{ l }}" class="p-error">{{ e }}</a>
+        <br>
+    {% endfor %}
+</div>
+{% endblock %}

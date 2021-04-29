@@ -46,8 +46,9 @@ def loadDataFIR(dateStart, dateEnd, dir_name, cadNums=None):
     загрузка данных из ФИР
     """
     URL = 'http://ir-app-lk-bal-01.prod.egrn:8080/firtir/getfirzip/70/'
-    dateStart = datetime.strptime(dateStart, "%Y-%m-%d").strftime("%d.%m.%Y")
-    dateEnd = datetime.strptime(dateEnd, "%Y-%m-%d").strftime("%d.%m.%Y")
+    if not cadNums:
+        dateStart = datetime.strptime(dateStart, "%Y-%m-%d").strftime("%d.%m.%Y")
+        dateEnd = datetime.strptime(dateEnd, "%Y-%m-%d").strftime("%d.%m.%Y")
     if cadNums:
         dataURL = URL + cadNums
         savePath = dir_name + 'package_fir_{0}.zip'.format(str(uuid.uuid1()))

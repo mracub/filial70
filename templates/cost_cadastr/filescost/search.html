@@ -71,33 +71,6 @@
                     </div>       
                 </div>
             </div>
-
-            <!-- animation -->
-            <div class="modal fade" id="deleteDoc" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Вы действительно хотите удалить документ?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <form action="/cost_cadastr/deletedoc/" method="POST" enctype="multipart/form-data" id="delDoc">
-                        {% csrf_token %}
-                        <div class="modal-body">
-                            <p>Удаление документа приведёт к удалению загруженных сведений о кадастровой стоимости обектов, переданных в рамках данного документа</p>
-                        </div>
-                        <div class="invalid-feedback">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                            <button type="submit" class="btn btn-danger">Удалить</button>
-                        </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-
         </div>
     </div>
     <script>

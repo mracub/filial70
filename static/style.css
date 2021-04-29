@@ -17,6 +17,14 @@ a {
     font-size: large;
 }
 
+.a-table {
+    text-decoration: none;
+}
+
+.a-table:hover {
+    text-decoration: none;
+}
+
 .a-template {
     text-decoration: none;
     color: white;

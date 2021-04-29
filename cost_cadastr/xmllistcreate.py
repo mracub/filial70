@@ -333,7 +333,7 @@ def createCarParkingSpace(objectsQuerySet):
 #--------------------------
 def createFlat(objectsQuerySet):
     """
-    формирование записей о зданиях
+    формирование записей о помещениях
     """
     xml_schema_listforrating = os.path.normcase(os.path.join(settings.STATICFILES_DIRS[0], 
             'scheme/ListForRating_v04', 'ListForRating_v04.xsd'))
